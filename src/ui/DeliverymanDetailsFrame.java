@@ -39,7 +39,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jlblPost = new javax.swing.JLabel();
         jlblCity = new javax.swing.JLabel();
         jlblStatus = new javax.swing.JLabel();
-        jdbStatus = new javax.swing.JComboBox<>();
+        jdbStatus = new javax.swing.JComboBox<String>();
         jtfID = new javax.swing.JTextField();
         jtfName = new javax.swing.JTextField();
         jtfID2 = new javax.swing.JTextField();
@@ -94,7 +94,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jlblStatus.setText("Status :");
         jPanel1.add(jlblStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 303, -1, -1));
 
-        jdbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Employed", "Retired", "Resigned", "Terminated" }));
+        jdbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Employed", "Retired", "Resigned", "Terminated" }));
         jdbStatus.setEnabled(false);
         jPanel1.add(jdbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 300, 122, -1));
 
