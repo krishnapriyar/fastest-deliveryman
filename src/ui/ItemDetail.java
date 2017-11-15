@@ -1,9 +1,6 @@
 package ui;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import javax.swing.JOptionPane;
 
 /*
@@ -22,10 +19,10 @@ public class ItemDetail extends javax.swing.JFrame {
   String itemName, category, promoInfo;
   double price;
     
-    String dbURL = "jdbc:mysql://localhost:1527/Fast"; 
+    String dbURL = "jdbc:derby://localhost:1527/Fast"; 
 
         Connection dbCon = null; 
-        Statement stmt = null; 
+        PreparedStatement stmt = null; 
         ResultSet rs = null;
   
     public ItemDetail() {
@@ -47,20 +44,28 @@ public class ItemDetail extends javax.swing.JFrame {
         jbtDelete = new javax.swing.JButton();
         jtfPrice = new javax.swing.JTextField();
         jtfName = new javax.swing.JTextField();
-        jtfCategory = new javax.swing.JTextField();
         jtfPromo = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jtfID = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jtfCategory = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Item Details");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Item Name :");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 164, 82, 33));
 
         jLabel2.setText("Category :");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 285, 82, 30));
 
         jLabel3.setText("Price :");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 225, 69, 36));
 
         jLabel4.setText("Promotional Info :");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 340, -1, 28));
 
         jbtAdd.setText("Add Item");
         jbtAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -68,6 +73,7 @@ public class ItemDetail extends javax.swing.JFrame {
                 jbtAddActionPerformed(evt);
             }
         });
+        getContentPane().add(jbtAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 418, -1, -1));
 
         jbtBack.setText("Back");
         jbtBack.addActionListener(new java.awt.event.ActionListener() {
@@ -75,6 +81,7 @@ public class ItemDetail extends javax.swing.JFrame {
                 jbtBackActionPerformed(evt);
             }
         });
+        getContentPane().add(jbtBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(73, 418, -1, -1));
 
         jbtUpdate.setText("Update Item");
         jbtUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -82,90 +89,37 @@ public class ItemDetail extends javax.swing.JFrame {
                 jbtUpdateActionPerformed(evt);
             }
         });
+        getContentPane().add(jbtUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(291, 418, -1, -1));
 
         jbtDelete.setText("Delete Item");
+        getContentPane().add(jbtDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(424, 418, -1, -1));
+        getContentPane().add(jtfPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(292, 231, 180, -1));
 
         jtfName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfNameActionPerformed(evt);
             }
         });
+        getContentPane().add(jtfName, new org.netbeans.lib.awtextra.AbsoluteConstraints(292, 168, 180, -1));
+        getContentPane().add(jtfPromo, new org.netbeans.lib.awtextra.AbsoluteConstraints(292, 342, 180, -1));
 
         jLabel5.setText("Item ID :");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 117, 72, -1));
 
         jtfID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfIDActionPerformed(evt);
             }
         });
+        getContentPane().add(jtfID, new org.netbeans.lib.awtextra.AbsoluteConstraints(292, 117, 180, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbtBack))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(59, 59, 59)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jtfName, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
-                                    .addComponent(jtfPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
-                                    .addComponent(jtfCategory, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
-                                    .addComponent(jtfPromo, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
-                                    .addComponent(jtfID)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(jbtAdd)
-                                .addGap(18, 18, 18)
-                                .addComponent(jbtUpdate)
-                                .addGap(18, 18, 18)
-                                .addComponent(jbtDelete))))
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(104, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5)
-                    .addComponent(jtfID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jtfPromo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtAdd)
-                    .addComponent(jbtBack)
-                    .addComponent(jbtUpdate)
-                    .addComponent(jbtDelete))
-                .addGap(50, 50, 50))
-        );
+        jLabel6.setFont(new java.awt.Font("新細明體", 0, 18)); // NOI18N
+        jLabel6.setText("Please Enter The Item Details");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 34, 279, 34));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 450, 40, 40));
+
+        jtfCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Beverage", "Desert", "Main Course", "Soup", "Steak\t", "Snacks", " " }));
+        getContentPane().add(jtfCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, 180, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -175,23 +129,45 @@ public class ItemDetail extends javax.swing.JFrame {
         // TODO add your handling code here:
         itemID = Integer.parseInt(jtfID.getText());
         itemName = jtfName.getText();
-        category = jtfCategory.getText();
+        category = jtfCategory.getSelectedItem().toString();
         promoInfo = jtfPromo.getText();
         price = Double.parseDouble(jtfPrice.getText());
         
-        JOptionPane.showMessageDialog(null, itemID + itemName + category + promoInfo + price, "Item added successfully!", JOptionPane.INFORMATION_MESSAGE);
+
         
         
     try{
-        Connection conn = DriverManager.getConnection(dbURL);
-        stmt = conn.createStatement();
-        stmt.executeUpdate("INSERT INTO ITEM " + "VALUES" + itemID + itemName + category + price + promoInfo ) ;
         
+//        Class.forName("com.mysql.jdbc.Driver"); 
+        DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+        Connection conn = DriverManager.getConnection(dbURL);
+//        stmt = conn.createStatement();
+//        String str = "INSERT INTO ITEM " + "VALUES (" + itemID +",'"+ itemName +"','"+category +"',"+ price +",'"+ promoInfo +"');";
+//        stmt.executeUpdate(str) ;
+
+        
+                String insertStr = "INSERT INTO  ITEM   VALUES(?,?,?,?,?,?)";
+
+      
+
+            stmt = conn.prepareStatement(insertStr);
+
+            stmt.setInt(1, itemID);
+
+            stmt.setString(2, itemName);
+
+            stmt.setString(3, category);
+
+            stmt.setDouble(4,price);
+
+            stmt.setString(5, promoInfo);
+            stmt.setInt(6, 1);
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null,"Item added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
      
-    }catch(Exception e)
-    {
-        JOptionPane.showMessageDialog(null, e);
-            }
+    }catch (Exception ex){
+        JOptionPane.showMessageDialog(null,ex.getMessage(),"Failed", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_jbtAddActionPerformed
 
     private void jbtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBackActionPerformed
@@ -253,11 +229,13 @@ public class ItemDetail extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JButton jbtAdd;
     private javax.swing.JButton jbtBack;
     private javax.swing.JButton jbtDelete;
     private javax.swing.JButton jbtUpdate;
-    private javax.swing.JTextField jtfCategory;
+    private javax.swing.JComboBox<String> jtfCategory;
     private javax.swing.JTextField jtfID;
     private javax.swing.JTextField jtfName;
     private javax.swing.JTextField jtfPrice;

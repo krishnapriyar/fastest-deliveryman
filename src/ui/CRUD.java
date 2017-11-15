@@ -1,9 +1,11 @@
-package ui;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              package ui;
 
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.naming.spi.DirStateFactory.Result;
 import javax.swing.JOptionPane;
@@ -20,6 +22,14 @@ import javax.swing.JOptionPane;
  */
 public class CRUD extends javax.swing.JFrame {
 
+    
+    private String host = "jdbc:derby://localhost:1527/Fast";
+    private String user = "";
+    private String password = "";
+    private String tableName = "ITEM";
+    private Connection conn;
+    private PreparedStatement stmt;
+    
     public CRUD() {
         initComponents();
     }
@@ -165,35 +175,19 @@ public class CRUD extends javax.swing.JFrame {
         //</editor-fold>
         
         
-        String dbURL = "jdbc:mysql://localhost:1527/Fast"; 
-
-        Connection dbCon = null; 
-        Statement stmt = null; 
-        ResultSet rs = null;
-
-       
-
-//    try{
-//        Connection conn = DriverManager.getConnection(dbURL);
-//        stmt = conn.createStatement();
-//        stmt.executeUpdate("INSERT INTO ITEM " + "VALUES" + itemID + itemName + category + price + promoInfo ) ;
-//       rs = stmt.executeQuery("select ITEMNAME from ITEM");
-//       
-//       while(rs.next()){
-//           String pat = rs.getString("itemName");
-//           jcbItem.addItem(pat);
-//       }
-//    }catch(Exception e)
-//    {
-//        JOptionPane.showMessageDialog(null, e);
-//            }
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CRUD().setVisible(true);
-            }
-        });
+    }
+    public void createConnection()
+    {
+        try
+        {
+             Class.forName("java.sql.DriverManager");   
+            conn = DriverManager.getConnection(host, user, password);
+            System.out.println("***Vet : Connection established.");
+        }
+        catch(Exception ex)
+        {
+            JOptionPane.showMessageDialog(null, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
