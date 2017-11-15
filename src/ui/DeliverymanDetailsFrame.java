@@ -5,6 +5,9 @@
  */
 package ui;
 
+import java.sql.*;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Priya
@@ -14,10 +17,20 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
     /**
      * Creates new form DeliverymanDetailsFrame
      */
+    
+        
+        String dbURL = "jdbc:derby://localhost:1527/Fast"; 
+
+        Connection dbCon = null; 
+        PreparedStatement stmt = null; 
+        ResultSet rs = null;
+        
+        
     public DeliverymanDetailsFrame() {
         initComponents();
         jdbStatus.setEnabled(false);
         jcbEdit.setSelected(false);
+        autogenID();
     }
  
     /**
@@ -39,7 +52,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jlblPost = new javax.swing.JLabel();
         jlblCity = new javax.swing.JLabel();
         jlblStatus = new javax.swing.JLabel();
-        jdbStatus = new javax.swing.JComboBox<String>();
+        jdbStatus = new javax.swing.JComboBox<>();
         jtfID = new javax.swing.JTextField();
         jtfName = new javax.swing.JTextField();
         jtfID2 = new javax.swing.JTextField();
@@ -94,7 +107,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jlblStatus.setText("Status :");
         jPanel1.add(jlblStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 303, -1, -1));
 
-        jdbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Employed", "Retired", "Resigned", "Terminated" }));
+        jdbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Employed", "Retired", "Resigned", "Terminated" }));
         jdbStatus.setEnabled(false);
         jPanel1.add(jdbStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 300, 122, -1));
 
@@ -119,6 +132,11 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jPanel1.add(jlblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 27, 661, -1));
 
         jbtAction.setText("Add Staff");
+        jbtAction.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtActionActionPerformed(evt);
+            }
+        });
         jPanel1.add(jbtAction, new org.netbeans.lib.awtextra.AbsoluteConstraints(182, 404, -1, -1));
 
         jbtClear.setText("Reset Fields");
@@ -172,6 +190,30 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
     private void jtfPostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPostActionPerformed
         // TODO add your handling code here:
+        //Automatically fill city
+        String postcode = jtfPost.getText();
+        if(postcode.length()==5){
+            
+            try{
+                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+                Connection conn = DriverManager.getConnection(dbURL);
+                
+                String queryStr="SELECT CITY FROM  POSTALCODES WHERE POSTALCODE = ?";
+
+                stmt = conn.prepareStatement(queryStr);
+                stmt.setString(1,postcode);
+                ResultSet rs = stmt.executeQuery();
+            
+                if(rs.next())
+                {
+                    jtfCity.setText(rs.getString(1));               
+                }
+                
+            }catch (Exception ex){
+                System.out.println(ex.getMessage());
+            }            
+        
+        }
     }//GEN-LAST:event_jtfPostActionPerformed
 
     private void jcbEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbEditActionPerformed
@@ -179,6 +221,62 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
        jdbStatus.setEnabled(jcbEdit.isSelected());
     }//GEN-LAST:event_jcbEditActionPerformed
 
+    private void jbtActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtActionActionPerformed
+        // TODO add your handling code here:
+        
+        int ID = Integer.parseInt(jtfID.getText());
+        String name = jtfName.getText();
+        int IC = Integer.parseInt(jtfID2.getText());
+        int tel = Integer.parseInt(jtfTel.getText());
+        String address = jtfAdd1.getText() +"|"+ jtfAdd2.getText() +"|"+jtfPost.getText()+"|"+ jtfCity.getText();
+        String status = jdbStatus.getSelectedItem().toString();
+        
+        try{
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+            Connection conn = DriverManager.getConnection(dbURL);
+            
+            String insertStr = "INSERT INTO  DELIVERYMAN VALUES(?,?,?,?,?,?,?)";
+            stmt = conn.prepareStatement(insertStr);
+
+            stmt.setInt(1, ID);
+            stmt.setString(2, name);
+            stmt.setInt(3, IC);
+            stmt.setInt(4, tel);
+            stmt.setString(5, address);
+            stmt.setString(6, status);
+            stmt.setString(7, "No");
+            
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null,"Delivery man added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        }catch (Exception ex){}
+    }//GEN-LAST:event_jbtActionActionPerformed
+
+    private void autogenID(){
+        
+        int ID= 20001;
+        
+        try{
+                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+                Connection conn = DriverManager.getConnection(dbURL);
+                
+                String queryStr="SELECT MAX(DMID) FROM  DELIVERYMAN";
+
+                stmt = conn.prepareStatement(queryStr);
+                ResultSet rs = stmt.executeQuery();
+            
+                if(rs.next())
+                {   
+                    ID=rs.getInt(1)+1;
+             
+                }
+                
+            }catch (Exception ex){
+                System.out.println(ex.getMessage());
+            }
+        
+        jtfID.setText(ID+"");  
+     
+    }
     /**
      * @param args the command line arguments
      */
@@ -214,6 +312,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         });
     }
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jbtAction;
