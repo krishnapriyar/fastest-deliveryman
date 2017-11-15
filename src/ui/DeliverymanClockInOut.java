@@ -20,8 +20,9 @@ import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Locale;
-
+import java.util.List;
 import javax.swing.Timer;
 
 /**
@@ -38,10 +39,10 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
     private ResultSet rSet;
     private PreparedStatement prepare;
     private Date date;
-
+    private List<DMClockInOut> list = new ArrayList<>();
     private String workStat1 = "Available";
     private String workStat2 = "Break Hour";
-    private int count = 0;
+
     public DeliverymanClockInOut() {
         initComponents();
         showDate();
@@ -60,10 +61,13 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
             rSet = stmt.executeQuery("SELECT * FROM QWE.DELIVERYMAN");
 
             while (rSet.next()) {
-                String cbName = rSet.getString("DMNAME");
-                jcbDMan.addItem(cbName);
-                //jcbDMan.setSelectedIndex(-1);
+                list.add(new DMClockInOut(rSet.getString("DMNAME"), Integer.parseInt(rSet.getString("DMID"))));
             }
+
+            for (int i = 0; i < list.size(); i++) {
+                jcbDMan.addItem(list.get(i).getDmName());
+            }
+
         } catch (SQLException e) {
             System.err.println(e);
         }
@@ -365,7 +369,7 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
 
     private void jbtnClockOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnClockOutActionPerformed
         // TODO add your handling code here:
-        
+
         if (jlblDManID.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Select a deliveryman!");
         } else {
@@ -412,14 +416,7 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
             }
 
         }
-        
-        
-        
-        
-        
-        
-        
-        
+
 //        if (jlblDManID.getText().isEmpty()) {
 //            JOptionPane.showMessageDialog(null, "Select a deliveryman!");
 //        } else {
