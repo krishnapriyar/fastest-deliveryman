@@ -17,8 +17,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
     /**
      * Creates new form DeliverymanDetailsFrame
      */
-    
-        
+           
         String dbURL = "jdbc:derby://localhost:1527/Fast"; 
 
         Connection dbCon = null; 
@@ -235,7 +234,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
             DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
             Connection conn = DriverManager.getConnection(dbURL);
             
-            String insertStr = "INSERT INTO  DELIVERYMAN VALUES(?,?,?,?,?,?,?)";
+            String insertStr = "INSERT INTO  DELIVERYMAN VALUES(?,?,?,?,?,?,?,?)";
             stmt = conn.prepareStatement(insertStr);
 
             stmt.setInt(1, ID);
@@ -245,10 +244,15 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
             stmt.setString(5, address);
             stmt.setString(6, status);
             stmt.setString(7, "No");
+            stmt.setString(8, status);
             
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null,"Delivery man added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        }catch (Exception ex){}
+        }catch (Exception ex){
+            
+            System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null,"Delivery man could not be added!", "Failed", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jbtActionActionPerformed
 
     private void autogenID(){
@@ -266,7 +270,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
             
                 if(rs.next())
                 {   
-                    ID=rs.getInt(1)+1;
+                    ID=rs.getInt(1)!=0?rs.getInt(1)+1:ID;
              
                 }
                 
