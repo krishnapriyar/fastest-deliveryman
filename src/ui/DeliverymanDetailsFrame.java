@@ -176,14 +176,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
     private void jbtClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtClearActionPerformed
         // TODO add your handling code here:
-        jtfID.setText("");
-        jtfName.setText("");
-        jtfID2.setText("");
-        jtfTel.setText("");
-        jtfAdd1.setText("");
-        jtfAdd2.setText("");
-        jtfCity.setText("");
-        jtfPost.setText("");
+        clearText();
         
     }//GEN-LAST:event_jbtClearActionPerformed
 
@@ -205,7 +198,10 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
             
                 if(rs.next())
                 {
-                    jtfCity.setText(rs.getString(1));               
+                    jtfCity.setText(rs.getString(1));  
+                    clearText();
+                    autogenID();
+                    
                 }
                 
             }catch (Exception ex){
@@ -225,8 +221,8 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         
         int ID = Integer.parseInt(jtfID.getText());
         String name = jtfName.getText();
-        int IC = Integer.parseInt(jtfID2.getText());
-        int tel = Integer.parseInt(jtfTel.getText());
+        String IC = jtfID2.getText();
+        String tel = jtfTel.getText();
         String address = jtfAdd1.getText() +"|"+ jtfAdd2.getText() +"|"+jtfPost.getText()+"|"+ jtfCity.getText();
         String status = jdbStatus.getSelectedItem().toString();
         
@@ -239,8 +235,8 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
             stmt.setInt(1, ID);
             stmt.setString(2, name);
-            stmt.setInt(3, IC);
-            stmt.setInt(4, tel);
+            stmt.setString(3, IC);
+            stmt.setString(4, tel);
             stmt.setString(5, address);
             stmt.setString(6, status);
             stmt.setString(7, "No");
@@ -280,6 +276,17 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         
         jtfID.setText(ID+"");  
      
+    }
+    
+    private void clearText(){
+        jtfID.setText("");
+        jtfName.setText("");
+        jtfID2.setText("");
+        jtfTel.setText("");
+        jtfAdd1.setText("");
+        jtfAdd2.setText("");
+        jtfCity.setText("");
+        jtfPost.setText("");
     }
     /**
      * @param args the command line arguments
