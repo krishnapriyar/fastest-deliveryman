@@ -236,7 +236,7 @@ public class ItemDetail extends javax.swing.JFrame {
                 DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
                 Connection conn = DriverManager.getConnection(dbURL);
                 
-                String queryStr="SELECT MAX(DMID) FROM  ITEM";
+                String queryStr="SELECT MAX(ITEMID) FROM  ITEM";
 
                 stmt = conn.prepareStatement(queryStr);
                 ResultSet rs = stmt.executeQuery();
