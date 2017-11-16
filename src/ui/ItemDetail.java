@@ -27,6 +27,7 @@ public class ItemDetail extends javax.swing.JFrame {
   
     public ItemDetail() {
         initComponents();
+        autogenID();
         
     }
 
@@ -106,6 +107,7 @@ public class ItemDetail extends javax.swing.JFrame {
         jLabel5.setText("Item ID :");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 117, 72, -1));
 
+        jtfID.setEnabled(false);
         jtfID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfIDActionPerformed(evt);
@@ -161,9 +163,11 @@ public class ItemDetail extends javax.swing.JFrame {
             stmt.setDouble(4,price);
 
             stmt.setString(5, promoInfo);
-            stmt.setInt(6, 1);
+            //Temporary affiliate ID
+            stmt.setInt(6, 3001);
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null,"Item added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            autogenID();
      
     }catch (Exception ex){
         JOptionPane.showMessageDialog(null,ex.getMessage(),"Failed", JOptionPane.ERROR_MESSAGE);
@@ -219,10 +223,38 @@ public class ItemDetail extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ItemDetail().setVisible(true);
+                
             }
         });
     }
 
+        private void autogenID(){
+        
+        int ID= 40001;
+        
+        try{
+                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+                Connection conn = DriverManager.getConnection(dbURL);
+                
+                String queryStr="SELECT MAX(DMID) FROM  ITEM";
+
+                stmt = conn.prepareStatement(queryStr);
+                ResultSet rs = stmt.executeQuery();
+            
+                if(rs.next())
+                {   
+                    ID=rs.getInt(1)!=0?rs.getInt(1)+1:ID;
+             
+                }
+                
+            }catch (Exception ex){
+                System.out.println(ex.getMessage());
+            }
+        
+        jtfID.setText(ID+"");  
+     
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
