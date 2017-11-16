@@ -199,8 +199,6 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
                 if(rs.next())
                 {
                     jtfCity.setText(rs.getString(1));  
-                    clearText();
-                    autogenID();
                     
                 }
                 
@@ -244,6 +242,8 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
             
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null,"Delivery man added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            clearText();
+            autogenID();
         }catch (Exception ex){
             
             System.out.println(ex.getMessage());
