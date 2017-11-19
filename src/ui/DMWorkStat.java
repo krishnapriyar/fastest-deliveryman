@@ -4,7 +4,16 @@ package ui;
 public class DMWorkStat {
     private String dmName ;
     private int dmID;
-    
+    private String activeStat;
+
+//    public String getActiveStat() {
+//        return activeStat;
+//    }
+//
+//    public void setActiveStat(String activeStat) {
+//        this.activeStat = activeStat;
+//    }
+//    
 
     public String getDmName() {
         return dmName;
@@ -26,7 +35,8 @@ public class DMWorkStat {
     public DMWorkStat(String dmName , int dmID)
     {
         this.dmName = dmName;
-        this.dmID =dmID;
+        this.dmID = dmID;
+        //this.activeStat = activeStat;
         
     }
 }

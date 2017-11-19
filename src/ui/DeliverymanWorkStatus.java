@@ -5,18 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.*;
 import java.sql.*;
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.List;
 import javax.swing.Timer;
 
@@ -28,6 +21,7 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
     private Date date;
     private PreparedStatement prepare;
     private List<DMWorkStat> list = new ArrayList<>();
+    private String empStatus = "Active";
 
     public DeliverymanWorkStatus() {
         initComponents();
@@ -45,26 +39,22 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
         } else {
             jbtnUpdate.setEnabled(true);
         }
-
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
         } catch (ClassNotFoundException e) {
             System.out.println(e);
         }
-
         try {
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
             stmt = con.createStatement();
-            rSet = stmt.executeQuery("SELECT * FROM QWE.DELIVERYMAN");
+            rSet = stmt.executeQuery("SELECT * FROM QWE.DELIVERYMAN WHERE ACTIVESTATUS = 'Active'");
 
             while (rSet.next()) {
                 list.add(new DMWorkStat(rSet.getString("DMNAME"), Integer.parseInt(rSet.getString("DMID"))));
             }
-
             for (int i = 0; i < list.size(); i++) {
-                jcbDMID.addItem(list.get(i).getDmName());
+                    jcbDMID.addItem(list.get(i).getDmName());
             }
-
         } catch (SQLException e) {
             System.err.println(e);
         }
@@ -74,35 +64,23 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
             public void itemStateChanged(ItemEvent e) {
                 String DMID = jcbDMID.getSelectedItem().toString();
                 getDMID(DMID);
-
             }
-
         });
-
-        jcbCurrentStat.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-
-            }
-
-        });
-
     }
 
     public void getDMID(String DMname) {
-
         if (DMname.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Selected deliveryman unavailable");
         } else {
             try {
                 con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-                prepare = con.prepareStatement("SELECT * FROM QWE.DELIVERYMAN WHERE DMName = ? ");
+                prepare = con.prepareStatement("SELECT * FROM QWE.DELIVERYMAN WHERE DMName = ?");
                 prepare.setString(1, DMname);
+                //prepare.setString(2, empStatus.toString());
                 ResultSet rSet = prepare.executeQuery();
 
                 if (rSet.next()) {
                     jlblDMID.setText(rSet.getString("DMID"));
-
                     try {
                         con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
                         prepare = con.prepareStatement("SELECT WORKINGSTATUS FROM QWE.DELIVERYMAN WHERE DMID = ? ");
@@ -114,7 +92,6 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                             jbtnUpdate.setEnabled(true);
                             jcbCurrentStat.setEnabled(true);
                             jcbCurrentStat.setVisible(true);
-
                         } else {
                             jlblCurrentStat.setText("No status yet");
                         }
@@ -126,20 +103,16 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                 System.err.println(e);
             }
         }
-
     }
 
     void showDate() {
-
         new Timer(0, new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd-MMM-yyyy  HH:mm:ss aa");
                 jlblDate.setText(sdf.format(date));
             }
-
         }).start();
     }
 
@@ -312,7 +285,6 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
         this.setVisible(false);
         new DeliverymanClockInOut().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -320,40 +292,42 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
     private void jbtnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUpdateActionPerformed
 
         if (!jcbCurrentStat.getSelectedItem().toString().equals("-- Select a status --")) {
-
             int confirmation = JOptionPane.showConfirmDialog(null, "Dp you want to update " + jcbDMID.getSelectedItem().toString() + "'s status?", "Update current work status", JOptionPane.YES_NO_OPTION);
             String currentStat = jcbCurrentStat.getSelectedItem().toString();
 
             if (confirmation == 0) {
+                if (!jcbCurrentStat.getSelectedItem().toString().equals(jlblCurrentStat.getText())) {
+                    try {
+//                      UPDATE SECTION -----------------------------------------------------------------------------
+                        con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
+                        prepare = con.prepareStatement("UPDATE DELIVERYMAN SET WORKINGSTATUS=? WHERE DMID=?");
+                        prepare.setString(1, currentStat);
+                        prepare.setString(2, jlblDMID.getText());
 
-                try {
-                    con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-                    prepare = con.prepareStatement("UPDATE DELIVERYMAN SET WORKINGSTATUS=? WHERE DMID=?");
-                    prepare.setString(1, currentStat);
-                    prepare.setString(2, jlblDMID.getText());
-
-                    int rowsUpdated = prepare.executeUpdate();
-                    if (rowsUpdated > 0) {
-                        JOptionPane.showMessageDialog(null, "Status update successful");
-
-                        try {
-                            con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-                            prepare = con.prepareStatement("SELECT WORKINGSTATUS FROM QWE.DELIVERYMAN WHERE DMID = ? ");
-                            prepare.setString(1, jlblDMID.getText());
-                            rSet = prepare.executeQuery();
-
-                            if (rSet.next()) {
-                                jlblCurrentStat.setText(rSet.getString("WORKINGSTATUS"));
+                        int rowsUpdated = prepare.executeUpdate();
+                        if (rowsUpdated > 0) {
+//                          RETRIEVE SECTION -----------------------------------------------------------------------
+                            try {
+                                con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
+                                prepare = con.prepareStatement("SELECT WORKINGSTATUS FROM QWE.DELIVERYMAN WHERE DMID = ? ");
+                                prepare.setString(1, jlblDMID.getText());
+                                rSet = prepare.executeQuery();
+                                if (rSet.next()) {
+                                    jlblCurrentStat.setText(rSet.getString("WORKINGSTATUS"));
+                                }
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(null, ex.toString());
                             }
-                        } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(null, ex.toString());
+                            JOptionPane.showMessageDialog(null, "Status update successful");
                         }
+//                          RETRIEVE SECTION -----------------------------------------------------------------------
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex.toString());
                     }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, ex.toString());
+                } else {
+                    JOptionPane.showMessageDialog(null, "Status is already - " + jcbCurrentStat.getSelectedItem().toString() + "\n Please select other status ");
                 }
-            } else {
-                
+//                      UPDATE SECTION -----------------------------------------------------------------------------
             }
         } else {
             JOptionPane.showMessageDialog(null, "Select a status!");
