@@ -159,6 +159,11 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
         jLabel4.setText("Deliveryman ID:");
 
         jcbDMan.setToolTipText("Select Deliveryman");
+        jcbDMan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbDManActionPerformed(evt);
+            }
+        });
 
         jlblDManID.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -414,53 +419,12 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-
         }
-
-//        if (jlblDManID.getText().isEmpty()) {
-//            JOptionPane.showMessageDialog(null, "Select a deliveryman!");
-//        } else {
-//            try {
-//                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//                String dateOutput = dateFormat.format(date);
-//
-//                con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-//                prepare = con.prepareStatement("SELECT * FROM TIMECARD WHERE DMID= ? AND DATE= ?");
-//                prepare.setInt(1, Integer.parseInt(jlblDManID.getText()));
-//                prepare.setDate(2, java.sql.Date.valueOf(dateOutput));
-//                rSet = prepare.executeQuery();
-//
-//                if (rSet.next()) {
-//                    if (rSet.getObject(4).equals(null)) {
-//                        //UPDATE SECTION-----------------------------------------------------------------
-//
-//                        //con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-//                        prepare = con.prepareStatement("UPDATE TIMECARD SET CLOCKOUTTIME = ? WHERE DMID=? ");
-//
-//                        prepare.setString(1, jlblTime.getText());
-//                        prepare.setString(2, jlblDManID.getText());
-//
-//                        int rowsUpdated = prepare.executeUpdate();
-//                        if (rowsUpdated > 0) {
-//                            JOptionPane.showMessageDialog(null, "Clock out successful");
-//                        }
-//
-//                        //UPDATE SECTION-----------------------------------------------------------------
-//                    } else {
-//                        JOptionPane.showMessageDialog(null, "Operation Failed");
-//                    }
-//
-//                } else {
-//                    JOptionPane.showMessageDialog(null, "Record does not exist");
-//                }
-//
-//            } catch (Exception ex) {
-//
-//                JOptionPane.showMessageDialog(null, ex.getMessage());
-//            }
-//
-//        }
     }//GEN-LAST:event_jbtnClockOutActionPerformed
+
+    private void jcbDManActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbDManActionPerformed
+        // TODO adyour handling code here
+    }//GEN-LAST:event_jcbDManActionPerformed
 
     public void reset() {
 

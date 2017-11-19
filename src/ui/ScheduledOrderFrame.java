@@ -43,8 +43,8 @@ public class ScheduledOrderFrame extends javax.swing.JFrame {
 
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jCbLocation = new javax.swing.JComboBox<>();
-        jCbRestaurant = new javax.swing.JComboBox<>();
+        jCbLocation = new javax.swing.JComboBox<String>();
+        jCbRestaurant = new javax.swing.JComboBox<String>();
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -79,9 +79,9 @@ public class ScheduledOrderFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jCbHour = new javax.swing.JComboBox<>();
-        jCbMinutes = new javax.swing.JComboBox<>();
-        jCbampm = new javax.swing.JComboBox<>();
+        jCbHour = new javax.swing.JComboBox<String>();
+        jCbMinutes = new javax.swing.JComboBox<String>();
+        jCbampm = new javax.swing.JComboBox<String>();
         jLabel23 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -91,14 +91,14 @@ public class ScheduledOrderFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Restaurant");
 
-        jCbLocation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCbLocation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jCbLocation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCbLocationActionPerformed(evt);
             }
         });
 
-        jCbRestaurant.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCbRestaurant.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setAutoscrolls(true);
@@ -230,6 +230,11 @@ public class ScheduledOrderFrame extends javax.swing.JFrame {
         jLabel11.setText("RM 10.00");
 
         jButton2.setText("Remove");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel12.setText("Nasi Goreng Lakna");
 
@@ -337,9 +342,9 @@ public class ScheduledOrderFrame extends javax.swing.JFrame {
 
         jLabel5.setText("Time");
 
-        jCbHour.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCbHour.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jCbampm.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCbampm.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -481,6 +486,10 @@ public class ScheduledOrderFrame extends javax.swing.JFrame {
         jCbRestaurant.addItem("Texas Chicken");
         jCbRestaurant.addItem("NZ Mamak");
     }//GEN-LAST:event_jCbLocationActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
