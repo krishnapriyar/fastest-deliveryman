@@ -66,13 +66,14 @@ public class SOsecond extends JFrame{
             jbtRemove[i] = new JButton("Remove Item");
             
             qty[i].setValue(1);
+            
             itemOrderedListing[i] = new JPanel(new GridLayout(1, orderedList.size()));
             itemOrderedListing[i].setBorder(BorderFactory.createLineBorder(Color.RED));
             itemOrderedListing[i].add(jlblItemName[i]);
             itemOrderedListing[i].add(jlblItemPricePerItem[i]);
             itemOrderedListing[i].add(qty[i]);
             itemOrderedListing[i].add(totalPrice[i]);
-            itemOrderedListing[i].add(jbtRemove[i]);
+            //itemOrderedListing[i].add(jbtRemove[i]);
             itemDetailListing.add(itemOrderedListing[i]);
             
             final JLabel itemPrice = jlblItemPricePerItem[i];
