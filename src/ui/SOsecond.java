@@ -107,6 +107,24 @@ public class SOsecond extends JFrame{
         southPanel.add(jlblTotalItem);
         southPanel.add(jlblTotalPrice);
        
+        jbtConfirm.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e)
+            {
+                List<ConfirmOrder> confirm = new ArrayList<>();
+                for(int i=0 ; i <orderedList.size();i++)
+                {
+                    String itemName = jlblItemName[i].getText();
+                    Double itemPrice = Double.parseDouble(jlblItemPricePerItem[i].getText());
+                    Double totalAmount = Double.parseDouble(totalPrice[i].getText());
+                    int quantity = Integer.parseInt(qty[i].getValue().toString());
+                    
+                    confirm.add(new ConfirmOrder(itemName, itemPrice, totalAmount, quantity));
+                }
+                
+                SOthird sot = new SOthird();
+                sot.orderDetails(confirm);
+            }
+        });
         
         mainPanel.add(jsp2,BorderLayout.CENTER);
         mainPanel.add(southPanel);
