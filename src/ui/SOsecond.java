@@ -101,7 +101,8 @@ public class SOsecond extends JFrame{
                 }
             });
         }
-        
+        jlblTotalItem.setFont(font);
+        jlblTotalPrice.setFont(font);
         //add control to panel
         southPanel.add(jlblTotalItem);
         southPanel.add(jlblTotalPrice);
