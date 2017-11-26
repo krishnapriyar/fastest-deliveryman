@@ -6,7 +6,7 @@
 package ui;
 
 import java.sql.*;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /**
  *
@@ -23,13 +23,14 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         Connection dbCon = null; 
         PreparedStatement stmt = null; 
         ResultSet rs = null;
+        JFrame caller;
         
         
-    public DeliverymanDetailsFrame() {
+    public DeliverymanDetailsFrame(char ch) {
         initComponents();
         jdbStatus.setEnabled(false);
         jcbEdit.setSelected(false);
-        autogenID();
+        prepFrame(ch);
     }
  
     /**
@@ -66,7 +67,8 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jbtBack = new javax.swing.JButton();
         jcbEdit = new javax.swing.JCheckBox();
         jlblPlaceHolder = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jbtSearch = new javax.swing.JButton();
+        jbtUpdate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -137,7 +139,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
                 jbtActionActionPerformed(evt);
             }
         });
-        jPanel1.add(jbtAction, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 400, -1, -1));
+        jPanel1.add(jbtAction, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
 
         jbtClear.setText("Reset Fields");
         jbtClear.addActionListener(new java.awt.event.ActionListener() {
@@ -148,6 +150,11 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jPanel1.add(jbtClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 400, -1, -1));
 
         jbtBack.setText("Back To Menu");
+        jbtBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtBackActionPerformed(evt);
+            }
+        });
         jPanel1.add(jbtBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 400, -1, -1));
 
         jcbEdit.setText("Edit?");
@@ -159,16 +166,27 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jPanel1.add(jcbEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(281, 299, -1, -1));
         jPanel1.add(jlblPlaceHolder, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 430, 79, 19));
 
-        jButton1.setText("Search Staff");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 400, -1, -1));
+        jbtSearch.setText("Search Staff");
+        jbtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtSearchActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
+
+        jbtUpdate.setText("Update Staff");
+        jbtUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtUpdateActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbtUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 400, 100, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 799, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,6 +273,89 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jbtActionActionPerformed
 
+    private void jbtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBackActionPerformed
+        // TODO add your handling code here:
+        getCaller().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jbtBackActionPerformed
+
+    private void jbtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSearchActionPerformed
+        // TODO add your handling code here:
+        
+        
+        
+        
+        String queryStr="SELECT * FROM DELIVERYMAN WHERE DMID = ? OR DMNAME = ? OR DMIC = ?";
+        try
+        {
+            Connection conn = DriverManager.getConnection(dbURL);
+            stmt = conn.prepareStatement(queryStr);
+            stmt.setString(1,jtfID.getText());
+            stmt.setString(2,jtfName.getText());
+            stmt.setString(3,jtfID2.getText());
+            ResultSet rs = stmt.executeQuery();
+            
+            if(rs.next())
+            {   
+                jtfName.setText(rs.getString("DMNAME"));
+                jtfID2.setText(rs.getString("DMIC"));
+                jtfTel.setText(rs.getString("DMTELNO"));
+                formatAddress(rs.getString("DMADDRESS"));
+                jdbStatus.setSelectedItem(rs.getString("ACTIVESTATUS"));
+                
+                if(jbtUpdate.isVisible()){
+                    jtfTel.setEnabled(true);
+                    jtfAdd1.setEnabled(true);
+                    jtfAdd2.setEnabled(true);
+                    jtfCity.setEnabled(true);
+                    jtfPost.setEnabled(true);
+        }
+            }
+        }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(null,"No record found!!", "Empty", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+        
+    }//GEN-LAST:event_jbtSearchActionPerformed
+
+    private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateActionPerformed
+        // TODO add your handling code here:
+   
+        int ID = Integer.parseInt(jtfID.getText());
+        String name = jtfName.getText();
+        String IC = jtfID2.getText();
+        String tel = jtfTel.getText();
+        String address = jtfAdd1.getText() +"|"+ jtfAdd2.getText() +"|"+jtfPost.getText()+"|"+ jtfCity.getText();
+        String status = jdbStatus.getSelectedItem().toString();
+        
+        try{
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+            Connection conn = DriverManager.getConnection(dbURL);
+            
+            String updStr = "UPDATE DELIVERYMAN SET DMNAME = ?, DMIC = ?,DMTELNO = ?,DMADDRESS = ?,ACTIVESTATUS = ?, AVAILABILITY = ?, WORKINGSTATUS = ? WHERE DMID = ?";
+            stmt = conn.prepareStatement(updStr);
+
+            stmt.setInt(8, ID);
+            stmt.setString(1, name);
+            stmt.setString(2, IC);
+            stmt.setString(3, tel);
+            stmt.setString(4, address);
+            stmt.setString(5, status);
+            stmt.setString(6, "No");
+            stmt.setString(7, status);
+            
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null,"Delivery man updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            clearText();
+        }
+        catch(Exception ex){
+            System.out.print(ex.getMessage());
+            JOptionPane.showMessageDialog(null,"Delivery man could not be updated!", "Failed", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jbtUpdateActionPerformed
+
     private void autogenID(){
         
         int ID= 20001;
@@ -292,6 +393,72 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jtfCity.setText("");
         jtfPost.setText("");
     }
+    
+    public void setCaller(JFrame caller){
+    
+        this.caller = caller;
+    }
+    
+    public JFrame getCaller(){
+         return caller;
+     }
+    
+    private void prepFrame(char c){
+        
+        switch(c){
+            case 'u':
+                clearText();
+                jlblTitle.setText("Update Deliveryman");
+                jtfID.setEnabled(true);
+                
+                jtfTel.setEnabled(false);
+                jtfAdd1.setEnabled(false);
+                jtfAdd2.setEnabled(false);
+                jtfCity.setEnabled(false);
+                jtfPost.setEnabled(false);
+                
+                jbtAction.setVisible(false);
+                break;
+            case 's':
+                clearText();
+                jlblTitle.setText("Search Deliveryman");
+                jtfID.setEnabled(true);
+                jtfTel.setEnabled(false);
+                jtfAdd1.setEnabled(false);
+                jtfAdd2.setEnabled(false);
+                jtfCity.setEnabled(false);
+                jtfPost.setEnabled(false);
+                jbtAction.setVisible(false);
+                jbtUpdate.setVisible(false);
+                break;
+                
+            case 'a':
+                autogenID();
+                jbtSearch.setVisible(false);
+                jbtUpdate.setVisible(false);
+                break;
+                
+            
+            
+        }
+    }
+    
+    
+    private void formatAddress(String fulladdress){
+    
+        try{
+        String[] parts = fulladdress.split("\\|");
+        jtfAdd1.setText(parts[0]);
+        jtfAdd2.setText(parts[1]);
+        jtfPost.setText(parts[2]);
+        jtfCity.setText(parts[3]);
+        }
+        catch(Exception ex ){
+        
+        }
+
+    }
+   
     /**
      * @param args the command line arguments
      */
@@ -322,18 +489,19 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DeliverymanDetailsFrame().setVisible(true);
+                new DeliverymanDetailsFrame('u').setVisible(true);
             }
         });
     }
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jbtAction;
     private javax.swing.JButton jbtBack;
     private javax.swing.JButton jbtClear;
+    private javax.swing.JButton jbtSearch;
+    private javax.swing.JButton jbtUpdate;
     private javax.swing.JCheckBox jcbEdit;
     private javax.swing.JComboBox<String> jdbStatus;
     private javax.swing.JLabel jlblAdd1;
