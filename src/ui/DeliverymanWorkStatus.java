@@ -1,21 +1,119 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ui;
 
-/**
- *
- * @author Kai Yan
- */
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.Timer;
+
 public class DeliverymanWorkStatus extends javax.swing.JFrame {
 
-    /**
-     * Creates new form DeliverymanStatus
-     */
+    private Connection con;
+    private Statement stmt;
+    private ResultSet rSet;
+    private Date date;
+    private PreparedStatement prepare;
+    private List<DMWorkStat> list = new ArrayList<>();
+    private String empStatus = "Active";
+
     public DeliverymanWorkStatus() {
         initComponents();
+        showDate();
+        jcbDMID.addItem("-- Select --");
+        jcbCurrentStat.setVisible(false);
+        jcbCurrentStat.setEnabled(false);
+        jlblCurrentStat.setFont(new Font("Tahoma", Font.BOLD, 11));
+        Dynamiclbl.setEnabled(false);
+        Dynamiclbl2.setEnabled(false);
+        Dynamiclbl3.setEnabled(false);
+
+        if (jcbDMID.getSelectedItem().toString().equals("-- Select --")) {
+            jbtnUpdate.setEnabled(false);
+        } else {
+            jbtnUpdate.setEnabled(true);
+        }
+        try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+        } catch (ClassNotFoundException e) {
+            System.out.println(e);
+        }
+        try {
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
+            stmt = con.createStatement();
+            rSet = stmt.executeQuery("SELECT * FROM QWE.DELIVERYMAN WHERE ACTIVESTATUS = 'Active'");
+
+            while (rSet.next()) {
+                list.add(new DMWorkStat(rSet.getString("DMNAME"), Integer.parseInt(rSet.getString("DMID"))));
+            }
+            for (int i = 0; i < list.size(); i++) {
+                    jcbDMID.addItem(list.get(i).getDmName());
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
+
+        jcbDMID.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String DMID = jcbDMID.getSelectedItem().toString();
+                getDMID(DMID);
+            }
+        });
+    }
+
+    public void getDMID(String DMname) {
+        if (DMname.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Selected deliveryman unavailable");
+        } else {
+            try {
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
+                prepare = con.prepareStatement("SELECT * FROM QWE.DELIVERYMAN WHERE DMName = ?");
+                prepare.setString(1, DMname);
+                //prepare.setString(2, empStatus.toString());
+                ResultSet rSet = prepare.executeQuery();
+
+                if (rSet.next()) {
+                    jlblDMID.setText(rSet.getString("DMID"));
+                    try {
+                        con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
+                        prepare = con.prepareStatement("SELECT WORKINGSTATUS FROM QWE.DELIVERYMAN WHERE DMID = ? ");
+                        prepare.setString(1, jlblDMID.getText());
+                        rSet = prepare.executeQuery();
+
+                        if (rSet.next()) {
+                            jlblCurrentStat.setText(rSet.getString("WORKINGSTATUS"));
+                            jbtnUpdate.setEnabled(true);
+                            jcbCurrentStat.setEnabled(true);
+                            jcbCurrentStat.setVisible(true);
+                        } else {
+                            jlblCurrentStat.setText("No status yet");
+                        }
+                    } catch (SQLException e) {
+                        System.err.println(e);
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println(e);
+            }
+        }
+    }
+
+    void showDate() {
+        new Timer(0, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd-MMM-yyyy  HH:mm:ss aa");
+                jlblDate.setText(sdf.format(date));
+            }
+        }).start();
     }
 
     /**
@@ -28,21 +126,22 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
     private void initComponents() {
 
         jlblTitleDWS = new javax.swing.JLabel();
-        jlblDMID = new javax.swing.JLabel();
+        DMID = new javax.swing.JLabel();
         jlblName = new javax.swing.JLabel();
         jlblStat = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        DMID = new javax.swing.JLabel();
-        DMname = new javax.swing.JLabel();
-        jlblCurrentDate = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        jlblDMID = new javax.swing.JLabel();
+        jlblDate = new javax.swing.JLabel();
+        jbtnUpdate = new javax.swing.JButton();
         jlblDynamic = new javax.swing.JLabel();
         Dynamiclbl = new javax.swing.JLabel();
         jlblDynamic2 = new javax.swing.JLabel();
         jlblDynamic3 = new javax.swing.JLabel();
         Dynamiclbl2 = new javax.swing.JLabel();
         Dynamiclbl3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        jcbDMID = new javax.swing.JComboBox();
+        jlblCurrentStat = new javax.swing.JLabel();
+        jcbCurrentStat = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,9 +150,9 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
         jlblTitleDWS.setMaximumSize(new java.awt.Dimension(178, 22));
         jlblTitleDWS.setMinimumSize(new java.awt.Dimension(178, 22));
 
-        jlblDMID.setText("Deliveryman ID:");
+        DMID.setText("Deliveryman Name:");
 
-        jlblName.setText("Name:");
+        jlblName.setText("ID:");
 
         jlblStat.setText("Current Status:");
 
@@ -64,18 +163,12 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
             }
         });
 
-        DMID.setText("ID");
-        DMID.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jlblDate.setText(" ");
 
-        DMname.setText("NAME");
-        DMname.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jlblCurrentDate.setText(" Date");
-
-        jButton2.setText("Update Status");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jbtnUpdate.setText("Update Status");
+        jbtnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jbtnUpdateActionPerformed(evt);
             }
         });
 
@@ -91,13 +184,13 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
 
         Dynamiclbl3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Available", "Break", "Delivery", "On Leave" }));
-        jComboBox1.setBorder(null);
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        jcbDMID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                jcbDMIDActionPerformed(evt);
             }
         });
+
+        jcbCurrentStat.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Select a status --", "Available", "Break hour", "Delivery", "On leave" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,25 +199,18 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(107, 107, 107)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(107, 107, 107))
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlblDMID)
-                        .addGap(18, 18, 18)
-                        .addComponent(DMID, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jlblName)
-                        .addGap(18, 18, 18)
-                        .addComponent(DMname, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jlblStat)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlblCurrentStat, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jcbCurrentStat, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -142,8 +228,18 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jlblTitleDWS, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jlblCurrentDate)))
+                                .addComponent(jlblDate)))
                         .addGap(76, 76, 76))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(DMID)
+                .addGap(18, 18, 18)
+                .addComponent(jcbDMID, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addComponent(jlblName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jlblDMID, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -151,18 +247,19 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlblTitleDWS, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlblCurrentDate))
-                .addGap(31, 31, 31)
+                    .addComponent(jlblDate))
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(DMname, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jlblName)
-                    .addComponent(jlblDMID)
-                    .addComponent(DMID))
-                .addGap(38, 38, 38)
+                    .addComponent(DMID)
+                    .addComponent(jcbDMID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlblDMID, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlblStat)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                    .addComponent(jlblCurrentStat, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbCurrentStat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlblDynamic, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(Dynamiclbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -177,7 +274,7 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbtnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25))
         );
 
@@ -188,18 +285,60 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         this.setVisible(false);
         new DeliverymanClockInOut().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void jbtnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUpdateActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+        if (!jcbCurrentStat.getSelectedItem().toString().equals("-- Select a status --")) {
+            int confirmation = JOptionPane.showConfirmDialog(null, "Dp you want to update " + jcbDMID.getSelectedItem().toString() + "'s status?", "Update current work status", JOptionPane.YES_NO_OPTION);
+            String currentStat = jcbCurrentStat.getSelectedItem().toString();
+
+            if (confirmation == 0) {
+                if (!jcbCurrentStat.getSelectedItem().toString().equals(jlblCurrentStat.getText())) {
+                    try {
+//                      UPDATE SECTION -----------------------------------------------------------------------------
+                        con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
+                        prepare = con.prepareStatement("UPDATE DELIVERYMAN SET WORKINGSTATUS=? WHERE DMID=?");
+                        prepare.setString(1, currentStat);
+                        prepare.setString(2, jlblDMID.getText());
+
+                        int rowsUpdated = prepare.executeUpdate();
+                        if (rowsUpdated > 0) {
+//                          RETRIEVE SECTION -----------------------------------------------------------------------
+                            try {
+                                con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
+                                prepare = con.prepareStatement("SELECT WORKINGSTATUS FROM QWE.DELIVERYMAN WHERE DMID = ? ");
+                                prepare.setString(1, jlblDMID.getText());
+                                rSet = prepare.executeQuery();
+                                if (rSet.next()) {
+                                    jlblCurrentStat.setText(rSet.getString("WORKINGSTATUS"));
+                                }
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(null, ex.toString());
+                            }
+                            JOptionPane.showMessageDialog(null, "Status update successful");
+                        }
+//                          RETRIEVE SECTION -----------------------------------------------------------------------
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex.toString());
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Status is already - " + jcbCurrentStat.getSelectedItem().toString() + "\n Please select other status ");
+                }
+//                      UPDATE SECTION -----------------------------------------------------------------------------
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Select a status!");
+        }
+
+
+    }//GEN-LAST:event_jbtnUpdateActionPerformed
+
+    private void jcbDMIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbDMIDActionPerformed
+
+    }//GEN-LAST:event_jcbDMIDActionPerformed
 
     /**
      * @param args the command line arguments
@@ -239,15 +378,16 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel DMID;
-    private javax.swing.JLabel DMname;
     private javax.swing.JLabel Dynamiclbl;
     private javax.swing.JLabel Dynamiclbl2;
     private javax.swing.JLabel Dynamiclbl3;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jlblCurrentDate;
+    private javax.swing.JButton jbtnUpdate;
+    private javax.swing.JComboBox jcbCurrentStat;
+    private javax.swing.JComboBox jcbDMID;
+    private javax.swing.JLabel jlblCurrentStat;
     private javax.swing.JLabel jlblDMID;
+    private javax.swing.JLabel jlblDate;
     private javax.swing.JLabel jlblDynamic;
     private javax.swing.JLabel jlblDynamic2;
     private javax.swing.JLabel jlblDynamic3;

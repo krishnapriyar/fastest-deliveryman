@@ -117,7 +117,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jPanel1.add(jtfID2, new org.netbeans.lib.awtextra.AbsoluteConstraints(466, 108, 260, -1));
         jPanel1.add(jtfTel, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 146, 221, -1));
         jPanel1.add(jtfAdd1, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 184, 573, -1));
-        jPanel1.add(jtfAdd2, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 222, 570, -1));
+        jPanel1.add(jtfAdd2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, 570, -1));
         jPanel1.add(jtfCity, new org.netbeans.lib.awtextra.AbsoluteConstraints(476, 261, 250, -1));
 
         jtfPost.addActionListener(new java.awt.event.ActionListener() {
@@ -203,8 +203,6 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
                 if(rs.next())
                 {
                     jtfCity.setText(rs.getString(1));  
-                    clearText();
-                    autogenID();
                     
                 }
                 
@@ -248,6 +246,8 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
             
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null,"Delivery man added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            clearText();
+            autogenID();
         }catch (Exception ex){
             
             System.out.println(ex.getMessage());

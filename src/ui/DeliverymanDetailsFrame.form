@@ -202,7 +202,7 @@
         <Component class="javax.swing.JTextField" name="jtfAdd2">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="153" y="222" width="570" height="-1"/>
+              <AbsoluteConstraints x="150" y="220" width="570" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
