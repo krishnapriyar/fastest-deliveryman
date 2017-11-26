@@ -66,6 +66,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jbtBack = new javax.swing.JButton();
         jcbEdit = new javax.swing.JCheckBox();
         jlblPlaceHolder = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,7 +137,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
                 jbtActionActionPerformed(evt);
             }
         });
-        jPanel1.add(jbtAction, new org.netbeans.lib.awtextra.AbsoluteConstraints(182, 404, -1, -1));
+        jPanel1.add(jbtAction, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 400, -1, -1));
 
         jbtClear.setText("Reset Fields");
         jbtClear.addActionListener(new java.awt.event.ActionListener() {
@@ -144,10 +145,10 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
                 jbtClearActionPerformed(evt);
             }
         });
-        jPanel1.add(jbtClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 404, -1, -1));
+        jPanel1.add(jbtClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 400, -1, -1));
 
         jbtBack.setText("Back To Menu");
-        jPanel1.add(jbtBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(397, 404, -1, -1));
+        jPanel1.add(jbtBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 400, -1, -1));
 
         jcbEdit.setText("Edit?");
         jcbEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -157,6 +158,9 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         });
         jPanel1.add(jcbEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(281, 299, -1, -1));
         jPanel1.add(jlblPlaceHolder, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 430, 79, 19));
+
+        jButton1.setText("Search Staff");
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 400, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -325,6 +329,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jbtAction;
     private javax.swing.JButton jbtBack;
