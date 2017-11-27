@@ -30,9 +30,7 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
         jcbCurrentStat.setVisible(false);
         jcbCurrentStat.setEnabled(false);
         jlblCurrentStat.setFont(new Font("Tahoma", Font.BOLD, 11));
-        Dynamiclbl.setEnabled(false);
-        Dynamiclbl2.setEnabled(false);
-        Dynamiclbl3.setEnabled(false);
+        orderNo.setEnabled(false);
 
         if (jcbDMID.getSelectedItem().toString().equals("-- Select --")) {
             jbtnUpdate.setEnabled(false);
@@ -53,7 +51,7 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                 list.add(new DMWorkStat(rSet.getString("DMNAME"), Integer.parseInt(rSet.getString("DMID"))));
             }
             for (int i = 0; i < list.size(); i++) {
-                    jcbDMID.addItem(list.get(i).getDmName());
+                jcbDMID.addItem(list.get(i).getDmName());
             }
         } catch (SQLException e) {
             System.err.println(e);
@@ -69,6 +67,9 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
     }
 
     public void getDMID(String DMname) {
+        orderNo.setText("");
+        custID.setText("");
+
         if (DMname.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Selected deliveryman unavailable");
         } else {
@@ -92,6 +93,8 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                             jbtnUpdate.setEnabled(true);
                             jcbCurrentStat.setEnabled(true);
                             jcbCurrentStat.setVisible(true);
+
+                            RetrieveIDs();
                         } else {
                             jlblCurrentStat.setText("No status yet");
                         }
@@ -103,6 +106,29 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                 System.err.println(e);
             }
         }
+    }
+
+    void RetrieveIDs() {
+        if (jlblCurrentStat.getText().equals("Delivery")) {
+
+            try {
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
+                prepare = con.prepareStatement("SELECT TRANID,CUSTID FROM QWE.TRANS WHERE DMID = ? ");
+                prepare.setString(1, jlblDMID.getText());
+                rSet = prepare.executeQuery();
+                if (rSet.next()) {
+                    orderNo.setText(rSet.getString("TRANID"));
+                    custID.setText(rSet.getString("CUSTID"));
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.toString());
+            }
+        } else {
+
+            orderNo.setText(null);
+            custID.setText(null);
+        }
+
     }
 
     void showDate() {
@@ -134,14 +160,12 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
         jlblDate = new javax.swing.JLabel();
         jbtnUpdate = new javax.swing.JButton();
         jlblDynamic = new javax.swing.JLabel();
-        Dynamiclbl = new javax.swing.JLabel();
-        jlblDynamic2 = new javax.swing.JLabel();
-        jlblDynamic3 = new javax.swing.JLabel();
-        Dynamiclbl2 = new javax.swing.JLabel();
-        Dynamiclbl3 = new javax.swing.JLabel();
+        orderNo = new javax.swing.JLabel();
         jcbDMID = new javax.swing.JComboBox();
         jlblCurrentStat = new javax.swing.JLabel();
         jcbCurrentStat = new javax.swing.JComboBox();
+        jlblDynamic1 = new javax.swing.JLabel();
+        custID = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -172,17 +196,9 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
             }
         });
 
-        jlblDynamic.setText("Time:");
+        jlblDynamic.setText("Order No:");
 
-        Dynamiclbl.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jlblDynamic2.setText("Location:");
-
-        jlblDynamic3.setText("Order No:");
-
-        Dynamiclbl2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        Dynamiclbl3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        orderNo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jcbDMID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -192,44 +208,41 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
 
         jcbCurrentStat.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- Select a status --", "Available", "Break hour", "Delivery", "On leave" }));
 
+        jlblDynamic1.setText("Customer ID:");
+
+        custID.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(107, 107, 107)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jbtnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(107, 107, 107))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlblTitleDWS, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jlblDate))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 16, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlblDynamic)
+                                    .addComponent(jlblDynamic1))
+                                .addGap(13, 13, 13)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(orderNo, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                                    .addComponent(custID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(297, 297, 297)))
+                        .addGap(76, 76, 76))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jlblStat)
                         .addGap(18, 18, 18)
                         .addComponent(jlblCurrentStat, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jcbCurrentStat, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jlblDynamic)
-                                    .addComponent(jlblDynamic2)
-                                    .addComponent(jlblDynamic3))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(Dynamiclbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(Dynamiclbl2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(Dynamiclbl3, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jlblTitleDWS, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jlblDate)))
-                        .addGap(76, 76, 76))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(DMID)
@@ -240,6 +253,12 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jlblDMID, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(74, 74, 74))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,23 +278,19 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                     .addComponent(jlblStat)
                     .addComponent(jlblCurrentStat, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jcbCurrentStat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlblDynamic, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Dynamiclbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlblDynamic2)
-                    .addComponent(Dynamiclbl2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlblDynamic3)
-                    .addComponent(Dynamiclbl3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(42, 42, 42)
+                    .addComponent(orderNo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlblDynamic1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(custID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(70, 70, 70)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25))
+                .addGap(28, 28, 28))
         );
 
         jButton1.getAccessibleContext().setAccessibleName("Update");
@@ -292,43 +307,56 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
     private void jbtnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUpdateActionPerformed
 
         if (!jcbCurrentStat.getSelectedItem().toString().equals("-- Select a status --")) {
-            int confirmation = JOptionPane.showConfirmDialog(null, "Dp you want to update " + jcbDMID.getSelectedItem().toString() + "'s status?", "Update current work status", JOptionPane.YES_NO_OPTION);
+            int confirmation1 = JOptionPane.showConfirmDialog(null, "Do you want to update " + jcbDMID.getSelectedItem().toString() + "'s status?", "Update current work status", JOptionPane.YES_NO_OPTION);
             String currentStat = jcbCurrentStat.getSelectedItem().toString();
 
-            if (confirmation == 0) {
-                if (!jcbCurrentStat.getSelectedItem().toString().equals(jlblCurrentStat.getText())) {
-                    try {
-//                      UPDATE SECTION -----------------------------------------------------------------------------
-                        con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-                        prepare = con.prepareStatement("UPDATE DELIVERYMAN SET WORKINGSTATUS=? WHERE DMID=?");
-                        prepare.setString(1, currentStat);
-                        prepare.setString(2, jlblDMID.getText());
-
-                        int rowsUpdated = prepare.executeUpdate();
-                        if (rowsUpdated > 0) {
-//                          RETRIEVE SECTION -----------------------------------------------------------------------
-                            try {
-                                con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-                                prepare = con.prepareStatement("SELECT WORKINGSTATUS FROM QWE.DELIVERYMAN WHERE DMID = ? ");
-                                prepare.setString(1, jlblDMID.getText());
-                                rSet = prepare.executeQuery();
-                                if (rSet.next()) {
-                                    jlblCurrentStat.setText(rSet.getString("WORKINGSTATUS"));
-                                }
-                            } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(null, ex.toString());
-                            }
-                            JOptionPane.showMessageDialog(null, "Status update successful");
+            if (confirmation1 == 0) {
+                if (currentStat != "Delivery") {
+                    if (!jcbCurrentStat.getSelectedItem().toString().equals(jlblCurrentStat.getText())) {
+                        if (jlblCurrentStat.getText() != "Delivery") {
+                            orderNo.setText(null);
+                            custID.setText(null);
                         }
+                        try {
+//                      UPDATE SECTION -----------------------------------------------------------------------------
+                            con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
+                            prepare = con.prepareStatement("UPDATE DELIVERYMAN SET WORKINGSTATUS=? WHERE DMID=?");
+                            prepare.setString(1, currentStat);
+                            prepare.setString(2, jlblDMID.getText());
+
+                            int rowsUpdated = prepare.executeUpdate();
+                            if (rowsUpdated > 0) {
 //                          RETRIEVE SECTION -----------------------------------------------------------------------
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, ex.toString());
+                                try {
+                                    con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
+                                    prepare = con.prepareStatement("SELECT WORKINGSTATUS FROM QWE.DELIVERYMAN WHERE DMID = ? ");
+                                    prepare.setString(1, jlblDMID.getText());
+                                    rSet = prepare.executeQuery();
+                                    if (rSet.next()) {
+                                        jlblCurrentStat.setText(rSet.getString("WORKINGSTATUS"));
+                                    }
+                                } catch (Exception ex) {
+                                    JOptionPane.showMessageDialog(null, ex.toString());
+                                }
+                                JOptionPane.showMessageDialog(null, "Status update successful");
+                            }
+//                          RETRIEVE SECTION -----------------------------------------------------------------------
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null, ex.toString());
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Status is already - " + jcbCurrentStat.getSelectedItem().toString() + "\n Please select other status ");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Status is already - " + jcbCurrentStat.getSelectedItem().toString() + "\n Please select other status ");
+                    //ASSIGN NEW ORDER NUMBER ---> TO NEW PAGE
+                    JOptionPane.showMessageDialog(null, "Click OK to assign new Delivery Order to " + jcbDMID.getSelectedItem().toString());
+                    this.setVisible(false);
+                    new TrackOrder().setVisible(true);
+                    //ASSIGN NEW ORDER NUMBER ---> TO NEW PAGE             
                 }
 //                      UPDATE SECTION -----------------------------------------------------------------------------
             }
+
         } else {
             JOptionPane.showMessageDialog(null, "Select a status!");
         }
@@ -378,9 +406,7 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel DMID;
-    private javax.swing.JLabel Dynamiclbl;
-    private javax.swing.JLabel Dynamiclbl2;
-    private javax.swing.JLabel Dynamiclbl3;
+    private javax.swing.JLabel custID;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jbtnUpdate;
     private javax.swing.JComboBox jcbCurrentStat;
@@ -389,10 +415,10 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
     private javax.swing.JLabel jlblDMID;
     private javax.swing.JLabel jlblDate;
     private javax.swing.JLabel jlblDynamic;
-    private javax.swing.JLabel jlblDynamic2;
-    private javax.swing.JLabel jlblDynamic3;
+    private javax.swing.JLabel jlblDynamic1;
     private javax.swing.JLabel jlblName;
     private javax.swing.JLabel jlblStat;
     private javax.swing.JLabel jlblTitleDWS;
+    private javax.swing.JLabel orderNo;
     // End of variables declaration//GEN-END:variables
 }
