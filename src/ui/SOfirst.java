@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
@@ -26,10 +28,12 @@ import org.jdesktop.swingx.JXDatePicker;
 
 public class SOfirst extends JFrame {
 
+    private static String dbURL = "jdbc:derby://localhost:1527/FastestDelivery;create=true;user=chong;password=abc123.";
+    private static Connection conn = null;
     public List<Item> list = new ArrayList<>();
     public List<Item> orderedList = new ArrayList<>();
     public JLabel totalItemOrder = new JLabel();
-
+    
     public SOfirst() {
 
         list.add(new Item("Nasi Goreng", 10.0));
@@ -168,4 +172,5 @@ public class SOfirst extends JFrame {
     public static void main(String[] args) {
         SOfirst mp = new SOfirst();
     }
+    
 }
