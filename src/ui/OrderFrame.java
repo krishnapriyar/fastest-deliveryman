@@ -75,7 +75,7 @@ public class OrderFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Restaurant");
 
-        jCbLocation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCbLocation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Wangsa Maju", "Genting Klang", "Kuchai Lama", "Cheras", "Puchong", " ", " " }));
         jCbLocation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCbLocationActionPerformed(evt);
@@ -87,10 +87,10 @@ public class OrderFrame extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel6.setText("Nasi Goreng");
+        jLabel6.setText("Nasi Goreng Cina");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel7.setText("RM 10.00");
+        jLabel7.setText("RM 7.00");
 
         jButton1.setText("Place Order");
 
@@ -98,16 +98,16 @@ public class OrderFrame extends javax.swing.JFrame {
         jLabel15.setText("Nasi Lemak Ayam");
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel16.setText("Nasi Goreng Lakna");
+        jLabel16.setText("Indoo Mee");
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel17.setText("Maggi Goreng");
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel18.setText("RM 10.00");
+        jLabel18.setText("RM 9.00");
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel19.setText("RM 9.00");
+        jLabel19.setText("RM 5.00");
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel20.setText("RM 8.00");
