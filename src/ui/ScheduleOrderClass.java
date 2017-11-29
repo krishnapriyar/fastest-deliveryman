@@ -1,5 +1,9 @@
 package ui;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ScheduleOrderClass {
     
     private int orderID;
@@ -8,6 +12,7 @@ public class ScheduleOrderClass {
     private String telNumber;
     private Double totalPrice;
     private int distance;
+    private Date deliveryTime;
 
     public int getOrderID() {
         return orderID;
@@ -62,7 +67,7 @@ public class ScheduleOrderClass {
         return String.format("%-8s  %-30s  %-100s  %-20s  %-6s  %-5s ", orderID, customerName, customerAddress, telNumber, totalPrice, distance);
     }
     
-    public ScheduleOrderClass(int orderID, String customerName, String customerAddress, String telNumber, Double totalPrice, int distance)
+    public ScheduleOrderClass(int orderID, String customerName, String customerAddress, String telNumber, Double totalPrice, int distance, Date deliveryTime)
     {
         this.orderID = orderID;
         this.customerName = customerName;
@@ -70,5 +75,15 @@ public class ScheduleOrderClass {
         this.telNumber = telNumber;
         this.totalPrice = totalPrice;
         this.distance = distance;
+        this.deliveryTime = deliveryTime;
+    }
+
+    public String getDeliveryTime() {
+        SimpleDateFormat df = new SimpleDateFormat("hh:mm a");
+        return df.format(deliveryTime).toString();
+    }
+
+    public void setDeliveryTime(Date deliveryTime) {
+        this.deliveryTime = deliveryTime;
     }
 }
