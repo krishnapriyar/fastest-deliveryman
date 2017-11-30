@@ -143,6 +143,7 @@ public class CRUD extends javax.swing.JFrame {
     private void jbtUpdateItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateItemActionPerformed
     new ItemDetail().setVisible(true);
     this.setVisible(false);
+        
     }//GEN-LAST:event_jbtUpdateItemActionPerformed
 
     private void jbtDeleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDeleteItemActionPerformed

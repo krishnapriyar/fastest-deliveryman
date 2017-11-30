@@ -181,7 +181,37 @@ public class ItemDetail extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtBackActionPerformed
 
     private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateActionPerformed
-        // TODO add your handling code here:
+          String queryStr="SELECT * FROM ITEM WHERE ITEMID = ?";
+        try
+        {
+            Connection conn = DriverManager.getConnection(dbURL);
+            stmt = conn.prepareStatement(queryStr);
+            stmt.setString(1,jtfID.getText());
+            stmt.setString(2,jtfName.getText());
+            stmt.setString(3,jtfPrice.getText());
+            stmt.setString(4,jtfPromo.getText());
+            stmt.setString(5,jtfCategory.getSelectedItem().toString());
+            ResultSet rs = stmt.executeQuery();
+            
+            if(rs.next())
+            {   
+                jtfName.setText(rs.getString("ITEMNAME"));
+                jtfPrice.setText(rs.getString("ITEMUNITPRICE"));
+                jtfPromo.setText(rs.getString("PROMOTIONALINFO"));
+                jtfCategory.setSelectedItem(rs.getString("ITEMCATEGORY"));
+                
+                if(jbtUpdate.isVisible()){
+                    jtfName.setEnabled(true);
+                    jtfPrice.setEnabled(true);
+                    jtfPromo.setEnabled(true);
+                    jtfCategory.setEnabled(true);
+        }
+            }
+        }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(null,"No record found!!", "Empty", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_jbtUpdateActionPerformed
 
     private void jtfNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNameActionPerformed
