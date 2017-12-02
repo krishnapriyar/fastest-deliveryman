@@ -79,13 +79,12 @@ public class Registration extends java.awt.Frame {
         jLabel2.setText("Password :");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 300, 79, 41));
 
-        jpPass.setText("jPasswordField1");
         jpPass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jpPassActionPerformed(evt);
             }
         });
-        add(jpPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 310, -1, -1));
+        add(jpPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 310, 220, -1));
 
         jtfID.setEnabled(false);
         jtfID.addActionListener(new java.awt.event.ActionListener() {
