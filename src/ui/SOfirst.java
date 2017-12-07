@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
@@ -28,47 +30,39 @@ import org.jdesktop.swingx.JXDatePicker;
 
 public class SOfirst extends JFrame {
 
-    private static String dbURL = "jdbc:derby://localhost:1527/FastestDelivery;create=true;user=chong;password=abc123.";
+    private static String dbURL = "jdbc:derby://localhost:1527/FastestDelivery";
     private static Connection conn = null;
-    public List<Item> list = new ArrayList<>();
-    public List<Item> orderedList = new ArrayList<>();
-    public JLabel totalItemOrder = new JLabel();
-    
-    public SOfirst() {
+    private static PreparedStatement prepare;
+    private static ResultSet rs = null;
+    private List<Item> list = new ArrayList<>();
+    private List<Item> orderedList = new ArrayList<>();
+    private JLabel totalItemOrder = new JLabel();
+    private JPanel pnlMain = new JPanel(new GridLayout(2, 1));
+    private JPanel pnlOrderDetails = new JPanel(new GridLayout(5, 2));
+    private JPanel menuListing = new JPanel(new GridLayout(list.size(), 3));
+    private JPanel southPanel = new JPanel(new GridLayout(1, 2));
+    private JPanel[] pnlItemListing = new JPanel[list.size()];
+    private JScrollPane jsp1 = new JScrollPane(menuListing, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    private JLabel jlblTitle = new JLabel("Make Schedule Order");
+    private JLabel jlblLocation = new JLabel("Location");
+    private JLabel jlblRestaurant = new JLabel("Restaurant");
+    private JLabel[] itemName = new JLabel[list.size()];
+    private JLabel[] itemPrice = new JLabel[list.size()];
+    private JLabel jlblDeliveryDate = new JLabel("Date");
+    private JLabel jlblDeliveryTime = new JLabel("Time");
+    private JLabel jlblDisplayDate = new JLabel();
+    private JLabel jlblDisplayTime = new JLabel();
+    private JComboBox jcbLocation = new JComboBox();
+    private JComboBox jcbRestaurant = new JComboBox();
 
-        list.add(new Item("Nasi Goreng", 10.0));
-        list.add(new Item("Nasi Goreng Lakna", 9.0));
-        list.add(new Item("Mee Goreng", 8.5));
-        list.add(new Item("Maggi Goreng", 9.0));
-        list.add(new Item("Roti Telur", 15.0));
-        list.add(new Item("Koren Ramen", 2.0));
-        list.add(new Item("Dry Meat", 6.0));
-        list.add(new Item("Donut", 1.0));
-
+    public void placeOrder(String deliveryDate, String deliveryTime) {
+        initializeComponent();
         updateOrderedItem();
-        //jpanel declaration
-        JPanel pnlMain = new JPanel(new GridLayout(2, 1));
-        JPanel pnlOrderDetails = new JPanel(new GridLayout(3, 2));
-        JPanel menuListing = new JPanel(new GridLayout(list.size(), 3));
-        JPanel southPanel = new JPanel(new GridLayout(1, 2));
-
-        JPanel[] pnlItemListing = new JPanel[list.size()];
-        JScrollPane jsp1 = new JScrollPane(menuListing, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jlblDisplayDate.setText(deliveryDate);
+        jlblDisplayTime.setText(deliveryTime);
         menuListing.setVisible(false);
         //jlabel declaration
-        JLabel jlblTitle = new JLabel("Make Schedule Order");
-        JLabel jlblLocation = new JLabel("Location");
-        JLabel jlblRestaurant = new JLabel("Restaurant");
-        JLabel[] itemName = new JLabel[list.size()];
-        JLabel[] itemPrice = new JLabel[list.size()];
 
-        //controls declaration
-        JComboBox jcbLocation = new JComboBox();
-        JComboBox jcbRestaurant = new JComboBox();
-
-        jcbLocation.addItem("--Select--");
-        jcbLocation.addItem("Kuala Lumpur");
-        jcbLocation.addItem("Johor Bahru");
         jcbRestaurant.setVisible(false);
 
         jcbLocation.addActionListener(new ActionListener() {
@@ -76,32 +70,23 @@ public class SOfirst extends JFrame {
                 jcbRestaurant.setVisible(true);
             }
         });
-        
-        jcbRestaurant.addItem("--Select--");
-        for (int i = 1; i < 3; i++) {
-            jcbRestaurant.addItem("Restaurant " + i);
-        }
-       
+
         JButton[] jbtOrder = new JButton[list.size()];
         JButton jbtSearch = new JButton("Search");
         JButton jbtCheckout = new JButton("Checkout");
         JButton jbtClear = new JButton("Clear");
         jbtCheckout.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        
-        jbtSearch.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e)
-            {
-                if(jcbLocation.getSelectedIndex()!=0 && jcbRestaurant.getSelectedIndex() != 0)
-                {
+
+        jbtSearch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (jcbLocation.getSelectedIndex() != 0 && jcbRestaurant.getSelectedIndex() != 0) {
                     menuListing.setVisible(true);
-                }
-                else
-                {
+                } else {
                     menuListing.setVisible(false);
                 }
             }
         });
-        
+
         //settings
         Font font = new Font("Serif", Font.BOLD, 25);
         jlblTitle.setFont(font);
@@ -129,6 +114,10 @@ public class SOfirst extends JFrame {
             });
         }
         JPanel nPanel = new JPanel();
+        pnlOrderDetails.add(jlblDeliveryDate);
+        pnlOrderDetails.add(jlblDisplayDate);
+        pnlOrderDetails.add(jlblDeliveryTime);
+        pnlOrderDetails.add(jlblDisplayTime);
         pnlOrderDetails.add(jlblLocation);
         pnlOrderDetails.add(jcbLocation).setPreferredSize(new Dimension(350, 40));
         pnlOrderDetails.add(jlblRestaurant);
@@ -162,7 +151,38 @@ public class SOfirst extends JFrame {
         setVisible(true);
         setLocationRelativeTo(null);
         setResizable(false);
+    }
 
+    public void initializeComponent() {
+        jcbLocation.addItem("-- Select --");
+        jcbRestaurant.addItem("-- Select --");
+        if (connection() == true) {
+            try {
+                prepare = conn.prepareStatement("SELECT DISTINCT CITY FROM POSTALCODES ORDER BY CITY");
+                rs = prepare.executeQuery();
+
+                while (rs.next()) {
+                    jcbLocation.addItem(rs.getString(1));
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public boolean connection() {
+        boolean isSuccess = false;
+
+        try {
+            conn = DriverManager.getConnection(dbURL, "chong", "abc123.");
+            if (conn != null) {
+                isSuccess = true;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return isSuccess;
     }
 
     public void updateOrderedItem() {
@@ -172,5 +192,5 @@ public class SOfirst extends JFrame {
     public static void main(String[] args) {
         SOfirst mp = new SOfirst();
     }
-    
+
 }
