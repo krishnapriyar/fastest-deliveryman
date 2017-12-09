@@ -97,6 +97,11 @@ public class ItemDetail extends javax.swing.JFrame {
         getContentPane().add(jbtUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(291, 418, -1, -1));
 
         jbtDelete.setText("Delete Item");
+        jbtDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtDeleteActionPerformed(evt);
+            }
+        });
         getContentPane().add(jbtDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(424, 418, -1, -1));
 
         jtfPrice.addActionListener(new java.awt.event.ActionListener() {
@@ -154,10 +159,7 @@ public class ItemDetail extends javax.swing.JFrame {
         category = jtfCategory.getSelectedItem().toString();
         promoInfo = jtfPromo.getText();
         price = Double.parseDouble(jtfPrice.getText());
-        
-
-        
-        
+       
     try{
         
 //        Class.forName("com.mysql.jdbc.Driver"); 
@@ -170,18 +172,12 @@ public class ItemDetail extends javax.swing.JFrame {
         
                 String insertStr = "INSERT INTO  ITEM   VALUES(?,?,?,?,?,?)";
 
-      
-
             stmt = conn.prepareStatement(insertStr);
 
             stmt.setInt(1, itemID);
-
             stmt.setString(2, itemName);
-
             stmt.setString(3, category);
-
             stmt.setDouble(4,price);
-
             stmt.setString(5, promoInfo);
             //Temporary affiliate ID
             stmt.setInt(6, 3001);
@@ -265,6 +261,8 @@ public class ItemDetail extends javax.swing.JFrame {
                 
    
             }
+            
+           
         }
         catch(Exception ex){
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Empty", JOptionPane.ERROR_MESSAGE);
@@ -278,6 +276,37 @@ public class ItemDetail extends javax.swing.JFrame {
     private void jtfPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPriceActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfPriceActionPerformed
+
+    private void jbtDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDeleteActionPerformed
+   
+           try{
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+            Connection conn = DriverManager.getConnection(dbURL);
+            
+                         
+                int ID = Integer.parseInt(jtfID.getText());
+                System.out.print(ID);
+                String name = jtfName.getText();
+                String price = jtfPrice.getText();
+                String promo = jtfPromo.getText();
+                String category = jtfCategory.getSelectedItem().toString();
+            
+             String updStr = "DELETE FROM ITEM WHERE ITEMID = ? ";
+             
+
+             stmt = conn.prepareStatement(updStr);
+             stmt.setInt(1, ID);
+             stmt.executeUpdate();
+         
+            JOptionPane.showMessageDialog(null,"Itwm delete successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            
+        }
+        catch(Exception ex){
+            System.out.print(ex.getMessage());
+            JOptionPane.showMessageDialog(null,"Item could not be updated!", "Failed", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jbtDeleteActionPerformed
 
     /**
      * @param args the command line arguments
