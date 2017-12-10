@@ -21,16 +21,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
-import org.jdesktop.swingx.JXDatePicker;
+
 
 /**
  *
  * @author chong
  */
-public class SOsecond extends JFrame{
+public class OrderQuantity extends JFrame{
     
     public double totalAmount = 0.0;
-    private Font font = new Font("Arial", Font.BOLD, 22);
     public void displayOrderedItem(List<Item> orderedList)
     {
         //orderedList = new ArrayList<>();
@@ -39,14 +38,14 @@ public class SOsecond extends JFrame{
         JPanel[] itemOrderedListing = new JPanel[orderedList.size()];
         JPanel itemDetailListing = new JPanel(new GridLayout(orderedList.size(),5));
         JPanel southPanel = new JPanel(new GridLayout(1,2));
-        JPanel itemPanel = new JPanel();
         
-        JScrollPane jsp2 = new JScrollPane(itemPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane jsp2 = new JScrollPane(itemDetailListing, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         //JLabel declaration
         JLabel jlblTitle = new JLabel("Order Details");
         JLabel jlblTotalPrice = new JLabel();
         JLabel jlblTotalItem = new JLabel();
         
+        Font font = new Font("Serif", Font.BOLD, 25);
         jlblTitle.setFont(font);
         
         //Controls declaration
@@ -65,20 +64,17 @@ public class SOsecond extends JFrame{
             qty[i] = new JSpinner();
             totalPrice[i] = new JLabel("Total");
             jbtRemove[i] = new JButton("Remove Item");
+            
             qty[i].setValue(1);
             
-            jlblItemName[i].setFont(font);
-            jlblItemPricePerItem[i].setFont(font);
-            totalPrice[i].setFont(font);
-            
             itemOrderedListing[i] = new JPanel(new GridLayout(1, orderedList.size()));
+            itemOrderedListing[i].setBorder(BorderFactory.createLineBorder(Color.RED));
             itemOrderedListing[i].add(jlblItemName[i]);
             itemOrderedListing[i].add(jlblItemPricePerItem[i]);
             itemOrderedListing[i].add(qty[i]);
             itemOrderedListing[i].add(totalPrice[i]);
             //itemOrderedListing[i].add(jbtRemove[i]);
             itemDetailListing.add(itemOrderedListing[i]);
-            itemPanel.add(itemDetailListing);
             
             final JLabel itemPrice = jlblItemPricePerItem[i];
             final JSpinner itemQty = qty[i];
@@ -125,7 +121,7 @@ public class SOsecond extends JFrame{
                     confirm.add(new ConfirmOrder(itemName, itemPrice, totalAmount, quantity));
                 }
                 
-                SOthird sot = new SOthird();
+                OrderConfirm sot = new OrderConfirm();
                 sot.orderDetails(confirm);
             }
         });
@@ -154,6 +150,6 @@ public class SOsecond extends JFrame{
     
     public static void main(String[] args)
     {
-        SOsecond sp = new SOsecond();
+        OrderQuantity sp = new OrderQuantity();
     }
 }
