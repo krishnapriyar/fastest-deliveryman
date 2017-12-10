@@ -48,7 +48,8 @@ public class HRExecMenu extends javax.swing.JFrame {
         });
         jPanel1.add(jbtSearch);
 
-        jButton4.setText("jButton4");
+        jButton4.setText("See Pending Deliveries ");
+        jButton4.setToolTipText("");
         jPanel1.add(jButton4);
 
         jbtAdd.setText("Add New Deliveryman");
