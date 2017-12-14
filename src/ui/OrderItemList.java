@@ -43,7 +43,7 @@ public class OrderItemList extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("Sort By :");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Newest item first", "Promotional item first", "Oldest item first" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -71,21 +71,22 @@ public class OrderItemList extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(144, 144, 144)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(135, 135, 135)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton1)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(119, Short.MAX_VALUE))
+                        .addGap(83, 83, 83)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(76, 76, 76)
+                .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -93,7 +94,7 @@ public class OrderItemList extends javax.swing.JFrame {
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -109,21 +110,21 @@ public class OrderItemList extends javax.swing.JFrame {
        int index = jComboBox1.getSelectedIndex();
        String queryStr=" ";
 //       String displayStr = "\"<html><body>";
-              String displayStr = "Item Name\t Price\t Promotional Item\n";
+              String displayStr = "Item ID\t Item Name\t Price\t Promotional Item\n";
         
        if(index == 0)
        {
-           queryStr = "SELECT ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY ITEMID DESC";
+           queryStr = "SELECT ITEMID, ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY ITEMID DESC";
            
        }
        else if(index == 1)
        {
-            queryStr = "SELECT ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY PROMOTIONALINFO DESC";
+            queryStr = "SELECT ITEMID, ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY PROMOTIONALINFO DESC";
        }
        else
        {
            
-            queryStr = "SELECT ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY ITEMID";
+            queryStr = "SELECT ITEMID, ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY ITEMID";
        }
        
             try{
@@ -137,7 +138,7 @@ public class OrderItemList extends javax.swing.JFrame {
             
                 while(rs.next())
                 {   
-                   displayStr += rs.getString("ITEMNAME")+"\t" +rs.getDouble("ITEMUNITPRICE")+"\t "+rs.getString("PROMOTIONALINFO")+"\n";
+                   displayStr += rs.getString("ITEMID")+"\t" +rs.getString("ITEMNAME")+"\t" +rs.getDouble("ITEMUNITPRICE")+"\t "+rs.getString("PROMOTIONALINFO")+"\n";
              
                 }
 //                displayStr += "</body></html>\"";

@@ -137,13 +137,13 @@ public class ItemDetail extends javax.swing.JFrame {
         jLabel8.setText("Select Item :");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, -1, -1));
 
-        jcbItem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fried Rice" }));
+        jcbItem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Unselected" }));
         jcbItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbItemActionPerformed(evt);
             }
         });
-        getContentPane().add(jcbItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, -1, -1));
+        getContentPane().add(jcbItem, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, 170, -1));
 
         jblTitle.setFont(new java.awt.Font("新細明體", 0, 24)); // NOI18N
         getContentPane().add(jblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 250, 40));
@@ -278,8 +278,10 @@ public class ItemDetail extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfPriceActionPerformed
 
     private void jbtDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDeleteActionPerformed
-   
+
+       
            try{
+                if(!jcbItem.getSelectedItem().equals("Unselected")){
             DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
             Connection conn = DriverManager.getConnection(dbURL);
             
@@ -299,7 +301,12 @@ public class ItemDetail extends javax.swing.JFrame {
              stmt.executeUpdate();
          
             JOptionPane.showMessageDialog(null,"Itwm delete successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            
+            jcbItem.removeAllItems();
+            insertItem();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Please select an item.!", "Failed", JOptionPane.ERROR_MESSAGE);
+                }
         }
         catch(Exception ex){
             System.out.print(ex.getMessage());
@@ -447,6 +454,7 @@ public class ItemDetail extends javax.swing.JFrame {
            
        private void insertItem(){
        
+           
             try{
                 DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
                 Connection conn = DriverManager.getConnection(dbURL);
