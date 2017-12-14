@@ -50,6 +50,11 @@ public class HRExecMenu extends javax.swing.JFrame {
 
         jButton4.setText("See Pending Deliveries ");
         jButton4.setToolTipText("");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton4);
 
         jbtAdd.setText("Add New Deliveryman");
@@ -108,6 +113,11 @@ public class HRExecMenu extends javax.swing.JFrame {
     private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateActionPerformed
         callDMFrame('u',"Update Deliveryman");
     }//GEN-LAST:event_jbtUpdateActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        new PendingDeliveryFrame().setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void callDMFrame(char ch, String title) {
         // TODO add your handling code here:

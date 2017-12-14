@@ -97,7 +97,7 @@ public class PendingDeliveryFrame extends javax.swing.JFrame {
                 
                 while(rs.next())
                 {
-                   display+=count+"\t"+rs.getInt(1)+" \t"+rs.getDate(2, new GregorianCalendar()).toLocalDate()+" \t"+rs.getTime(3)+" \t"+rs.getTime(5)+"\n";
+                   display+=count+++"\t"+rs.getInt(1)+" \t"+rs.getDate(2, new GregorianCalendar()).toLocalDate()+" \t"+rs.getTime(3)+" \t"+rs.getTime(5)+"\n";
                     
                 }
                 
