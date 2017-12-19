@@ -12,6 +12,11 @@ public class ConfirmOrder {
     private Double totalPrice;
     private int qty;
    
+    public ConfirmOrder(){
+    
+    
+    }
+    
     public ConfirmOrder(String itemName, Double itemPrice, Double totalPrice, int qty)
     {
         this.itemName = itemName;

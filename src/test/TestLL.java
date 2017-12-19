@@ -5,6 +5,7 @@
  */
 package test;
 import adt.*;
+import entity.*;
 /**
  *
  * @author Priya
@@ -16,13 +17,21 @@ public class TestLL {
      */
     public static void main(String[] args) {
         
-        LinkedList<Character> ll = new LinkedList();
+        LinkedList<RestaurantItem> ll = new LinkedList();
         
-        ll.add('a');
-        ll.add('b');
-        ll.add('c');
+        RestaurantItem item = new RestaurantItem();
+        RestaurantItem item1 = new RestaurantItem();
+        RestaurantItem item2 = new RestaurantItem();
+        item.setItemID(20001);
+        item1.setItemID(20002);
+        item2.setItemID(20003);
         
-        System.out.println(ll.getEntry(2));
+        ll.add(item);
+        ll.add(item1);
+        ll.add(item2);
+        ll.remove(item2);
+        
+        System.out.println(ll.getEntry(3));
         
         
     }

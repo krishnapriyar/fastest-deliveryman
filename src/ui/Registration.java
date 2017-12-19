@@ -5,6 +5,8 @@
  */
 package ui;
 
+import adt.*;
+import entity.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,7 +18,10 @@ import javax.swing.JOptionPane;
  * @author Lysan Chen
  */
 public class Registration extends java.awt.Frame {
-
+    
+       entity.Restaurant restaurant = new entity.Restaurant();
+       LinkedList<entity.Restaurant> restaurantList = new LinkedList();
+    
        String BussName, BussRegNo, address, password, userName, Person, GPSCo, email;
         int TelNo, affID, GSTRegNo;
     
@@ -65,6 +70,7 @@ public class Registration extends java.awt.Frame {
         jlblCity = new javax.swing.JLabel();
         jtfCity = new javax.swing.JTextField();
         jtfPost = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -118,7 +124,7 @@ public class Registration extends java.awt.Frame {
                 jButton1ActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 560, 100, 47));
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 550, 100, 47));
 
         jLabel8.setText("Username :");
         add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 250, -1, -1));
@@ -189,6 +195,14 @@ public class Registration extends java.awt.Frame {
         });
         add(jtfPost, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 430, 200, -1));
 
+        jButton2.setText("Back To Menu");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 550, 130, 40));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -217,6 +231,18 @@ public class Registration extends java.awt.Frame {
        TelNo = Integer.parseInt(jtfTel.getText());
        affID = Integer.parseInt(jtfID.getText());
        GSTRegNo = Integer.parseInt(jtfBussRegNo.getText());;
+       
+       restaurant.setAffID(affID);
+       restaurant.setBussName(BussName);
+       restaurant.setAddress(address);
+       restaurant.setBussRegNo(BussRegNo);
+       restaurant.setGstRegNo(GSTRegNo);
+       restaurant.setPesonInCharged(BussName);
+       restaurant.setTelNo(TelNo);
+       restaurant.setGPS(GPSCo);
+       
+       restaurantList.add(restaurant);
+      
        
         try{
         
@@ -295,6 +321,41 @@ public class Registration extends java.awt.Frame {
         }
     }//GEN-LAST:event_jtfPostActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        for(int i = 0;i<restaurantList.getNumberOfEntries();i++)
+        {
+             try {
+
+//        Class.forName("com.mysql.jdbc.Driver"); 
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+            Connection conn = DriverManager.getConnection(dbURL);
+//        stmt = conn.createStatement();
+//        String str = "INSERT INTO ITEM " + "VALUES (" + itemID +",'"+ itemName +"','"+category +"',"+ price +",'"+ promoInfo +"');";
+//        stmt.executeUpdate(str) ;
+
+            String insertStr = "INSERT INTO  ITEM   VALUES(?,?,?,?,?,?)";
+
+            stmt = conn.prepareStatement(insertStr);
+
+            stmt.setInt(1, restaurantList.getEntry(i).getAffID());
+            stmt.setString(2, restaurantList.getEntry(i).getAddress());
+            stmt.setString(3, restaurantList.getEntry(i).getBussName());
+            stmt.setInt(4, restaurantList.getEntry(i).getAffID());
+            stmt.setString(5, restaurantList.getEntry(i).getBussRegNo());
+            stmt.setString(6, restaurantList.getEntry(i).getGPS());
+            stmt.setString(7, restaurantList.getEntry(i).getPesonInCharged());
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Affiliate Register successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            autogenID();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Failed", JOptionPane.ERROR_MESSAGE);
+        }
+            
+            
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -336,6 +397,7 @@ public class Registration extends java.awt.Frame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

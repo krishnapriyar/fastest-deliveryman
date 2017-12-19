@@ -52,11 +52,30 @@ public class LinkedList<T> implements ListInterface<T> {
 //        }
 //        result = nodeBefore.next.data;  // save entry to be removed
 //        nodeBefore.next = nodeBefore.next.next;	// make node before point to node after the
-//      } 																// one to be deleted (to disconnect node from chain)
+//      } 																
+// one to be deleted (to disconnect node from chain)
 //
 //      numberOfEntries--;
 //    }
+        boolean rs = false;
+        Node currentNode = firstNode;
 
+        if (firstNode != null) {
+            if (firstNode.getData().equals(anEntry)) {
+                firstNode = firstNode.getNext();
+            } else {
+                while (currentNode.getNext() != null) {
+                    if (currentNode.getNext().getData().equals(anEntry)) {
+                        currentNode.setNext(currentNode.getNext().getNext());
+                        rs = true;
+                        break;
+                    }
+                    currentNode = currentNode.getNext();
+                }
+            }
+
+        }
+        numberOfEntries--;
         return false;
     }
 
@@ -100,6 +119,10 @@ public class LinkedList<T> implements ListInterface<T> {
 
         return str;
 
+    }
+
+    public int getNumberOfEntries() {
+        return numberOfEntries;
     }
 
 }

@@ -1,5 +1,7 @@
 package ui;
 
+import adt.*;
+import entity.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -26,6 +28,11 @@ public class CRUD extends javax.swing.JFrame {
     private String tableName = "ITEM";
     private Connection conn;
     private PreparedStatement stmt;
+    LinkedList<entity.RestaurantItem> itemList = new LinkedList();
+
+    public void setItemList(LinkedList<RestaurantItem> itemList) {
+        this.itemList = itemList;
+    }
 
     public CRUD() {
         initComponents();
@@ -118,7 +125,9 @@ public class CRUD extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtViewActionPerformed
 
     private void jbtAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddItemActionPerformed
-        new ItemDetail('a').setVisible(true);
+        ItemDetail id=new ItemDetail('a');
+        id.setVisible(true);
+        id.setItemList(itemList);
         this.setVisible(false);
     }//GEN-LAST:event_jbtAddItemActionPerformed
 
