@@ -16,7 +16,7 @@ public class Restaurant {
     private String bussName;
     private String bussRegNo;
     private int gstRegNo;
-    private String pesonInCharged;
+    private String personInCharged;
     private String address;
     private int telNo;
     private String GPS;
@@ -25,12 +25,12 @@ public class Restaurant {
     public Restaurant() {
     }
 
-    public Restaurant(int affID, String bussName, String bussRegNo, int gstRegNo, String pesonInCharged, String address, int telNo, String GPS) {
+    public Restaurant(int affID, String bussName, String bussRegNo, int gstRegNo, String personInCharged, String address, int telNo, String GPS) {
         this.affID = affID;
         this.bussName = bussName;
         this.bussRegNo = bussRegNo;
         this.gstRegNo = gstRegNo;
-        this.pesonInCharged = pesonInCharged;
+        this.personInCharged = personInCharged;
         this.address = address;
         this.telNo = telNo;
         this.GPS = GPS;
@@ -68,12 +68,12 @@ public class Restaurant {
         this.gstRegNo = gstRegNo;
     }
 
-    public String getPesonInCharged() {
-        return pesonInCharged;
+    public String getPersonInCharged() {
+        return personInCharged;
     }
 
-    public void setPesonInCharged(String pesonInCharged) {
-        this.pesonInCharged = pesonInCharged;
+    public void setPersonInCharged(String personInCharged) {
+        this.personInCharged = personInCharged;
     }
 
     public String getAddress() {
@@ -102,7 +102,7 @@ public class Restaurant {
 
     @Override
     public String toString() {
-        return "Restaurant{" + "affID=" + affID + ", bussName=" + bussName + ", bussRegNo=" + bussRegNo + ", gstRegNo=" + gstRegNo + ", pesonInCharged=" + pesonInCharged + ", address=" + address + ", telNo=" + telNo + ", GPS=" + GPS + '}';
+        return "Restaurant{" + "affID=" + affID + ", bussName=" + bussName + ", bussRegNo=" + bussRegNo + ", gstRegNo=" + gstRegNo + ", personInCharged=" + personInCharged + ", address=" + address + ", telNo=" + telNo + ", GPS=" + GPS + '}';
     }
     
     
