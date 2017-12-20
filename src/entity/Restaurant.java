@@ -5,6 +5,7 @@
  */
 package entity;
 
+import adt.*;
 /**
  *
  * @author Lysan Chen
@@ -19,6 +20,7 @@ public class Restaurant {
     private String address;
     private int telNo;
     private String GPS;
+    private LinkedList<RestaurantItem> menu;
 
     public Restaurant() {
     }

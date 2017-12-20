@@ -7,6 +7,8 @@ package ui;
 
 import java.sql.*;
 import javax.swing.*;
+import adt.*;
+import entity.*;
 
 /**
  *
@@ -24,7 +26,8 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         PreparedStatement stmt = null; 
         ResultSet rs = null;
         JFrame caller;
-        
+      
+        ListInterface dmList = new LinkedList<>();
         
     public DeliverymanDetailsFrame(char ch) {
         initComponents();

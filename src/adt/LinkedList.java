@@ -39,24 +39,6 @@ public class LinkedList<T> implements ListInterface<T> {
 
     @Override
     public boolean remove(T anEntry) {
-//        boolean result = true;                
-//
-//    if ((givenPosition >= 1) && (givenPosition <= numberOfEntries)) {
-//      if (givenPosition == 1) {      // case 1: remove first entry
-//        result = firstNode.data;     // save entry to be removed
-//        firstNode = firstNode.next;
-//      } else {                         // case 2: givenPosition > 1
-//        Node nodeBefore = firstNode;
-//        for (int i = 1; i < givenPosition - 1; ++i) {
-//          nodeBefore = nodeBefore.next;		// advance nodeBefore to its next node
-//        }
-//        result = nodeBefore.next.data;  // save entry to be removed
-//        nodeBefore.next = nodeBefore.next.next;	// make node before point to node after the
-//      } 																
-// one to be deleted (to disconnect node from chain)
-//
-//      numberOfEntries--;
-//    }
         boolean rs = false;
         Node currentNode = firstNode;
 
@@ -98,6 +80,11 @@ public class LinkedList<T> implements ListInterface<T> {
 
     }
 
+    public boolean remove(int index){
+        
+        return remove(getEntry(index));
+    }
+    
     @Override
     public boolean contains(T anEntry) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

@@ -31,7 +31,7 @@ public class TestLL {
         ll.add(item2);
         ll.remove(item2);
         
-        System.out.println(ll.getEntry(3));
+        System.out.println(ll.getEntry(2));
         
         
     }
