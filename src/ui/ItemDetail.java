@@ -21,7 +21,7 @@ public class ItemDetail extends javax.swing.JFrame {
     String itemName, category, promoInfo;
     double price;
     entity.RestaurantItem item = new entity.RestaurantItem();
-    LinkedList<entity.RestaurantItem> itemList = new LinkedList();
+    static LinkedList<entity.RestaurantItem> itemList = new LinkedList();
     JFrame caller;
 
     public void setItemList(LinkedList<entity.RestaurantItem> itemList) {
@@ -163,7 +163,7 @@ public class ItemDetail extends javax.swing.JFrame {
 
     private void jbtAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddActionPerformed
         // TODO add your handling code here:
-
+        entity.RestaurantItem item = new entity.RestaurantItem();
         itemID = Integer.parseInt(jtfID.getText());
         itemName = jtfName.getText();
         category = jtfCategory.getSelectedItem().toString();
@@ -248,8 +248,8 @@ public class ItemDetail extends javax.swing.JFrame {
         } catch (Exception ex) {
         }
 
-        getCaller()
-                .setVisible(true);
+        JFrame frame = getCaller();
+        frame.setVisible(true);
 
         this.dispose();
 

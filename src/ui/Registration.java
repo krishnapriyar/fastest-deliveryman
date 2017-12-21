@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 public class Registration extends java.awt.Frame {
     
        entity.Restaurant restaurant = new entity.Restaurant();
-       LinkedList<entity.Restaurant> restaurantList = new LinkedList();
+       static LinkedList<entity.Restaurant> restaurantList = new LinkedList();
     
        String BussName, BussRegNo, address, password, userName, Person, GPSCo, email;
         int TelNo, affID, GSTRegNo;
@@ -221,8 +221,9 @@ public class Registration extends java.awt.Frame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        jButton2.setEnabled(true);
+       jButton2.setEnabled(true);
        try{ 
+           
        BussName = jtfName.getText();
        BussRegNo = jtfBussRegNo.getText();
        address = jtfAdd1.getText() +"|"+ jtfAdd2.getText() +"|"+jtfPost.getText()+"|"+ jtfCity.getText();
@@ -330,9 +331,7 @@ public class Registration extends java.awt.Frame {
     }//GEN-LAST:event_jtfPostActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-        
-        
+
         for(int i = 0;i<restaurantList.getNumberOfEntries();i++)
         {
              try {

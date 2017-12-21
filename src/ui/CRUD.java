@@ -28,7 +28,7 @@ public class CRUD extends javax.swing.JFrame {
     private String tableName = "ITEM";
     private Connection conn;
     private PreparedStatement stmt;
-    LinkedList<entity.RestaurantItem> itemList = new LinkedList();
+    static LinkedList<entity.RestaurantItem> itemList = new LinkedList();
 
     public void setItemList(LinkedList<RestaurantItem> itemList) {
         this.itemList = itemList;
