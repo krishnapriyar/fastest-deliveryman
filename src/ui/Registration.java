@@ -237,7 +237,7 @@ public class Registration extends java.awt.Frame {
        restaurant.setAddress(address);
        restaurant.setBussRegNo(BussRegNo);
        restaurant.setGstRegNo(GSTRegNo);
-       restaurant.setPesonInCharged(BussName);
+       restaurant.setPersonInCharged(BussName);
        restaurant.setTelNo(TelNo);
        restaurant.setGPS(GPSCo);
        
@@ -343,7 +343,7 @@ public class Registration extends java.awt.Frame {
             stmt.setInt(4, restaurantList.getEntry(i).getAffID());
             stmt.setString(5, restaurantList.getEntry(i).getBussRegNo());
             stmt.setString(6, restaurantList.getEntry(i).getGPS());
-            stmt.setString(7, restaurantList.getEntry(i).getPesonInCharged());
+            stmt.setString(7, restaurantList.getEntry(i).getPersonInCharged());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Affiliate Register successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             autogenID();

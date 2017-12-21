@@ -5,6 +5,9 @@
  */
 package ui;
 
+import adt.LinkedList;
+import entity.*;
+import adt.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,15 +18,35 @@ import java.sql.ResultSet;
  * @author Lysan Chen
  */
 public class OrderItemList extends javax.swing.JFrame {
- 
-       String dbURL = "jdbc:derby://localhost:1527/Fast"; 
 
-        Connection dbCon = null; 
-        PreparedStatement stmt = null; 
-        ResultSet rs = null;
-        
+    LinkedList<RestaurantItem> itemList = new LinkedList<RestaurantItem>();
+
+    String dbURL = "jdbc:derby://localhost:1527/Fast";
+
+    public void setItemList(LinkedList<RestaurantItem> itemList) {
+        this.itemList = itemList;
+    }
+
+    public LinkedList<RestaurantItem> getItemList() {
+        return itemList;
+    }
+
+    Connection dbCon = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+
     public OrderItemList() {
         initComponents();
+
+        RestaurantItem item1 = new RestaurantItem(40001, "seafood", "food", 10.00, "Promo");
+        RestaurantItem item2 = new RestaurantItem(40002, "ice", "food", 10.00, "No Promo");
+        RestaurantItem item3 = new RestaurantItem(40003, "soup", "food", 10.00, "Promo");
+        RestaurantItem item4 = new RestaurantItem(40004, "beef", "food", 10.00, "No Promo");
+
+        itemList.add(item1);
+        itemList.add(item2);
+        itemList.add(item3);
+        itemList.add(item4);
     }
 
     /**
@@ -101,53 +124,144 @@ public class OrderItemList extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        
+
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-       
-       int index = jComboBox1.getSelectedIndex();
-       String queryStr=" ";
-//       String displayStr = "\"<html><body>";
-              String displayStr = "Item ID\t Item Name\t Price\t Promotional Item\n";
-        
-       if(index == 0)
-       {
-           queryStr = "SELECT ITEMID, ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY ITEMID DESC";
-           
-       }
-       else if(index == 1)
-       {
-            queryStr = "SELECT ITEMID, ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY PROMOTIONALINFO DESC";
-       }
-       else
-       {
-           
-            queryStr = "SELECT ITEMID, ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY ITEMID";
-       }
-       
-            try{
-                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-                Connection conn = DriverManager.getConnection(dbURL);
-                
-                
 
-                stmt = conn.prepareStatement(queryStr);
-                ResultSet rs = stmt.executeQuery();
-            
-                while(rs.next())
-                {   
-                   displayStr += rs.getString("ITEMID")+"\t" +rs.getString("ITEMNAME")+"\t" +rs.getDouble("ITEMUNITPRICE")+"\t "+rs.getString("PROMOTIONALINFO")+"\n";
-             
-                }
-//                displayStr += "</body></html>\"";
-                jTextArea1.setText(displayStr);
-                
-            }catch (Exception ex){
-               System.out.println(ex.getMessage());
-            }       
+        int index = jComboBox1.getSelectedIndex();
+        String queryStr = " ";
+//       String displayStr = "\"<html><body>";
+        String displayStr = "Item ID\t Item Name\t Price\t Promotional Item\n";
+
+        if (index == 0) {
+            sortByNewest();
+            queryStr = "SELECT ITEMID, ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY ITEMID DESC";
+
+        } else if (index == 1) {
+            sortByPromo();
+            queryStr = "SELECT ITEMID, ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY PROMOTIONALINFO DESC";
+        } else {
+            sortByOldest();
+            queryStr = "SELECT ITEMID, ITEMNAME,ITEMUNITPRICE,PROMOTIONALINFO FROM ITEM ORDER BY ITEMID";
+        }
+
+//            try{
+//                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+//                Connection conn = DriverManager.getConnection(dbURL);
+//                
+//                
+//
+//                stmt = conn.prepareStatement(queryStr);
+//                ResultSet rs = stmt.executeQuery();
+//            
+//                while(rs.next())
+//                {   
+//                   displayStr += rs.getString("ITEMID")+"\t" +rs.getString("ITEMNAME")+"\t" +rs.getDouble("ITEMUNITPRICE")+"\t "+rs.getString("PROMOTIONALINFO")+"\n";
+//             
+//                }
+////                displayStr += "</body></html>\"";
+//                jTextArea1.setText(displayStr);
+//                
+//            }catch (Exception ex){
+//               System.out.println(ex.getMessage());
+//            }       
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void sortByNewest() {
+        
+        int itemID = 40001;
+        int listSize = itemList.getNumberOfEntries();
+
+        LinkedStack<RestaurantItem> tempStack = new LinkedStack();
+
+        while (tempStack.getSize() != listSize) {
+            for (int i = 0; i < listSize; i++) {
+
+                if (itemList.getEntry(i + 1).getItemID() == itemID) {
+                    tempStack.push(itemList.getEntry(i + 1));
+
+                }
+
+            }
+            itemID++;
+
+        }
+        String displayStr = "Item ID\t Item Name\t Price\t Promotional Item\n";
+        int queueSize = tempStack.getSize();
+        for (int i = 0; i < queueSize; i++) {
+            RestaurantItem item = tempStack.pop();
+
+            displayStr += item.getItemID() + "\t" + item.getItemName() + "\t" + item.getUnitPrice() + "\t " + item.getPromoInfo() + "\n";
+
+        }
+        jTextArea1.setText(displayStr);
+    }
+
+    public void sortByOldest() {
+
+        int itemID = 40001;
+        int listSize = itemList.getNumberOfEntries();
+
+        CircularLinkedQueue<RestaurantItem> tempQueue = new CircularLinkedQueue();
+
+        while (tempQueue.getSize() != listSize) {
+            for (int i = 0; i < listSize; i++) {
+
+                if (itemList.getEntry(i + 1).getItemID() == itemID) {
+                    tempQueue.enqueue(itemList.getEntry(i + 1));
+
+                }
+
+            }
+            itemID++;
+
+        }
+        String displayStr = "Item ID\t Item Name\t Price\t Promotional Item\n";
+        int queueSize = tempQueue.getSize();
+        for (int i = 0; i < queueSize; i++) {
+            RestaurantItem item = tempQueue.dequeue();
+
+            displayStr += item.getItemID() + "\t" + item.getItemName() + "\t" + item.getUnitPrice() + "\t " + item.getPromoInfo() + "\n";
+
+        }
+        jTextArea1.setText(displayStr);
+    }
+
+    public void sortByPromo() {
+
+        LinkedList tempList1 = new LinkedList<RestaurantItem>();
+        LinkedList tempList2 = new LinkedList<RestaurantItem>();
+        RestaurantItem item;
+
+        for (int i = 0; i < itemList.getNumberOfEntries(); i++) {
+
+            item = itemList.getEntry(i + 1);
+
+            if (item.getPromoInfo().equals("Promo")) {
+
+                tempList1.add(item);
+            } else {
+                tempList2.add(item);
+            }
+
+        }
+
+        for (int i = 0; i < tempList2.getNumberOfEntries(); i++) {
+            tempList1.add(tempList2.getEntry(i + 1));
+        }
+
+        itemList = tempList1;
+        String displayStr = "Item ID\t Item Name\t Price\t Promotional Item\n";
+
+        for (int i = 0; i < itemList.getNumberOfEntries(); i++) {
+            item = itemList.getEntry(i + 1);
+
+            displayStr += item.getItemID() + "\t" + item.getItemName() + "\t" + item.getUnitPrice() + "\t " + item.getPromoInfo() + "\n";
+
+        }
+        jTextArea1.setText(displayStr);
+    }
 
     /**
      * @param args the command line arguments
