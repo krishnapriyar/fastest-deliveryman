@@ -118,8 +118,11 @@ public class CRUD extends javax.swing.JFrame {
 
 
     private void jbtViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtViewActionPerformed
-        new ItemDetail('v').setVisible(true);
+       ItemDetail  itemd = new ItemDetail('v');
+       itemd.setVisible(true);
         this.setVisible(false);
+        itemd.setCaller(this);
+        itemd.setItemList(itemList);
 //        jtfID.setEditable(false);
 
     }//GEN-LAST:event_jbtViewActionPerformed
@@ -128,18 +131,26 @@ public class CRUD extends javax.swing.JFrame {
         ItemDetail id=new ItemDetail('a');
         id.setVisible(true);
         id.setItemList(itemList);
+        id.setCaller(this);
         this.setVisible(false);
     }//GEN-LAST:event_jbtAddItemActionPerformed
 
     private void jbtUpdateItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateItemActionPerformed
-        new ItemDetail('u').setVisible(true);
+        ItemDetail  itemd = new ItemDetail('u');
+        itemd.setVisible(true);
         this.setVisible(false);
+        itemd.setCaller(this);
+        itemd.setItemList(itemList);
+
 
     }//GEN-LAST:event_jbtUpdateItemActionPerformed
 
     private void jbtDeleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDeleteItemActionPerformed
-        new ItemDetail('d').setVisible(true);
+        ItemDetail  itemd = new ItemDetail('d');
+        itemd.setVisible(true);
         this.setVisible(false);
+        itemd.setCaller(this);
+        itemd.setItemList(itemList);
     }//GEN-LAST:event_jbtDeleteItemActionPerformed
 
     /**

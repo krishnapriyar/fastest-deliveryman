@@ -124,7 +124,7 @@ public class Registration extends java.awt.Frame {
                 jButton1ActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 550, 100, 47));
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 540, 100, 47));
 
         jLabel8.setText("Username :");
         add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 250, -1, -1));
@@ -195,13 +195,14 @@ public class Registration extends java.awt.Frame {
         });
         add(jtfPost, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 430, 200, -1));
 
-        jButton2.setText("Back To Menu");
+        jButton2.setText("Go To Menu");
+        jButton2.setEnabled(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 550, 130, 40));
+        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 540, 140, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -219,7 +220,9 @@ public class Registration extends java.awt.Frame {
     }//GEN-LAST:event_jpPassActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
+
+        jButton2.setEnabled(true);
+       try{ 
        BussName = jtfName.getText();
        BussRegNo = jtfBussRegNo.getText();
        address = jtfAdd1.getText() +"|"+ jtfAdd2.getText() +"|"+jtfPost.getText()+"|"+ jtfCity.getText();
@@ -230,7 +233,8 @@ public class Registration extends java.awt.Frame {
        email = jtfEmail.getText();
        TelNo = Integer.parseInt(jtfTel.getText());
        affID = Integer.parseInt(jtfID.getText());
-       GSTRegNo = Integer.parseInt(jtfBussRegNo.getText());;
+       GSTRegNo = Integer.parseInt(jtfBussRegNo.getText());
+       
        
        restaurant.setAffID(affID);
        restaurant.setBussName(BussName);
@@ -242,8 +246,12 @@ public class Registration extends java.awt.Frame {
        restaurant.setGPS(GPSCo);
        
        restaurantList.add(restaurant);
-      
        
+       }catch(Exception ex){
+        JOptionPane.showMessageDialog(null,ex.getMessage(),"Failed", JOptionPane.ERROR_MESSAGE);
+    }
+       
+ 
         try{
         
 //        Class.forName("com.mysql.jdbc.Driver"); 
@@ -322,6 +330,9 @@ public class Registration extends java.awt.Frame {
     }//GEN-LAST:event_jtfPostActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        
+        
         for(int i = 0;i<restaurantList.getNumberOfEntries();i++)
         {
              try {

@@ -4,6 +4,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import adt.*;
 import entity.*;
+import javax.swing.JFrame;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,6 +22,7 @@ public class ItemDetail extends javax.swing.JFrame {
     double price;
     entity.RestaurantItem item = new entity.RestaurantItem();
     LinkedList<entity.RestaurantItem> itemList = new LinkedList();
+    JFrame caller;
 
     public void setItemList(LinkedList<entity.RestaurantItem> itemList) {
         this.itemList = itemList;
@@ -206,29 +208,70 @@ public class ItemDetail extends javax.swing.JFrame {
 
     private void jbtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBackActionPerformed
         // TODO add your handling code here:
-        new CRUD().setVisible(true);
-        this.setVisible(false);
-        
-        
+
+        try {
+            for (int i = 0; i < itemList.getNumberOfEntries(); i++) {
+
+                RestaurantItem item = itemList.getEntry(i + 1);
+
+                String queryStr = "SELECT * FROM ITEM WHERE ITEMID = ? ";
+
+                Connection conn = DriverManager.getConnection(dbURL);
+                stmt = conn.prepareStatement(queryStr);
+
+                stmt.setInt(1, item.getItemID());
+
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+
+                } else {
+                    String insertStr = "INSERT INTO  ITEM   VALUES(?,?,?,?,?,?)";
+
+                    stmt = conn.prepareStatement(insertStr);
+
+                    stmt.setInt(1, itemID);
+                    stmt.setString(2, itemName);
+                    stmt.setString(3, category);
+                    stmt.setDouble(4, price);
+                    stmt.setString(5, promoInfo);
+                    //Temporary affiliate ID
+                    stmt.setInt(6, 3001);
+                    stmt.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Item added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
+
+            }
+            {
+
+            }
+        } catch (Exception ex) {
+        }
+
+        getCaller()
+                .setVisible(true);
+
+        this.dispose();
+
     }//GEN-LAST:event_jbtBackActionPerformed
 
     private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateActionPerformed
-        
+
         int ID = Integer.parseInt(jtfID.getText());
         String name = jtfName.getText();
         Double price = Double.parseDouble(jtfPrice.getText());
         String promo = jtfPromo.getText();
         String category = jtfCategory.getSelectedItem().toString();
-        
+
         item = itemList.getEntry(jcbItem.getSelectedIndex());
         itemList.remove(item);
-        
+
         item.setItemID(itemID);
         item.setItemName(itemName);
         item.setPromoInfo(promoInfo);
         item.setCategory(category);
         item.setUnitPrice(price);
-        
+
         itemList.add(item);
 
         try {
@@ -302,9 +345,9 @@ public class ItemDetail extends javax.swing.JFrame {
         item.setCategory(category);
         item.setPromoInfo(promoInfo);
         item.setUnitPrice(price);
-        
+
         itemList.remove(item);
-        
+
         try {
             if (!jcbItem.getSelectedItem().equals("Unselected")) {
                 DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
@@ -350,16 +393,24 @@ public class ItemDetail extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ItemDetail.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ItemDetail.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ItemDetail.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ItemDetail.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ItemDetail.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ItemDetail.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ItemDetail.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ItemDetail.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -496,6 +547,14 @@ public class ItemDetail extends javax.swing.JFrame {
 //            }catch (Exception ex){
 //               
 //            }
+    }
+
+    public JFrame getCaller() {
+        return caller;
+    }
+
+    public void setCaller(JFrame caller) {
+        this.caller = caller;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
