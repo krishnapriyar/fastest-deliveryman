@@ -1,0 +1,23 @@
+*   7845aa4 2017-11-11 | Merge origin/master (HEAD -> master, origin/master) [Lysan Chen]
+
+|\  
+
+| * 643c23e 2017-11-11 |  [User]
+
+| * bdd6960 2017-11-11 |  [chong]
+
+| * b03cff0 2017-11-11 | #11112017 Added DeliverymanClockInOut.form and DeliverymanWorkStatus.form by Bryan [Kai Yan]
+
+| * c716783 2017-11-10 | Update .travis.yml [Krishnapriya Ranga Nathan]
+
+| * 733a8e7 2017-11-10 | Create .travis.yml [Krishnapriya Ranga Nathan]
+
+* | 2c6a9a8 2017-11-11 | Affiliate Add Item [Lysan Chen]
+
+|/  
+
+* 962bdaa 2017-11-09 | Affiliate Registration UI created [Lysan Chen]
+
+* 89212ff 2017-11-07 | Created UI for Add Deliveryman [Krishnapriya Ranga Nathan]
+
+* 0623972 2017-11-07 | First commit [Krishnapriya Ranga Nathan]
