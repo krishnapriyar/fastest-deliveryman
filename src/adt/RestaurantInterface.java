@@ -12,7 +12,8 @@ package adt;
 public interface RestaurantInterface<T> {
     
     boolean addItemToMenu(T Item);
-    boolean addItemFrmoMenu(T Item);
+    T getItemFromMenu(T Item);
+    boolean removeItemFromMenu(T Item);
     
     
 }

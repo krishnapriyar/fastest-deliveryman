@@ -17,7 +17,7 @@ public class TestLL {
      */
     public static void main(String[] args) {
         
-       CircularLinkedList<RestaurantItem> ll = new CircularLinkedList();
+       LinkedQueue<RestaurantItem> ll = new LinkedQueue();
         
         RestaurantItem item = new RestaurantItem();
         RestaurantItem item1 = new RestaurantItem();
@@ -28,20 +28,25 @@ public class TestLL {
         item2.setItemID(20003);
         item3.setItemID(20004);
         
-        ll.add(item);
-        ll.add(item1);
-        ll.add(item2);
-        ll.add(item3);
-        System.out.println(ll);
+        ll.enqueue(item);
+        ll.enqueue(item1);
+        ll.enqueue(item2);
+        ll.enqueue(item3);
+        System.out.println("List"+ll);
         
         
-        ll.remove(item1);
-        System.out.println(ll);
         
-        ll.remove(item3);
-        ll.remove(item2);
-        ll.remove(item);
-        System.out.println(ll);
+        System.out.println("Dequeue"+ll.dequeue()+"\n");
+
+        System.out.println("List"+ll);
+        System.out.println("Dequeue2"+ll.dequeue()+"\n");
+
+        System.out.println("Dequeue3"+ll.dequeue()+"\n");
+
+        System.out.println("List"+ll);
+        System.out.println("Dequeue4"+ll.dequeue()+"\n");
+
+        System.out.println("List"+ll);
         
 
         

@@ -12,12 +12,12 @@ import entity.Node;
  * @author Priya
  */
 public class CircularDoublyLinkedList<T> implements ListInterface<T> {
-    
+
     private Node firstNode;
     private int size;
 
     public CircularDoublyLinkedList() {
-        
+
         this.firstNode = null;
         this.size = 0;
     }
@@ -34,13 +34,13 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
 
         } else {
             Node lastNode = firstNode.getPrevious();
-            
+
             newNode.setNext(firstNode);
             newNode.setPrevious(lastNode);
-            
+
             lastNode.setNext(newNode);
             firstNode.setPrevious(newNode);
-            
+
         }
         size++;
     }
@@ -48,15 +48,35 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
     @Override
     public boolean remove(T anEntry) {
         boolean removed = false;
-        
-        if(size==1 && firstNode.getData().equals(anEntry)){
-            
-            firstNode =null;
-            size=0;
-            removed = true;     
+
+        if (size == 1 && firstNode.getData().equals(anEntry)) {
+
+            firstNode = null;
+            size = 0;
+            removed = true;
+        } else {
+            Node node = firstNode;
+            do {
+                if (node.getData().equals(anEntry)) {
+
+                    if (node.equals(firstNode)) {
+                        firstNode = firstNode.getNext();
+                    }
+                    Node tempnode = node;
+
+                    node.getNext().setPrevious(tempnode.getPrevious());
+                    node.getPrevious().setNext(tempnode.getNext());
+                    size--;
+                    removed = true;
+
+                    
+                }
+                node = node.getNext();
+
+            } while (!node.equals(firstNode));
+
         }
-        
-        
+
         return removed;
     }
 
@@ -80,7 +100,7 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
     @Override
     public boolean contains(T anEntry) {
         Node currentNode = firstNode;
-        Node newNode = new Node(anEntry);
+        Node node = new Node(anEntry);
         boolean contains = false;
         do {
             if (currentNode.getData().equals(anEntry)) {
@@ -88,8 +108,8 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
                 break;
             }
             currentNode = currentNode.getNext();
-        }while (currentNode != firstNode);
-        
+        } while (currentNode != firstNode);
+
         return contains;
     }
 
@@ -102,7 +122,7 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
     public String toString() {
         String str = "";
         Node node = firstNode;
-        if (size != 0) {
+        if (size > 0) {
             do {
                 str += node.getData().toString() + "\n";
                 node = node.getNext();
@@ -110,7 +130,7 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
         }
 
         return str;
-    
+
     }
-    
+
 }

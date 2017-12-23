@@ -154,6 +154,7 @@ public class LoginFrame extends javax.swing.JFrame {
     
             
     }
+    
     private boolean compareLogin(char prefix) {
 
         boolean allow = false;

@@ -29,6 +29,12 @@ public class CRUD extends javax.swing.JFrame {
     private Connection conn;
     private PreparedStatement stmt;
     static LinkedList<entity.RestaurantItem> itemList = new LinkedList();
+    
+    static Restaurant restaurant;
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
 
     public void setItemList(LinkedList<RestaurantItem> itemList) {
         this.itemList = itemList;
@@ -36,6 +42,7 @@ public class CRUD extends javax.swing.JFrame {
 
     public CRUD() {
         initComponents();
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -116,19 +123,21 @@ public class CRUD extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
+    
     private void jbtViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtViewActionPerformed
-       ItemDetail  itemd = new ItemDetail('v');
-       itemd.setVisible(true);
+        ItemDetail itemd = new ItemDetail('v');
+        itemd.setVisible(true);
         this.setVisible(false);
         itemd.setCaller(this);
         itemd.setItemList(itemList);
+        itemd.setRestaurant(restaurant);
 //        jtfID.setEditable(false);
+
 
     }//GEN-LAST:event_jbtViewActionPerformed
 
     private void jbtAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddItemActionPerformed
-        ItemDetail id=new ItemDetail('a');
+        ItemDetail id = new ItemDetail('a');
         id.setVisible(true);
         id.setItemList(itemList);
         id.setCaller(this);
@@ -136,7 +145,7 @@ public class CRUD extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtAddItemActionPerformed
 
     private void jbtUpdateItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateItemActionPerformed
-        ItemDetail  itemd = new ItemDetail('u');
+        ItemDetail itemd = new ItemDetail('u');
         itemd.setVisible(true);
         this.setVisible(false);
         itemd.setCaller(this);
@@ -146,7 +155,7 @@ public class CRUD extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtUpdateItemActionPerformed
 
     private void jbtDeleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDeleteItemActionPerformed
-        ItemDetail  itemd = new ItemDetail('d');
+        ItemDetail itemd = new ItemDetail('d');
         itemd.setVisible(true);
         this.setVisible(false);
         itemd.setCaller(this);
@@ -158,10 +167,10 @@ public class CRUD extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
 
-         java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new CRUD().setVisible(true);
-                
+
             }
         });
         try {

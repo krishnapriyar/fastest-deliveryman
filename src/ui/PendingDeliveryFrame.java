@@ -5,6 +5,8 @@
  */
 package ui;
 
+import adt.*;
+import entity.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,7 +21,7 @@ import javax.swing.JFrame;
 public class PendingDeliveryFrame extends javax.swing.JFrame {
 
     String dbURL = "jdbc:derby://localhost:1527/Fast"; 
-
+    static CircularDoublyLinkedList<Deliveryman> dmList = new CircularDoublyLinkedList<Deliveryman>();
     Connection dbCon = null; 
     PreparedStatement stmt = null; 
     ResultSet rs = null;
@@ -27,6 +29,14 @@ public class PendingDeliveryFrame extends javax.swing.JFrame {
     public PendingDeliveryFrame() {
         initComponents();
         fillBox();
+    }
+
+    public static CircularDoublyLinkedList<Deliveryman> getDmList() {
+        return dmList;
+    }
+
+    public static void setDmList(CircularDoublyLinkedList<Deliveryman> dmList) {
+        PendingDeliveryFrame.dmList = dmList;
     }
 
     /**

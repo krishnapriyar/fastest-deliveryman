@@ -26,8 +26,9 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         PreparedStatement stmt = null; 
         ResultSet rs = null;
         JFrame caller;
+        
+        CircularDoublyLinkedList<Deliveryman> dmList = new CircularDoublyLinkedList<Deliveryman>();
       
-        ListInterface dmList = new LinkedList<>();
         
     public DeliverymanDetailsFrame(char ch) {
         initComponents();
@@ -207,31 +208,31 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
     private void jtfPostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPostActionPerformed
         // TODO add your handling code here:
-        //Automatically fill city
-        String postcode = jtfPost.getText();
-        if(postcode.length()==5){
-            
-            try{
-                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-                Connection conn = DriverManager.getConnection(dbURL);
-                
-                String queryStr="SELECT CITY FROM  POSTALCODES WHERE POSTALCODE = ?";
-
-                stmt = conn.prepareStatement(queryStr);
-                stmt.setString(1,postcode);
-                ResultSet rs = stmt.executeQuery();
-            
-                if(rs.next())
-                {
-                    jtfCity.setText(rs.getString(1));  
-                    
-                }
-                
-            }catch (Exception ex){
-                System.out.println(ex.getMessage());
-            }            
-        
-        }
+//        //Automatically fill city
+//        String postcode = jtfPost.getText();
+//        if(postcode.length()==5){
+//            
+//            try{
+//                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+//                Connection conn = DriverManager.getConnection(dbURL);
+//                
+//                String queryStr="SELECT CITY FROM  POSTALCODES WHERE POSTALCODE = ?";
+//
+//                stmt = conn.prepareStatement(queryStr);
+//                stmt.setString(1,postcode);
+//                ResultSet rs = stmt.executeQuery();
+//            
+//                if(rs.next())
+//                {
+//                    jtfCity.setText(rs.getString(1));  
+//                    
+//                }
+//                
+//            }catch (Exception ex){
+//                System.out.println(ex.getMessage());
+//            }            
+//        
+//        }
     }//GEN-LAST:event_jtfPostActionPerformed
 
     private void jcbEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbEditActionPerformed
@@ -283,10 +284,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtBackActionPerformed
 
     private void jbtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSearchActionPerformed
-        // TODO add your handling code here:
-        
-        
-        
+        // TODO add your handling code here:   
         
         String queryStr="SELECT * FROM DELIVERYMAN WHERE DMID = ? OR DMNAME = ? OR DMIC = ?";
         try
@@ -460,6 +458,14 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         
         }
 
+    }
+
+    public CircularDoublyLinkedList<Deliveryman> getDmList() {
+        return dmList;
+    }
+
+    public void setDmList(CircularDoublyLinkedList<Deliveryman> dmList) {
+        this.dmList = dmList;
     }
    
     /**

@@ -6,34 +6,37 @@
 package ui;
 
 import adt.*;
-import entity.*;
+import entity.Restaurant;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Lysan Chen
  */
-public class Registration extends java.awt.Frame {
-    
-       entity.Restaurant restaurant = new entity.Restaurant();
-       static LinkedList<entity.Restaurant> restaurantList = new LinkedList();
-    
-       String BussName, BussRegNo, address, password, userName, Person, GPSCo, email;
-        int TelNo, affID, GSTRegNo;
-    
-       String dbURL = "jdbc:derby://localhost:1527/Fast"; 
+public class Registration extends javax.swing.JFrame {
 
-        Connection dbCon = null; 
-        PreparedStatement stmt = null; 
-        ResultSet rs = null;
-    
+    static entity.Restaurant restaurant = new entity.Restaurant();
+    static LinkedList<entity.Restaurant> restaurantList = new LinkedList();
+
+    String BussName, BussRegNo, address, password, userName, Person, GPSCo, email;
+    int TelNo, affID, GSTRegNo;
+
+    String dbURL = "jdbc:derby://localhost:1527/Fast";
+
+    Connection dbCon = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+
     public Registration() {
         initComponents();
         autogenID();
+
+        jtfUsername.setText(jtfID.getText());
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -128,6 +131,8 @@ public class Registration extends java.awt.Frame {
 
         jLabel8.setText("Username :");
         add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 250, -1, -1));
+
+        jtfUsername.setEditable(false);
         add(jtfUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 250, 216, -1));
         add(jtfAdd1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 340, 200, 20));
 
@@ -221,76 +226,64 @@ public class Registration extends java.awt.Frame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-       jButton2.setEnabled(true);
-       try{ 
-           
-       BussName = jtfName.getText();
-       BussRegNo = jtfBussRegNo.getText();
-       address = jtfAdd1.getText() +"|"+ jtfAdd2.getText() +"|"+jtfPost.getText()+"|"+ jtfCity.getText();
-       userName = jtfUsername.getText();
-       password = jpPass.getText();
-       Person = jtfPerson.getText();
-       GPSCo = jtfGPS.getText();
-       email = jtfEmail.getText();
-       TelNo = Integer.parseInt(jtfTel.getText());
-       affID = Integer.parseInt(jtfID.getText());
-       GSTRegNo = Integer.parseInt(jtfBussRegNo.getText());
-       
-       
-       restaurant.setAffID(affID);
-       restaurant.setBussName(BussName);
-       restaurant.setAddress(address);
-       restaurant.setBussRegNo(BussRegNo);
-       restaurant.setGstRegNo(GSTRegNo);
-       restaurant.setPersonInCharged(BussName);
-       restaurant.setTelNo(TelNo);
-       restaurant.setGPS(GPSCo);
-       
-       restaurantList.add(restaurant);
-       
-       }catch(Exception ex){
-        JOptionPane.showMessageDialog(null,ex.getMessage(),"Failed", JOptionPane.ERROR_MESSAGE);
-    }
-       
- 
-        try{
-        
-//        Class.forName("com.mysql.jdbc.Driver"); 
-        DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-        Connection conn = DriverManager.getConnection(dbURL);
-//        stmt = conn.createStatement();
-//        String str = "INSERT INTO ITEM " + "VALUES (" + itemID +",'"+ itemName +"','"+category +"',"+ price +",'"+ promoInfo +"');";
-//        stmt.executeUpdate(str) ;
+        try {
+            
+            //Assign values to restaurant 
+            BussName = jtfName.getText();
+            BussRegNo = jtfBussRegNo.getText();
+            address = jtfAdd1.getText() + "|" + jtfAdd2.getText() + "|" + jtfPost.getText() + "|" + jtfCity.getText();
+            userName = jtfUsername.getText();
+            password = jpPass.getText();
+            Person = jtfPerson.getText();
+            GPSCo = jtfGPS.getText();
+            email = jtfEmail.getText();
+            TelNo = Integer.parseInt(jtfTel.getText());
+            affID = Integer.parseInt(jtfID.getText());
+            GSTRegNo = Integer.parseInt(jtfBussRegNo.getText());
 
-        
+            restaurant.setAffID(affID);
+            restaurant.setBussName(BussName);
+            restaurant.setAddress(address);
+            restaurant.setBussRegNo(BussRegNo);
+            restaurant.setGstRegNo(GSTRegNo);
+            restaurant.setPersonInCharged(BussName);
+            restaurant.setTelNo(TelNo);
+            restaurant.setGPS(GPSCo);
+            
+            //Add to list of restaurants
+            restaurantList.add(restaurant);
+
+            //Write to db
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+            Connection conn = DriverManager.getConnection(dbURL);
             String insertStr = "INSERT INTO AFFILIATE VALUES(?,?,?,?,?,?,?,?)";
 
             stmt = conn.prepareStatement(insertStr);
             stmt.setInt(1, affID);
             stmt.setString(2, BussName);
             stmt.setString(3, BussRegNo);
-            stmt.setInt(4,GSTRegNo);
-            stmt.setString(5, Person);       
-            stmt.setString(6, address);    
-            stmt.setInt(7, TelNo);           
+            stmt.setInt(4, GSTRegNo);
+            stmt.setString(5, Person);
+            stmt.setString(6, address);
+            stmt.setInt(7, TelNo);
             stmt.setString(8, "123.45");
             stmt.executeUpdate();
             stmt.close();
-            
+
             insertStr = "INSERT INTO LOGINACCOUNT VALUES(?,?,?)";
             stmt = conn.prepareStatement(insertStr);
-            stmt.setString(1, "a"+userName);
+            stmt.setString(1, "a" + userName);
             stmt.setString(2, password);
             stmt.setString(3, email);
-            stmt.executeUpdate();   
-            JOptionPane.showMessageDialog(null,"Login Account added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Affliate registration successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             autogenID();
-            
-     
-    }catch (Exception ex){
-        JOptionPane.showMessageDialog(null,ex.getMessage(),"Failed", JOptionPane.ERROR_MESSAGE);
-    }
-        
+            jButton2.setEnabled(true);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Failed", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jtfNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNameActionPerformed
@@ -304,67 +297,46 @@ public class Registration extends java.awt.Frame {
     private void jtfPostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPostActionPerformed
         // TODO add your handling code here:
         //Automatically fill city
-        String postcode = jtfPost.getText();
-        if(postcode.length()==5){
-
-            try{
-                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-                Connection conn = DriverManager.getConnection(dbURL);
-
-                String queryStr="SELECT CITY FROM  POSTALCODES WHERE POSTALCODE = ?";
-
-                stmt = conn.prepareStatement(queryStr);
-                stmt.setString(1,postcode);
-                ResultSet rs = stmt.executeQuery();
-
-                if(rs.next())
-                {
-                    jtfCity.setText(rs.getString(1));
-
-                }
-
-            }catch (Exception ex){
-                System.out.println(ex.getMessage());
-            }
-
-        }
+//        String postcode = jtfPost.getText();
+//        if(postcode.length()==5){
+//
+//            try{
+//                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+//                Connection conn = DriverManager.getConnection(dbURL);
+//
+//                String queryStr="SELECT CITY FROM  POSTALCODES WHERE POSTALCODE = ?";
+//
+//                stmt = conn.prepareStatement(queryStr);
+//                stmt.setString(1,postcode);
+//                ResultSet rs = stmt.executeQuery();
+//
+//                if(rs.next())
+//                {
+//                    jtfCity.setText(rs.getString(1));
+//
+//                }
+//
+//            }catch (Exception ex){
+//                System.out.println(ex.getMessage());
+//            }
+//
+//        }
     }//GEN-LAST:event_jtfPostActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-        for(int i = 0;i<restaurantList.getNumberOfEntries();i++)
-        {
-             try {
-
-//        Class.forName("com.mysql.jdbc.Driver"); 
-            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-            Connection conn = DriverManager.getConnection(dbURL);
-//        stmt = conn.createStatement();
-//        String str = "INSERT INTO ITEM " + "VALUES (" + itemID +",'"+ itemName +"','"+category +"',"+ price +",'"+ promoInfo +"');";
-//        stmt.executeUpdate(str) ;
-
-            String insertStr = "INSERT INTO  ITEM   VALUES(?,?,?,?,?,?)";
-
-            stmt = conn.prepareStatement(insertStr);
-
-            stmt.setInt(1, restaurantList.getEntry(i).getAffID());
-            stmt.setString(2, restaurantList.getEntry(i).getAddress());
-            stmt.setString(3, restaurantList.getEntry(i).getBussName());
-            stmt.setInt(4, restaurantList.getEntry(i).getAffID());
-            stmt.setString(5, restaurantList.getEntry(i).getBussRegNo());
-            stmt.setString(6, restaurantList.getEntry(i).getGPS());
-            stmt.setString(7, restaurantList.getEntry(i).getPersonInCharged());
-            stmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Affiliate Register successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            autogenID();
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Failed", JOptionPane.ERROR_MESSAGE);
-        }
-            
-            
-        }
+        
+        CRUD frame = new CRUD();
+        frame.setRestaurant(restaurant);
+        frame.setItemList(restaurant.getMenu());
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    public static Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public static LinkedList<Restaurant> getRestaurantList() {
+        return restaurantList;
+    }
 
     /**
      * @param args the command line arguments
@@ -376,32 +348,31 @@ public class Registration extends java.awt.Frame {
             }
         });
     }
-    
-    private void autogenID(){
-        
-        int ID= 30001;
-        
-        try{
-                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-                Connection conn = DriverManager.getConnection(dbURL);
-                
-                String queryStr="SELECT MAX(AFFID) FROM  AFFILIATE";
 
-                stmt = conn.prepareStatement(queryStr);
-                ResultSet rs = stmt.executeQuery();
-            
-                if(rs.next())
-                {   
-                    ID=rs.getInt(1)!=0?rs.getInt(1)+1:ID;
-             
-                }
-                
-            }catch (Exception ex){
-                System.out.println(ex.getMessage());
+    private void autogenID() {
+
+        int ID = 30001;
+
+        try {
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+            Connection conn = DriverManager.getConnection(dbURL);
+
+            String queryStr = "SELECT MAX(AFFID) FROM  AFFILIATE";
+
+            stmt = conn.prepareStatement(queryStr);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                ID = rs.getInt(1) != 0 ? rs.getInt(1) + 1 : ID;
+
             }
-        
-        jtfID.setText(ID+"");  
-     
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        jtfID.setText(ID + "");
+
     }
 
 

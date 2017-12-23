@@ -20,10 +20,10 @@ public class Deliveryman implements DeliverymanInterface {
     private String dmAddress;
     private String activeStatus;
     private String availability;
-    private LinkedList<Order> deliveryList;
+    private LinkedQueue<Order> deliveryList;
 
     public Deliveryman() {
-        deliveryList = new LinkedList<Order>();
+        deliveryList = new LinkedQueue<Order>();
     }
 
     /**
@@ -127,22 +127,22 @@ public class Deliveryman implements DeliverymanInterface {
     @Override
     public boolean addDelivery(Object delivery) {
 
-        deliveryList.add((Order) delivery);
+        deliveryList.enqueue((Order) delivery);
         return true;
     }
 
     @Override
     public boolean removeDelivery(Object delivery) {
 
-        for (int i = 0; i < deliveryList.getNumberOfEntries(); i++) {
+        for (int i = 0; i < deliveryList.getSize(); i++) {
 
-            if (deliveryList.contains((Order) delivery)) {
-                {
-                    deliveryList.remove((Order) delivery);
-                    return true;
-                }
-
-            }
+//            if (deliveryList.contains((Order) delivery)) {
+//                {
+//                    deliveryList.dequeue((Order) delivery);
+//                    return true;
+//                }
+//
+//            }
 
         }
         return false;

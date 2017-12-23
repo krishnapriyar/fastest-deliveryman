@@ -20,9 +20,18 @@ public class ItemDetail extends javax.swing.JFrame {
     int itemID;
     String itemName, category, promoInfo;
     double price;
+    static Restaurant restaurant;
+
+    public static Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public static void setRestaurant(Restaurant restaurant) {
+        ItemDetail.restaurant = restaurant;
+    }
     entity.RestaurantItem item = new entity.RestaurantItem();
     static LinkedList<entity.RestaurantItem> itemList = new LinkedList();
-    JFrame caller;
+    CRUD caller;
 
     public void setItemList(LinkedList<entity.RestaurantItem> itemList) {
         this.itemList = itemList;
@@ -178,13 +187,8 @@ public class ItemDetail extends javax.swing.JFrame {
         itemList.add(item);
 
         try {
-
-//        Class.forName("com.mysql.jdbc.Driver"); 
             DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
             Connection conn = DriverManager.getConnection(dbURL);
-//        stmt = conn.createStatement();
-//        String str = "INSERT INTO ITEM " + "VALUES (" + itemID +",'"+ itemName +"','"+category +"',"+ price +",'"+ promoInfo +"');";
-//        stmt.executeUpdate(str) ;
 
             String insertStr = "INSERT INTO  ITEM   VALUES(?,?,?,?,?,?)";
 
@@ -208,7 +212,7 @@ public class ItemDetail extends javax.swing.JFrame {
 
     private void jbtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBackActionPerformed
         // TODO add your handling code here:
-
+        caller.setItemList(itemList);
         try {
             for (int i = 0; i < itemList.getNumberOfEntries(); i++) {
 
@@ -236,13 +240,10 @@ public class ItemDetail extends javax.swing.JFrame {
                     stmt.setDouble(4, price);
                     stmt.setString(5, promoInfo);
                     //Temporary affiliate ID
-                    stmt.setInt(6, 3001);
+                    stmt.setInt(6, restaurant.getAffID());
                     stmt.executeUpdate();
                     JOptionPane.showMessageDialog(null, "Item added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 }
-
-            }
-            {
 
             }
         } catch (Exception ex) {
@@ -366,7 +367,7 @@ public class ItemDetail extends javax.swing.JFrame {
                 stmt.setInt(1, ID);
                 stmt.executeUpdate();
 
-                JOptionPane.showMessageDialog(null, "Itwm delete successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Item delete successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 jcbItem.removeAllItems();
                 insertItem();
             } else {
@@ -554,7 +555,7 @@ public class ItemDetail extends javax.swing.JFrame {
     }
 
     public void setCaller(JFrame caller) {
-        this.caller = caller;
+        this.caller = (CRUD)caller;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

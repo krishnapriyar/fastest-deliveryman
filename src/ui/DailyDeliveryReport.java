@@ -5,6 +5,8 @@
  */
 package ui;
 
+import adt.*;
+import entity.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,15 +22,24 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
     /**
      * Creates new form DailyDeliveryReport
      */
-    String dbURL = "jdbc:derby://localhost:1527/Fast"; 
+    String dbURL = "jdbc:derby://localhost:1527/Fast";
 
-    Connection dbCon = null; 
-    PreparedStatement stmt = null; 
+    Connection dbCon = null;
+    PreparedStatement stmt = null;
     ResultSet rs = null;
-     
+    static CircularDoublyLinkedList<Deliveryman> dmList = new CircularDoublyLinkedList<Deliveryman>();
+
     public DailyDeliveryReport() {
         initComponents();
         getData();
+    }
+
+    public static CircularDoublyLinkedList<Deliveryman> getDmList() {
+        return dmList;
+    }
+
+    public static void setDmList(CircularDoublyLinkedList<Deliveryman> dmList) {
+        DailyDeliveryReport.dmList = dmList;
     }
 
     /**
@@ -64,39 +75,37 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
-    private void genReport(){}
-    
-    private void getData(){
-    
-        try{
-            
-                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-                Connection conn = DriverManager.getConnection(dbURL);
-                
-                String queryStr="SELECT COUNT(TRANID) FROM  TRANS WHERE TRANDATE = CURRENT_DATE GROUP BY DMID ORDER BY COUNT(TRANID) DESC";
-
-                stmt = conn.prepareStatement(queryStr);
-                ResultSet rs = stmt.executeQuery();
-            
-                
-                String display = "No.\tOrder ID \tDate \tTime \tETA\n\n";
-                
-                while(rs.next())
-                {
-                   display+="\t"+rs.getInt(1)+"\n";
-                    
-                }
-                
-                System.out.println(display);
-                
-            }catch (Exception ex){
-                System.out.println(ex.getMessage());
-            }
+    private void genReport() {
     }
-    
+
+    private void getData() {
+
+        try {
+
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+            Connection conn = DriverManager.getConnection(dbURL);
+
+            String queryStr = "SELECT COUNT(TRANID) FROM  TRANS WHERE TRANDATE = CURRENT_DATE GROUP BY DMID ORDER BY COUNT(TRANID) DESC";
+
+            stmt = conn.prepareStatement(queryStr);
+            ResultSet rs = stmt.executeQuery();
+
+            String display = "No.\tOrder ID \tDate \tTime \tETA\n\n";
+
+            while (rs.next()) {
+                display += "\t" + rs.getInt(1) + "\n";
+
+            }
+
+            System.out.println(display);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
     public double distBetweenCoordinate(double lat1, double lat2, double lon1,
-        double lon2) {
+            double lon2) {
 
         final int R = 6371; // Radius of the earth
 
@@ -108,9 +117,9 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = R * c * 1000; // convert to meters
 
-    return distance;
-}
-    
+        return distance;
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -5,6 +5,9 @@
  */
 package ui;
 
+import adt.*;
+import entity.*;
+
 /**
  *
  * @author Priya
@@ -14,8 +17,18 @@ public class HRExecMenu extends javax.swing.JFrame {
     /**
      * Creates new form HRExecMenu
      */
+    
+    static CircularDoublyLinkedList<Deliveryman> dmList = new CircularDoublyLinkedList<Deliveryman>();
     public HRExecMenu() {
         initComponents();
+    }
+
+    public static CircularDoublyLinkedList<Deliveryman> getDmList() {
+        return dmList;
+    }
+
+    public static void setDmList(CircularDoublyLinkedList<Deliveryman> dmList) {
+        HRExecMenu.dmList = dmList;
     }
 
     /**

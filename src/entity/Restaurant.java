@@ -10,7 +10,7 @@ import adt.*;
  *
  * @author Lysan Chen
  */
-public class Restaurant implements RestaurantInterface{
+public class Restaurant {
     
     private int affID;
     private String bussName;
@@ -34,6 +34,7 @@ public class Restaurant implements RestaurantInterface{
         this.address = address;
         this.telNo = telNo;
         this.GPS = GPS;
+        menu = new LinkedList<RestaurantItem>();
     }
 
     public int getAffID() {
@@ -105,31 +106,15 @@ public class Restaurant implements RestaurantInterface{
         return "Restaurant{" + "affID=" + affID + ", bussName=" + bussName + ", bussRegNo=" + bussRegNo + ", gstRegNo=" + gstRegNo + ", personInCharged=" + personInCharged + ", address=" + address + ", telNo=" + telNo + ", GPS=" + GPS + '}';
     }
 
-    @Override
-    public boolean addItemToMenu(Object Item) {
-        RestaurantItem item = (RestaurantItem)Item;
-        
-        menu.add(item);
-        return true;
+    public LinkedList<RestaurantItem> getMenu() {
+        return menu;
     }
 
-    @Override
-    public boolean addItemFrmoMenu(Object Item) {
-        RestaurantItem item = (RestaurantItem)Item;
-        Boolean ret = false;
-        for (int i = 0; i < menu.getNumberOfEntries(); i++) {
-
-            if (menu.contains(item)) {
-                {
-                    menu.remove(item);
-                    ret = true;
-                }
-
-            }
-
-        }
-        return ret;
+    public void setMenu(LinkedList<RestaurantItem> menu) {
+        this.menu = menu;
     }
+
+ 
     
     
 }
