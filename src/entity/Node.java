@@ -13,6 +13,9 @@ public class Node<T> {
     
     private T data;
     private Node next;
+    private Node previous;
+
+
     public Node() {
 
     }
@@ -40,6 +43,14 @@ public class Node<T> {
 
     public void setNext(Node next) {
         this.next = next;
+    }
+    
+    public Node getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(Node previous) {
+        this.previous = previous;
     }
     
     

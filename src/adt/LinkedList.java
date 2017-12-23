@@ -45,20 +45,23 @@ public class LinkedList<T> implements ListInterface<T> {
         if (firstNode != null) {
             if (firstNode.getData().equals(anEntry)) {
                 firstNode = firstNode.getNext();
+                rs = true;
             } else {
                 while (currentNode.getNext() != null) {
                     if (currentNode.getNext().getData().equals(anEntry)) {
                         currentNode.setNext(currentNode.getNext().getNext());
                         rs = true;
+                        numberOfEntries--;
                         break;
+                        
                     }
                     currentNode = currentNode.getNext();
                 }
             }
 
         }
-        numberOfEntries--;
-        return false;
+
+        return rs;
     }
 
     @Override

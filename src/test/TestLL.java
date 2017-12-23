@@ -17,21 +17,33 @@ public class TestLL {
      */
     public static void main(String[] args) {
         
-        LinkedList<RestaurantItem> ll = new LinkedList();
+       CircularLinkedList<RestaurantItem> ll = new CircularLinkedList();
         
         RestaurantItem item = new RestaurantItem();
         RestaurantItem item1 = new RestaurantItem();
         RestaurantItem item2 = new RestaurantItem();
+        RestaurantItem item3 = new RestaurantItem();
         item.setItemID(20001);
         item1.setItemID(20002);
         item2.setItemID(20003);
+        item3.setItemID(20004);
         
         ll.add(item);
         ll.add(item1);
         ll.add(item2);
-        ll.remove(item2);
+        ll.add(item3);
+        System.out.println(ll);
         
-        System.out.println(ll.contains(item1));
+        
+        ll.remove(item1);
+        System.out.println(ll);
+        
+        ll.remove(item3);
+        ll.remove(item2);
+        ll.remove(item);
+        System.out.println(ll);
+        
+
         
         
     }
