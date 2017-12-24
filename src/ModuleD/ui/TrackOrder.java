@@ -1,9 +1,11 @@
-package ui;
+package ModuleD.ui;
 
+import ModuleD.entity.OrderClass;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,77 +15,40 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import ModuleD.adt.DMListImplementation;
+import ModuleD.adt.DMListInterface;
 
 public class TrackOrder extends javax.swing.JFrame {
 
-    private Connection con;
-    private Statement stmt;
-    private ResultSet rSet;
-    private PreparedStatement prepare;
+    int x;
+    private DMListInterface<OrderClass> listDM = new DMListImplementation<>();
+    private Queue<OrderClass> queueOrder = new ArrayBlockingQueue<OrderClass>(100);
 
     public TrackOrder() {
         initComponents();
-
-        custName.setText("Teck Chung");
-        custID.setText("90090");
-        jcbOrder.addItem("-- Select --");
-
-        try {
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-            stmt = con.createStatement();
-            rSet = stmt.executeQuery("SELECT * FROM QWE.TRANS WHERE CUSTID = 90090");
-
-            while (rSet.next()) {
-                jcbOrder.addItem(rSet.getString("TRANID"));
-            }
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
-        }
-
-        jcbOrder.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                String orderID = jcbOrder.getSelectedItem().toString();
-                getOrder(orderID);
-            }
-        });
+//        listDM.addNewEntry(new OrderClass(10001, "Preparing", 200, 10.10, "9090909090", 10001));
+//        listDM.addNewEntry(new OrderClass(10002, "OTW", 300, 20.10, "8080808080", 10002));
+//        listDM.addNewEntry(new OrderClass(10003, "Delivered", 400, 30.10, "8080808080", 10003));
+//        queueOrder.add(new OrderClass(20002, "Available", 99, 19.19, "91019191919", 10000));
+//        queueOrder.add(new OrderClass(30003, "Unavailable", 88, 19.19, "12345678233", 10001));
+//        queueOrder.add(new OrderClass(40004, "OTW", 77, 19.19, "68273673678", 10002));
     }
 
     public void getOrder(String DMname) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss"); 
-        String hourFormat = "";
-        
-        try {
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-            prepare = con.prepareStatement("SELECT TRANTIME,TRANDATE,ETA,DELIVERYSTATUS FROM QWE.TRANS WHERE TRANID = ? ");
-            prepare.setString(1, jcbOrder.getSelectedItem().toString());
-            rSet = prepare.executeQuery();
-
-            if (rSet.next()) {
-                Date dateTemp = sdf.parse(rSet.getString("TRANTIME"));
-                Calendar gc = new GregorianCalendar();
-                gc.setTime(dateTemp);
-                gc.add(Calendar.HOUR, 1);
-                Date d2 = gc.getTime();
-                if(d2.getHours() > 0 && d2.getHours() < 12 ){
-                    hourFormat = " AM";
-                }else{
-                    hourFormat = " PM";
-                }
-                String dateFormatted = sdf.format(d2);
-
-                orderTime.setText(rSet.getString("TRANTIME")+hourFormat);
-                orderDate.setText(rSet.getString("TRANDATE"));
-                eta.setText(dateFormatted+hourFormat);
-                deliveryStatus.setText(rSet.getString("DELIVERYSTATUS"));
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
-        }
-
+//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+//        String hourFormat = "";
+//        //Date dateTemp = sdf.parse(rSet.getString("TRANTIME"));
+//        Calendar gc = new GregorianCalendar();
+//
+//        gc.add(Calendar.HOUR, 1);
+//        Date d2 = gc.getTime();
+//
+//        String dateFormatted = sdf.format(d2);
+//        eta.setText(dateFormatted + hourFormat);
     }
 
     /**
@@ -96,14 +61,10 @@ public class TrackOrder extends javax.swing.JFrame {
     private void initComponents() {
 
         jlblTitleDWS = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jcbOrder = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        custName = new javax.swing.JTextField();
-        custID = new javax.swing.JTextField();
+        jtfOrderID = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         orderDate = new javax.swing.JTextField();
@@ -112,6 +73,7 @@ public class TrackOrder extends javax.swing.JFrame {
         eta = new javax.swing.JTextField();
         deliveryStatus = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jbtnFindOrder = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -121,22 +83,16 @@ public class TrackOrder extends javax.swing.JFrame {
         jlblTitleDWS.setMaximumSize(new java.awt.Dimension(178, 22));
         jlblTitleDWS.setMinimumSize(new java.awt.Dimension(178, 22));
 
-        jLabel1.setText("Your Name: ");
-
-        jLabel2.setText("Your ID:");
-
-        jLabel3.setText("Select your order: ");
+        jLabel2.setText("Enter your Order ID:");
 
         jLabel4.setText("Order Date: ");
 
-        custName.setEnabled(false);
-        custName.addActionListener(new java.awt.event.ActionListener() {
+        jtfOrderID.setInheritsPopupMenu(true);
+        jtfOrderID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                custNameActionPerformed(evt);
+                jtfOrderIDActionPerformed(evt);
             }
         });
-
-        custID.setEnabled(false);
 
         jLabel5.setText("Order Time: ");
 
@@ -169,75 +125,66 @@ public class TrackOrder extends javax.swing.JFrame {
             }
         });
 
+        jbtnFindOrder.setText("Find Order");
+        jbtnFindOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnFindOrderActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 23, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlblTitleDWS, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jcbOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(custName))
-                                    .addComponent(jlblTitleDWS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(35, 35, 35)
                                 .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(custID, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jtfOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(45, 45, 45)
+                                .addComponent(jbtnFindOrder))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(eta, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(deliveryStatus))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(orderDate, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(35, 35, 35)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(deliveryStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(orderDate, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(33, 33, 33)
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(orderTime, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(105, 105, 105)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jlblTitleDWS, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(custName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(custID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcbOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(34, 34, 34)
+                    .addComponent(jtfOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnFindOrder))
+                .addGap(26, 26, 26)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5)
@@ -251,18 +198,14 @@ public class TrackOrder extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(eta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
+                .addGap(28, 28, 28))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void custNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_custNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_custNameActionPerformed
 
     private void deliveryStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deliveryStatusActionPerformed
         // TODO add your handling code here:
@@ -272,15 +215,44 @@ public class TrackOrder extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jtfOrderIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfOrderIDActionPerformed
+
+    }//GEN-LAST:event_jtfOrderIDActionPerformed
+
+    private void jbtnFindOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnFindOrderActionPerformed
+        int int1;
+        try {
+            int1 = Integer.parseInt(jtfOrderID.getText());
+            jtfOrderID.requestFocusInWindow();
+            for (int i = 0; i < listDM.retrieveSize(); i++) {
+                if (int1 == listDM.retrieveAllEntry(i).getOrderID()) {
+                    deliveryStatus.setText(listDM.retrieveAllEntry(i).getStatus());
+                }
+
+                Integer tempID = Integer.valueOf(queueOrder.element().getOrderID());
+
+                for (int j = 0; j < queueOrder.size(); j++) {
+                    if (queueOrder.element().getOrderID() == tempID) {
+                        orderDate.setText(String.valueOf(queueOrder.element().getOrderDate()));
+                        orderTime.setText(String.valueOf(queueOrder.element().getOrderTime()));
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No record");
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Order ID is not valid");
+            jtfOrderID.setText("");
+            jtfOrderID.requestFocusInWindow();
+            return;
+        }
+    }//GEN-LAST:event_jbtnFindOrderActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -308,21 +280,18 @@ public class TrackOrder extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField custID;
-    private javax.swing.JTextField custName;
     private javax.swing.JTextField deliveryStatus;
     private javax.swing.JTextField eta;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JComboBox jcbOrder;
+    private javax.swing.JButton jbtnFindOrder;
     private javax.swing.JLabel jlblTitleDWS;
+    private javax.swing.JTextField jtfOrderID;
     private javax.swing.JTextField orderDate;
     private javax.swing.JTextField orderTime;
     // End of variables declaration//GEN-END:variables

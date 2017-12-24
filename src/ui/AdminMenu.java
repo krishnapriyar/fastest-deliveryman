@@ -1,22 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ui;
 
 import ModuleD.ui.AcceptDeliveryJob;
 import ModuleD.ui.DeliverymanWorkStatus;
 
-/**
- *
- * @author Kai Yan
- */
 public class AdminMenu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AdminMenu
-     */
     public AdminMenu() {
         initComponents();
     }
