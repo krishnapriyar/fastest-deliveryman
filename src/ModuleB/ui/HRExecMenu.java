@@ -150,9 +150,10 @@ public class HRExecMenu extends javax.swing.JFrame {
         PendingDeliveryFrame pdf = new PendingDeliveryFrame();
         
         pdf.setDmList(dmList);
+        pdf.setVisible(true);
         pdf.setCaller(this);
         this.setVisible(false);
-        pdf.setVisible(true);
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -166,22 +167,24 @@ public class HRExecMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         DailyDeliveryReport ddr = new DailyDeliveryReport();
+        ddr.setVisible(true);
         ddr.setDmList(dmList);
         ddr.setCaller(this);
         this.setVisible(false);
-        ddr.setVisible(true);
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void callDMFrame(char ch, String title) {
         // TODO add your handling code here:
         DeliverymanDetailsFrame  ddf = new DeliverymanDetailsFrame(ch);
-        
+        this.setVisible(false);
+        ddf.setVisible(true);
         ddf.setTitle(title);
         ddf.setCaller(this);
         ddf.setDmList(dmList);
-        ddf.setVisible(true);
+        
         ddf.autogenID();
-        this.setVisible(false);
+        
     }
     
     /**
