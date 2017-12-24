@@ -164,7 +164,7 @@ public class LoginFrame extends javax.swing.JFrame {
             DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
             Connection conn = DriverManager.getConnection(dbURL);
 
-            String queryStr = "SELECT * FROM  USERACCOUNT WHERE USERNAME = ?";
+            String queryStr = "SELECT * FROM  LOGINACCOUNT WHERE USERNAME = ?";
 
             stmt = conn.prepareStatement(queryStr);
             stmt.setString(1, user);
