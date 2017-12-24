@@ -27,7 +27,7 @@ public class SOCheckTodayOrder extends JFrame {
     private Font itemListingFont = new Font("Arial", Font.PLAIN, 20);
     private Font titleFont = new Font("Arial", Font.BOLD, 20);
     public ListClass arrList = new ListClass();
-    
+    private int custID = 0;
     public void setData(ListClass list) {
         arrList = list;
     }
@@ -57,8 +57,10 @@ public class SOCheckTodayOrder extends JFrame {
         JButton[] jbtDeliveryDetails = new JButton[arrList.getScOrderClass().size()];
         JButton jbtBack = new JButton("Back");
         
+       
         for (int i = 0; i < arrList.getScOrderClass().size(); i++) {
             if (dmID == arrList.getScOrderClass().getEntry(i).getDmID()) {
+                custID = arrList.getScOrderClass().getEntry(i).getCustID();
                 jlblDistanceTitle[i] = new JLabel("Estimated distance :");
                 jlblCustAddressTitle[i] = new JLabel("Recipient Address :");
                 jlblOrderIDTitle[i] = new JLabel("Order ID :");
@@ -118,7 +120,7 @@ public class SOCheckTodayOrder extends JFrame {
                 
                 jbtDeliveryDetails[i].addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        new DeliveryDetails(Integer.parseInt(id.getText()), arrList).setVisible(true);
+                        new DeliveryDetails(Integer.parseInt(id.getText()), arrList, custID).setVisible(true);
                     }
                 });
             }

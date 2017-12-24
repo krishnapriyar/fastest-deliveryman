@@ -19,6 +19,7 @@ public class ScheduledOrderClass implements Comparable<ScheduledOrderClass>{
     private double totalAmount;
     private int custID;
     private int dmID;
+    private String dmName;
 
     public ScheduledOrderClass(int orderID, Date receiveDate, Date receiveTime, String status, int distance, double totalAmount, int custID, int dmID) {
         this.orderID = orderID;
@@ -30,6 +31,14 @@ public class ScheduledOrderClass implements Comparable<ScheduledOrderClass>{
         this.custID = custID;
         this.dmID = dmID;
     }  
+
+    public String getDmName() {
+        return dmName;
+    }
+
+    public void setDmName(String dmName) {
+        this.dmName = dmName;
+    }
    
 
     public double getTotalAmount() {

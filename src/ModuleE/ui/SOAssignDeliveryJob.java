@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import test.TestPurpose;
 import ui.AdminMenu;
 
 public class SOAssignDeliveryJob extends JFrame {
@@ -25,6 +26,7 @@ public class SOAssignDeliveryJob extends JFrame {
     private SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm aa");
     private ListClass arrList = new ListClass();
     private String username;
+    private TestPurpose t = new TestPurpose();
     
     public void setData(ListClass arrClass, String name){
         arrList = arrClass;
@@ -80,8 +82,8 @@ public class SOAssignDeliveryJob extends JFrame {
                 jbtAssign[i] = new JButton("Accept");
                 jbtDecline[i] = new JButton("Decline");
 
-                for (int j = 0; j < arrList.getDmList().getSize(); j++) {
-                    jcbDM[i].addItem(arrList.getDmList().getAllData(j).getDmName());
+                for (int j = 0; j < t.getList().getSize(); j++) {
+                    jcbDM[i].addItem(t.getList().getAllData(i).getDmID()+" "+t.getList().getAllData(j).getDmName());
                 }
 
                 jlblOrderIDTitle[i].setFont(fontDisplay);
@@ -145,14 +147,14 @@ public class SOAssignDeliveryJob extends JFrame {
                     }
                 });
 
-                final JComboBox dmName = jcbDM[i];
+                final String[] str = jcbDM[i].getSelectedItem().toString().split(" ");
                 jbtAssign[i].addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         for (int j = 0; j < arrList.getScOrderClass().size(); j++) {
                             if (orderID == arrList.getScOrderClass().getEntry(j).getOrderID()) {
-                                //arrList.getScOrderClass().getEntry(j).setDmName(dmName.getSelectedItem().toString());
+                                arrList.getScOrderClass().getEntry(j).setDmID(Integer.parseInt(str[0]));
                                 arrList.getScOrderClass().getEntry(j).setStatus("Accepted");
-                                JOptionPane.showMessageDialog(null, "Job Assign Successfully to " + dmName.getSelectedItem().toString());
+                                JOptionPane.showMessageDialog(null, "Job Assign Successfully to " + str[1]);
                                
                                 SOAssignDeliveryJob assignJob = new SOAssignDeliveryJob();
                                 assignJob.setData(arrList, username);
