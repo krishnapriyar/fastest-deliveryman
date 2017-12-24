@@ -5,10 +5,12 @@
  */
 package ModuleB.ui;
 
-
 import ModuleB.adt.*;
 import ModuleB.entity.*;
 import java.sql.*;
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 /**
@@ -26,14 +28,30 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
     PreparedStatement stmt = null;
     ResultSet rs = null;
     static CircularDoublyLinkedList<Deliveryman> dmList = new CircularDoublyLinkedList<Deliveryman>();
+    HRExecMenu caller;
+
+    public HRExecMenu getCaller() {
+        return caller;
+    }
+
+    public void setCaller(HRExecMenu caller) {
+        this.caller = caller;
+    }
 
     public DailyDeliveryReport() {
         initComponents();
-        getData();
+        GregorianCalendar cal = new GregorianCalendar();
+        jLabel2.setText("Daily Delivery Report (" +convertDate(cal.getTime().getTime())+ ")" );
     }
 
     public static CircularDoublyLinkedList<Deliveryman> getDmList() {
         return dmList;
+    }
+    
+    public String convertDate(long time) {
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("dd/MM/yyyy");
+        return format.format(date);
     }
 
     public static void setDmList(CircularDoublyLinkedList<Deliveryman> dmList) {
@@ -50,72 +68,117 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jtaDisplay = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jbtGen = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setBackground(new java.awt.Color(204, 204, 255));
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jtaDisplay.setEditable(false);
+        jtaDisplay.setBackground(new java.awt.Color(204, 204, 255));
+        jtaDisplay.setColumns(20);
+        jtaDisplay.setRows(5);
+        jScrollPane1.setViewportView(jtaDisplay);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 84, 630, 350));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 840, 290));
 
         jLabel1.setText("  ");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 380, 20, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 400, 40, 50));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel2.setText("Daily Delivery Report");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
+
+        jbtGen.setText("Generate Today's Report");
+        jbtGen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtGenActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jbtGen, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 73, 180, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtGenActionPerformed
+        // TODO add your handling code here:
+        genReport();
+    }//GEN-LAST:event_jbtGenActionPerformed
 
     /**
      * @param args the command line arguments
      */
     private void genReport() {
-    }
-
-    private void getData() {
 
         try {
+            String display = "No.\tDM ID \t Name \tTotal Deliveries \tDistance Travelled\n\n";
+            int count = 1;
+            for (int i = 0; i < dmList.getSize(); i++) {
 
-            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-            Connection conn = DriverManager.getConnection(dbURL);
+                int noOfDelivery = 0;
+                double distance = 0.00;
 
-            String queryStr = "SELECT COUNT(TRANID) FROM  TRANS WHERE TRANDATE = CURRENT_DATE GROUP BY DMID ORDER BY COUNT(TRANID) DESC";
+                Deliveryman dm = dmList.getEntry(i + 1);
+                LinkedQueue q = (LinkedQueue) dm.getDeliveryQueue();
+                int size = q.getSize();
 
-            stmt = conn.prepareStatement(queryStr);
-            ResultSet rs = stmt.executeQuery();
+                for (int j = 0; j < size; j++) {
 
-            String display = "No.\tOrder ID \tDate \tTime \tETA\n\n";
+                    Order ord = (Order) q.dequeue();
+                    if (ord != null) {
+                        if (ord.getDeliveryStatus().equals("Completed")) {
+                            noOfDelivery++;
+                            distance += genDistance();
 
-            while (rs.next()) {
-                display += "\t" + rs.getInt(1) + "\n";
-
+                        }
+                    }
+                }
+             DecimalFormat df = new DecimalFormat(".####");
+             display += count++ + "\t"+ dm.getDmID() + " \t" + dm.getDmName()+ " \t" + ""+noOfDelivery + " \t\t" + df.format(distance) + "\n";
             }
-
-            System.out.println(display);
-
+            jtaDisplay.setText(display);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
         }
     }
 
-    public double distBetweenCoordinate(double lat1, double lat2, double lon1,
-            double lon2) {
+    private double genDistance() {
+        //Generate for around Selangor area
 
-        final int R = 6371; // Radius of the earth
+        double minLat = 3.0;
+        double maxLat = 3.2;
+        double minLon = 101.00;
+        double maxLon = 101.50;
 
-        double latDist = Math.toRadians(lat2 - lat1);
-        double lonDist = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(latDist / 2) * Math.sin(latDist / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(lonDist / 2) * Math.sin(lonDist / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c * 1000; // convert to meters
+        double longitude1 = minLon + (double) (Math.random() * ((maxLon - minLon) + 1));
+        double latitude1 = minLat + (double) (Math.random() * ((maxLat - minLat) + 1));
 
-        return distance;
+        double longitude2 = minLon + (double) (Math.random() * ((maxLon - minLon) + 1));
+        double latitude2 = minLat + (double) (Math.random() * ((maxLat - minLat) + 1));
+
+        return distance(latitude1, longitude1, latitude2, longitude2) / 1000;
+
+    }
+
+    public double distance(double lat1, double lng1, double lat2, double lng2) {
+        double a = (lat1 - lat2) * DailyDeliveryReport.LatitudeDist(lat1);
+        double b = (lng1 - lng2) * DailyDeliveryReport.LogitudeDist(lat1);
+        return Math.sqrt(a * a + b * b);
+    }
+
+    private static double LogitudeDist(double lat) {
+        return 0.0003121092 * Math.pow(lat, 4)
+                + 0.0101182384 * Math.pow(lat, 3)
+                - 17.2385140059 * lat * lat
+                + 5.5485277537 * lat + 111301.967182595;
+    }
+
+    private static double LatitudeDist(double lat) {
+        return -0.000000487305676 * Math.pow(lat, 4)
+                - 0.0033668574 * Math.pow(lat, 3)
+                + 0.4601181791 * lat * lat
+                - 1.4558127346 * lat + 110579.25662316;
     }
 
     public static void main(String args[]) {
@@ -153,7 +216,9 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JButton jbtGen;
+    private javax.swing.JTextArea jtaDisplay;
     // End of variables declaration//GEN-END:variables
 }
