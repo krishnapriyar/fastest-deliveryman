@@ -8,8 +8,6 @@ package ui;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import ModuleA.ui.*;
-import ModuleB.ui.*;
 
 /**
  *
@@ -30,6 +28,7 @@ public class LoginFrame extends javax.swing.JFrame {
     public LoginFrame() {
         initComponents();
         setTitle("Login - FastestDeliveryman");
+        insertCredential();
     }
 
     /**
@@ -103,7 +102,6 @@ public class LoginFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         char prefix = 'Z';
         String userType = jcbUserType.getSelectedItem().toString();
-        
 
         switch (userType) {
             case "Customer":
@@ -123,40 +121,42 @@ public class LoginFrame extends javax.swing.JFrame {
         if (compareLogin(prefix)) {
 
             goToMenu();
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_jbtLoginActionPerformed
 
     private void jbtRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRegisterActionPerformed
         // TODO add your handling code here:
-        
-       frame =  new Registration();
-       
-       frame.setVisible(true);
-       this.setVisible(false);
-    }//GEN-LAST:event_jbtRegisterActionPerformed
-    
-    private void goToMenu(){
-        switch (jcbUserType.getSelectedItem().toString()) {
-            case "Customer":
-                
-                break;
-            case "Affliate":
-                frame = new CRUD();
-                break;
-            case "Deliveryman":
-                
-                break;
-            case "HR Executive":
-                frame = new HRExecMenu();
-                break;
-        }
-        
+
+        frame = new Registration();
+
         frame.setVisible(true);
         this.setVisible(false);
-    
-            
+    }//GEN-LAST:event_jbtRegisterActionPerformed
+
+    private void goToMenu() {
+        switch (jcbUserType.getSelectedItem().toString()) {
+            case "Customer":
+
+                break;
+            case "Affliate":
+                frame = new ModuleA.ui.CRUD();
+                break;
+            case "Deliveryman":
+
+                break;
+            case "HR Executive":
+                frame = new ModuleB.ui.HRExecMenu();
+                break;
+        }
+
+        frame.setVisible(true);
+        this.setVisible(false);
+
     }
-    
+
     private boolean compareLogin(char prefix) {
 
         boolean allow = false;
@@ -174,7 +174,15 @@ public class LoginFrame extends javax.swing.JFrame {
 
             if (rs.next()) {
                 String password = rs.getString("PASSWORD");
-                allow = jpfPass.getPassword().equals(password.toCharArray());
+                char[] fromDB = password.toCharArray();
+                char[] entered = jpfPass.getPassword();
+
+                for (int i = 0; i < fromDB.length; i++) {
+                    allow = false;
+                    if (fromDB[i] == entered[i]) {
+                        allow = true;
+                    }
+                }
 
             }
 
@@ -185,6 +193,26 @@ public class LoginFrame extends javax.swing.JFrame {
 
         return allow;
 
+    }
+
+    private void insertCredential() {
+        try {
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+            Connection conn = DriverManager.getConnection(dbURL);
+
+            String queryStr = "INSERT INTO LOGINACCOUNT VALUES(?,?,?)";
+
+            stmt = conn.prepareStatement(queryStr);
+            stmt.setString(1, "hExecutive");
+            stmt.setString(2, "priya");
+            stmt.setString(3, "priya@priya.com");
+            stmt.executeUpdate();
+
+            System.out.println("Credentials Inserted");
+
+        } catch (Exception ex) {
+
+        }
     }
 
     /**
