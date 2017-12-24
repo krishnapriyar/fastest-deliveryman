@@ -8,7 +8,7 @@ package ModuleB.adt;
 
 /**
  *
- * @author Lysan Chen
+ * @author Priya
  */
 public interface QueueInterface<T> {
     /**

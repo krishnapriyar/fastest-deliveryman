@@ -10,7 +10,7 @@ import ModuleB.entity.Node;
 
 /**
  *
- * @author USHA
+ * @author Priya
  */
 public class LinkedQueue<T> implements QueueInterface<T> {
 

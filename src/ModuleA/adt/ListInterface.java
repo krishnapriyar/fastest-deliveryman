@@ -8,7 +8,7 @@ package ModuleA.adt;
 
 /**
  *
- * @author Priya
+ * @author Lysan Chen
  */
 public interface ListInterface<T> {
     void add(T newEntry);

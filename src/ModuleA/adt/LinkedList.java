@@ -9,7 +9,7 @@ import ModuleA.entity.Node;
 
 /**
  *
- * @author Priya
+ * @author Lysan Chen
  */
 public class LinkedList<T> implements ListInterface<T> {
 

@@ -204,7 +204,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
             stmt = conn.prepareStatement(queryStr);
             stmt.setString(1, "hExecutive");
-            stmt.setString(2, "priya");
+            stmt.setString(2, "123456");
             stmt.setString(3, "priya@priya.com");
             stmt.executeUpdate();
 
