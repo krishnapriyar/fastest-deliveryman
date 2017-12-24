@@ -51,20 +51,10 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jbtnClockIn" max="32767" attributes="0"/>
-                              <Component id="jbtnLeaveBreak" pref="151" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="jbtnClockIn" min="-2" pref="151" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jbtnClockOut" max="32767" attributes="0"/>
-                              <Component id="jbtnReturnBreak" pref="151" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="jbtnClockOut" min="-2" pref="151" max="-2" attributes="0"/>
                       </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                      <Component id="jbtnViewDMStat" min="-2" pref="356" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -93,14 +83,7 @@
                   <Component id="jbtnClockOut" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
                   <Component id="jbtnClockIn" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jbtnLeaveBreak" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
-                  <Component id="jbtnReturnBreak" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jbtnViewDMStat" min="-2" pref="54" max="-2" attributes="0"/>
-              <EmptySpace pref="33" max="32767" attributes="0"/>
+              <EmptySpace pref="109" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -124,7 +107,6 @@
           <Font name="Tahoma" size="36" style="0"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="06:42 PM"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
@@ -165,36 +147,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnClockOutActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jbtnLeaveBreak">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="LEAVE ON BREAK"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnLeaveBreakActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="jbtnClockIn">
       <Properties>
         <Property name="text" type="java.lang.String" value="CLOCK IN"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnClockInActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="jbtnReturnBreak">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="RETURN FROM BREAK"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnReturnBreakActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="jbtnViewDMStat">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="VIEW DELIVERYMAN WORKING STATUS"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbtnViewDMStatActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

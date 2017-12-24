@@ -1,5 +1,7 @@
-package ui;
+package ModuleD.ui;
 
+import ModuleD.entity.OrderClass;
+import ModuleD.entity.DMClockInOut;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,58 +11,90 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 import javax.swing.Timer;
+import ModuleD.adt.DMListImplementation;
+import ModuleD.adt.DMListInterface;
+import ModuleD.entity.DeliveryManDet;
+import ModuleD.entity.OrderClass;
+import ui.AdminMenu;
 
 public class DeliverymanWorkStatus extends javax.swing.JFrame {
 
-    private Connection con;
-    private Statement stmt;
-    private ResultSet rSet;
     private Date date;
-    private PreparedStatement prepare;
-    private List<DMWorkStat> list = new ArrayList<>();
-    private String empStatus = "Active";
+    private SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy");
+    private SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm aa");
+    private String selectedItem = null;
+    private DMListInterface<DMClockInOut> listDM = new DMListImplementation<>();
+    private Queue<OrderClass> queueOrder = new ArrayBlockingQueue<OrderClass>(100);
 
     public DeliverymanWorkStatus() {
         initComponents();
         showDate();
-        jcbDMID.addItem("-- Select --");
+
+        jcbDMname.addItem("-- Select --");
         jcbCurrentStat.setVisible(false);
         jcbCurrentStat.setEnabled(false);
         jlblCurrentStat.setFont(new Font("Tahoma", Font.BOLD, 11));
         orderNo.setEnabled(false);
 
-        if (jcbDMID.getSelectedItem().toString().equals("-- Select --")) {
+        // NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+        try {
+            listDM.addNewEntry(new DMClockInOut("John", 10000, "Available", sdfDate.parse("12/12/2017"), sdfTime.parse("12:00 AM"), sdfTime.parse("06:00 AM")));
+            listDM.addNewEntry(new DMClockInOut("Adam", 10001, "Break", sdfDate.parse("12/12/2017"), sdfTime.parse("11:11 AM"), sdfTime.parse("09:09 AM")));
+            listDM.addNewEntry(new DMClockInOut("Smith", 10002, "On Leave", sdfDate.parse("12/12/2017"), sdfTime.parse("07:07 AM"), sdfTime.parse("08:08 AM")));
+//            queueOrder.add(new OrderClass(20002, "Available", 99, 19.19, "91019191919", 10000));
+//            queueOrder.add(new OrderClass(30003, "Unavailable", 88, 19.19, "12345678233", 10001));
+//            queueOrder.add(new OrderClass(40004, "OTW", 77, 19.19, "68273673678", 10002));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        for (int i = 0; i < listDM.retrieveSize(); i++) {
+            jcbDMname.addItem(listDM.retrieveAllEntry(i).getDmName());
+        }
+
+        jcbDMname.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String selectedItem = jcbDMname.getSelectedItem().toString();
+
+                for (int i = 0; i < listDM.retrieveSize(); i++) {
+                    if (listDM.retrieveAllEntry(i).getDmName().equals(selectedItem)) {
+                        jlblDMID.setText(String.valueOf(listDM.retrieveAllEntry(i).getDmID()));
+                        jlblCurrentStat.setText(listDM.retrieveAllEntry(i).getStatus());
+
+                        Integer tempID = Integer.valueOf(listDM.retrieveAllEntry(i).getDmID());
+
+                        while (!queueOrder.isEmpty()) {
+                            for (int j = 0; j < queueOrder.size(); j++) {
+                                if (queueOrder.element().getDmID() == tempID) {
+                                    orderNo.setText(String.valueOf(queueOrder.element().getOrderID()));
+                                    //custID.setText(String.valueOf(queueOrder.element().getCustIC()));
+                                    
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "No record");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        // NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
+        if (jcbDMname.getSelectedItem().toString().equals("-- Select --")) {
+            jlblCurrentStat.setText(null);
+            orderNo.setText(null);
+            custID.setText(null);
             jbtnUpdate.setEnabled(false);
         } else {
             jbtnUpdate.setEnabled(true);
         }
-        try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-        } catch (ClassNotFoundException e) {
-            System.out.println(e);
-        }
-        try {
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-            stmt = con.createStatement();
-            rSet = stmt.executeQuery("SELECT * FROM QWE.DELIVERYMAN WHERE ACTIVESTATUS = 'Active'");
 
-            while (rSet.next()) {
-                list.add(new DMWorkStat(rSet.getString("DMNAME"), Integer.parseInt(rSet.getString("DMID"))));
-            }
-            for (int i = 0; i < list.size(); i++) {
-                jcbDMID.addItem(list.get(i).getDmName());
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-
-        jcbDMID.addItemListener(new ItemListener() {
+        jcbDMname.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                String DMID = jcbDMID.getSelectedItem().toString();
+                String DMID = jcbDMname.getSelectedItem().toString();
                 getDMID(DMID);
             }
         });
@@ -69,66 +103,17 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
     public void getDMID(String DMname) {
         orderNo.setText("");
         custID.setText("");
-
         if (DMname.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Selected deliveryman unavailable");
-        } else {
-            try {
-                con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-                prepare = con.prepareStatement("SELECT * FROM QWE.DELIVERYMAN WHERE DMName = ?");
-                prepare.setString(1, DMname);
-                //prepare.setString(2, empStatus.toString());
-                ResultSet rSet = prepare.executeQuery();
-
-                if (rSet.next()) {
-                    jlblDMID.setText(rSet.getString("DMID"));
-                    try {
-                        con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-                        prepare = con.prepareStatement("SELECT WORKINGSTATUS FROM QWE.DELIVERYMAN WHERE DMID = ? ");
-                        prepare.setString(1, jlblDMID.getText());
-                        rSet = prepare.executeQuery();
-
-                        if (rSet.next()) {
-                            jlblCurrentStat.setText(rSet.getString("WORKINGSTATUS"));
-                            jbtnUpdate.setEnabled(true);
-                            jcbCurrentStat.setEnabled(true);
-                            jcbCurrentStat.setVisible(true);
-
-                            RetrieveIDs();
-                        } else {
-                            jlblCurrentStat.setText("No status yet");
-                        }
-                    } catch (SQLException e) {
-                        System.err.println(e);
-                    }
-                }
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
         }
     }
 
     void RetrieveIDs() {
         if (jlblCurrentStat.getText().equals("Delivery")) {
-
-            try {
-                con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-                prepare = con.prepareStatement("SELECT TRANID,CUSTID FROM QWE.TRANS WHERE DMID = ? ");
-                prepare.setString(1, jlblDMID.getText());
-                rSet = prepare.executeQuery();
-                if (rSet.next()) {
-                    orderNo.setText(rSet.getString("TRANID"));
-                    custID.setText(rSet.getString("CUSTID"));
-                }
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex.toString());
-            }
         } else {
-
             orderNo.setText(null);
             custID.setText(null);
         }
-
     }
 
     void showDate() {
@@ -161,7 +146,7 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
         jbtnUpdate = new javax.swing.JButton();
         jlblDynamic = new javax.swing.JLabel();
         orderNo = new javax.swing.JLabel();
-        jcbDMID = new javax.swing.JComboBox();
+        jcbDMname = new javax.swing.JComboBox();
         jlblCurrentStat = new javax.swing.JLabel();
         jcbCurrentStat = new javax.swing.JComboBox();
         jlblDynamic1 = new javax.swing.JLabel();
@@ -196,13 +181,13 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
             }
         });
 
-        jlblDynamic.setText("Order No:");
+        jlblDynamic.setText("Order ID:");
 
         orderNo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jcbDMID.addActionListener(new java.awt.event.ActionListener() {
+        jcbDMname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcbDMIDActionPerformed(evt);
+                jcbDMnameActionPerformed(evt);
             }
         });
 
@@ -247,12 +232,12 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(DMID)
                 .addGap(18, 18, 18)
-                .addComponent(jcbDMID, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jcbDMname, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addComponent(jlblName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jlblDMID, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
+                .addGap(35, 35, 35))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(74, 74, 74)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,7 +258,7 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jlblName)
                         .addComponent(DMID)
-                        .addComponent(jcbDMID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jcbDMname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlblStat)
@@ -302,13 +287,13 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
-        new DeliverymanClockInOut().setVisible(true);
+        new AdminMenu().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jbtnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUpdateActionPerformed
 
         if (!jcbCurrentStat.getSelectedItem().toString().equals("-- Select a status --")) {
-            int confirmation1 = JOptionPane.showConfirmDialog(null, "Do you want to update " + jcbDMID.getSelectedItem().toString() + "'s status?", "Update current work status", JOptionPane.YES_NO_OPTION);
+            int confirmation1 = JOptionPane.showConfirmDialog(null, "Do you want to update " + jcbDMname.getSelectedItem().toString() + "'s status?", "Update current work status", JOptionPane.YES_NO_OPTION);
             String currentStat = jcbCurrentStat.getSelectedItem().toString();
 
             if (confirmation1 == 0) {
@@ -318,56 +303,25 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
                             orderNo.setText(null);
                             custID.setText(null);
                         }
-                        try {
-//                      UPDATE SECTION -----------------------------------------------------------------------------
-                            con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-                            prepare = con.prepareStatement("UPDATE DELIVERYMAN SET WORKINGSTATUS=? WHERE DMID=?");
-                            prepare.setString(1, currentStat);
-                            prepare.setString(2, jlblDMID.getText());
 
-                            int rowsUpdated = prepare.executeUpdate();
-                            if (rowsUpdated > 0) {
-//                          RETRIEVE SECTION -----------------------------------------------------------------------
-                                try {
-                                    con = DriverManager.getConnection("jdbc:derby://localhost:1527/FastestDM", "qwe", "qwe");
-                                    prepare = con.prepareStatement("SELECT WORKINGSTATUS FROM QWE.DELIVERYMAN WHERE DMID = ? ");
-                                    prepare.setString(1, jlblDMID.getText());
-                                    rSet = prepare.executeQuery();
-                                    if (rSet.next()) {
-                                        jlblCurrentStat.setText(rSet.getString("WORKINGSTATUS"));
-                                    }
-                                } catch (Exception ex) {
-                                    JOptionPane.showMessageDialog(null, ex.toString());
-                                }
-                                JOptionPane.showMessageDialog(null, "Status update successful");
-                            }
-//                          RETRIEVE SECTION -----------------------------------------------------------------------
-                        } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(null, ex.toString());
-                        }
                     } else {
                         JOptionPane.showMessageDialog(null, "Status is already - " + jcbCurrentStat.getSelectedItem().toString() + "\n Please select other status ");
                     }
                 } else {
                     //ASSIGN NEW ORDER NUMBER ---> TO NEW PAGE
-                    JOptionPane.showMessageDialog(null, "Click OK to assign new Delivery Order to " + jcbDMID.getSelectedItem().toString());
+                    JOptionPane.showMessageDialog(null, "Click OK to assign new Delivery Order to " + jcbDMname.getSelectedItem().toString());
                     this.setVisible(false);
                     //new TrackOrder().setVisible(true);
-                    //ASSIGN NEW ORDER NUMBER ---> TO NEW PAGE             
                 }
-//                      UPDATE SECTION -----------------------------------------------------------------------------
             }
-
         } else {
             JOptionPane.showMessageDialog(null, "Select a status!");
         }
-
-
     }//GEN-LAST:event_jbtnUpdateActionPerformed
 
-    private void jcbDMIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbDMIDActionPerformed
+    private void jcbDMnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbDMnameActionPerformed
 
-    }//GEN-LAST:event_jcbDMIDActionPerformed
+    }//GEN-LAST:event_jcbDMnameActionPerformed
 
     /**
      * @param args the command line arguments
@@ -411,7 +365,7 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jbtnUpdate;
     private javax.swing.JComboBox jcbCurrentStat;
-    private javax.swing.JComboBox jcbDMID;
+    private javax.swing.JComboBox jcbDMname;
     private javax.swing.JLabel jlblCurrentStat;
     private javax.swing.JLabel jlblDMID;
     private javax.swing.JLabel jlblDate;

@@ -63,12 +63,12 @@
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
               <Component id="DMID" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jcbDMID" min="-2" pref="226" max="-2" attributes="0"/>
+              <Component id="jcbDMname" min="-2" pref="226" max="-2" attributes="0"/>
               <EmptySpace pref="70" max="32767" attributes="0"/>
               <Component id="jlblName" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="jlblDMID" min="-2" pref="178" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
@@ -93,7 +93,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jlblName" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="DMID" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jcbDMID" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbDMname" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
@@ -180,7 +180,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jlblDynamic">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Order No:"/>
+        <Property name="text" type="java.lang.String" value="Order ID:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="orderNo">
@@ -192,14 +192,14 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jcbDMID">
+    <Component class="javax.swing.JComboBox" name="jcbDMname">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jcbDMIDActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jcbDMnameActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jlblCurrentStat">
