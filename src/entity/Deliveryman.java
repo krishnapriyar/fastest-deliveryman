@@ -20,10 +20,21 @@ public class Deliveryman implements DeliverymanInterface {
     private String dmAddress;
     private String activeStatus;
     private String availability;
-    private LinkedQueue<Order> deliveryList;
+    private LinkedQueue<Order> deliveryQ;
 
     public Deliveryman() {
-        deliveryList = new LinkedQueue<Order>();
+        deliveryQ = new LinkedQueue<Order>();
+    }
+
+    public Deliveryman(int dmID, String dmName, String dmIC, String dmTelNo, String dmAddress, String activeStatus, String availability) {
+        this.dmID = dmID;
+        this.dmName = dmName;
+        this.dmIC = dmIC;
+        this.dmTelNo = dmTelNo;
+        this.dmAddress = dmAddress;
+        this.activeStatus = activeStatus;
+        this.availability = availability;
+        deliveryQ = new LinkedQueue<Order>();
     }
 
     /**
@@ -117,6 +128,10 @@ public class Deliveryman implements DeliverymanInterface {
         return availability;
     }
 
+    private LinkedQueue<Order> getDeliveryQ() {
+        return deliveryQ;
+    }
+
     /**
      * @param availability the availability to set
      */
@@ -126,32 +141,57 @@ public class Deliveryman implements DeliverymanInterface {
 
     @Override
     public boolean addDelivery(Object delivery) {
-
-        deliveryList.enqueue((Order) delivery);
+        //add a new delivery
+        deliveryQ.enqueue((Order) delivery);
         return true;
     }
 
     @Override
     public boolean removeDelivery(Object delivery) {
-
-        for (int i = 0; i < deliveryList.getSize(); i++) {
-
-//            if (deliveryList.contains((Order) delivery)) {
-//                {
-//                    deliveryList.dequeue((Order) delivery);
-//                    return true;
-//                }
-//
-//            }
-
+        //This method is intended for removing specific delivery if it has been reassigned
+        
+        LinkedQueue<Order> tempQ = new LinkedQueue<Order>();
+        Order order;
+        int initialSize = deliveryQ.getSize();
+        
+        for (int i = 0; i < initialSize; i++) {           
+            order = deliveryQ.dequeue();
+            if(!order.equals(delivery)){
+                tempQ.enqueue(order);
+            }
         }
+        deliveryQ = tempQ;
         return false;
 
     }
 
+
     @Override
-    public ListInterface getDeliveryList() {
-        return deliveryList;
+    public Object getDelivery() {
+        //get the delivery on top of queue to complete
+        return deliveryQ.dequeue();
+    }
+
+    @Override
+    public QueueInterface getDeliveryQueue() {
+        //get copy of queue
+        
+        LinkedQueue<Order> tempQ1 = new LinkedQueue<Order>();
+        LinkedQueue<Order> tempQ2 = new LinkedQueue<Order>();
+        Order order;
+        int initialSize = deliveryQ.getSize();
+        
+        for (int i = 0; i < initialSize; i++) {           
+            order = deliveryQ.dequeue();
+            tempQ1.enqueue(order);
+            tempQ2.enqueue(order);
+        }
+        deliveryQ = tempQ1;
+        
+        
+        
+        
+        return tempQ2;
     }
 
 }

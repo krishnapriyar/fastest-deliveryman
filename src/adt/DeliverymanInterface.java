@@ -13,6 +13,7 @@ public interface DeliverymanInterface<T> {
     
     boolean addDelivery(T delivery);
     boolean removeDelivery(T delivery);
-    ListInterface<T> getDeliveryList();
+    T getDelivery();
+    QueueInterface<T> getDeliveryQueue();
     
 }

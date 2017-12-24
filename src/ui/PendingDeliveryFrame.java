@@ -6,13 +6,16 @@
 package ui;
 
 import adt.*;
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import entity.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
-import javax.swing.JFrame;
 
 /**
  *
@@ -20,15 +23,26 @@ import javax.swing.JFrame;
  */
 public class PendingDeliveryFrame extends javax.swing.JFrame {
 
-    String dbURL = "jdbc:derby://localhost:1527/Fast"; 
-    static CircularDoublyLinkedList<Deliveryman> dmList = new CircularDoublyLinkedList<Deliveryman>();
-    Connection dbCon = null; 
-    PreparedStatement stmt = null; 
+    String dbURL = "jdbc:derby://localhost:1527/Fast";
+    static CircularDoublyLinkedList<Deliveryman> dmList;
+    Connection dbCon = null;
+    PreparedStatement stmt = null;
     ResultSet rs = null;
-    
+    HRExecMenu caller;
+    String display = "";
+    int count = 1;
+
+    public HRExecMenu getCaller() {
+        return caller;
+    }
+
+    public void setCaller(HRExecMenu caller) {
+        this.caller = caller;
+    }
+
     public PendingDeliveryFrame() {
         initComponents();
-        fillBox();
+
     }
 
     public static CircularDoublyLinkedList<Deliveryman> getDmList() {
@@ -54,6 +68,8 @@ public class PendingDeliveryFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtaDisplay = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
+        jbtMenu = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("View Pending Deliveries");
@@ -84,64 +100,113 @@ public class PendingDeliveryFrame extends javax.swing.JFrame {
         jLabel1.setText("   ");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 450, 40, 40));
 
+        jbtMenu.setText("Back To Menu");
+        jbtMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtMenuActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jbtMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 90, -1, -1));
+
+        jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 100, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcbDMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbDMActionPerformed
         // TODO add your handling code here:
-        
-        String dm = jcbDM.getSelectedItem().toString().substring(0,5);
-        try{
-            
-                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-                Connection conn = DriverManager.getConnection(dbURL);
-                
-                String queryStr="SELECT * FROM  TRANS WHERE DELIVERYSTATUS ='PENDING' AND DMID = "+dm;
+        display = "No.\tOrder ID \tDate \tTime \tETA\n\n";
+        String dm = jcbDM.getSelectedItem().toString().substring(0, 5);
+        count=0;
+        for (int i = 0; i < dmList.getSize(); i++) {
+            if (dm.equals(dmList.getEntry(i + 1).getDmID()+"")) {
+                LinkedQueue q = (LinkedQueue) dmList.getEntry(i + 1).getDeliveryQueue();
+                int size = q.getSize();
 
-                stmt = conn.prepareStatement(queryStr);
-                ResultSet rs = stmt.executeQuery();
-            
-                
-                String display = "No.\tOrder ID \tDate \tTime \tETA\n\n";
-                int count = 1;
-                
-                while(rs.next())
-                {
-                   display+=count+++"\t"+rs.getInt(1)+" \t"+rs.getDate(2, new GregorianCalendar()).toLocalDate()+" \t"+rs.getTime(3)+" \t"+rs.getTime(5)+"\n";
-                    
+                for (int j = 0; j < size; j++) {
+
+                    Order ord = (Order) q.dequeue();
+                    if (ord != null) {
+                        if (ord.getDeliveryStatus().equals("Pending")) {
+
+                            
+                            display += count++ + "\t" 
+                                    + ord.getOrderID() + " \t" 
+                                    + convertDate(ord.getDateTime().getTime())
+                                    + " \t" + convertTime(ord.getDateTime().getTime())
+                                    + " \t" + ord.getETA() + "\n";
+                        }
+                    }
                 }
-                
-                jtaDisplay.setText(display);
-                
-            }catch (Exception ex){
-                System.out.println(ex.getMessage());
             }
-        
-        
+        }
+//        genFromDB(dm);
+        jtaDisplay.setText(display);
+
+
     }//GEN-LAST:event_jcbDMActionPerformed
 
-    private void fillBox(){
-    
-        try{
-            
-                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-                Connection conn = DriverManager.getConnection(dbURL);
-                
-                String queryStr="SELECT DMID, DMNAME FROM  DELIVERYMAN";
+    public String convertTime(long time){
+    Date date = new Date(time);
+    Format format = new SimpleDateFormat("HH:mm:ss");
+    return format.format(date);
+}
 
-                stmt = conn.prepareStatement(queryStr);
-                ResultSet rs = stmt.executeQuery();
-            
-                while(rs.next())
-                {
-                   jcbDM.addItem(rs.getString(1)+"  " +rs.getString(2));
-                    
-                }
-                
-            }catch (Exception ex){
-                System.out.println(ex.getMessage());
-            }     
+public String convertDate(long time){
+    Date date = new Date(time);
+    Format format = new SimpleDateFormat("dd/MM/yyyy");
+    return format.format(date);
+}
+    private void jbtMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtMenuActionPerformed
+        // TODO add your handling code here:
+
+        caller.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jbtMenuActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        fillBox();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private String genFromDB(String dmid) {
+        try {
+
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+            Connection conn = DriverManager.getConnection(dbURL);
+
+            String queryStr = "SELECT * FROM  TRANS WHERE DELIVERYSTATUS ='PENDING' AND DMID = " + dmid;
+
+            stmt = conn.prepareStatement(queryStr);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                display += count++ + "\t" + rs.getInt(1) + " \t" + rs.getDate(2, new GregorianCalendar()).toLocalDate() + " \t" + rs.getTime(3) + " \t" + rs.getTime(5) + "\n";
+
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return display;
     }
+
+    public void fillBox() {
+        jcbDM.removeAllItems();
+        for (int i = 0; i < dmList.getSize(); i++) {
+
+            jcbDM.addItem(dmList.getEntry(i + 1).getDmID() + "  " + dmList.getEntry(i + 1).getDmName());
+
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -178,8 +243,10 @@ public class PendingDeliveryFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbtMenu;
     private javax.swing.JComboBox<String> jcbDM;
     private javax.swing.JLabel jlblDM;
     private javax.swing.JLabel jlblTilte;

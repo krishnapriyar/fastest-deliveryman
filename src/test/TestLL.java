@@ -45,6 +45,7 @@ public class TestLL {
 
         System.out.println("List"+ll);
         System.out.println("Dequeue4"+ll.dequeue()+"\n");
+        System.out.println("Dequeue5"+ll.dequeue()+"\n");
 
         System.out.println("List"+ll);
         

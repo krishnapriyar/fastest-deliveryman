@@ -18,9 +18,10 @@ public class HRExecMenu extends javax.swing.JFrame {
      * Creates new form HRExecMenu
      */
     
-    static CircularDoublyLinkedList<Deliveryman> dmList = new CircularDoublyLinkedList<Deliveryman>();
+    static CircularDoublyLinkedList<Deliveryman> dmList;
     public HRExecMenu() {
         initComponents();
+        dmList = (CircularDoublyLinkedList) new PopulateDeliverymanList().getDMList();
     }
 
     public static CircularDoublyLinkedList<Deliveryman> getDmList() {
@@ -78,7 +79,7 @@ public class HRExecMenu extends javax.swing.JFrame {
         });
         jPanel1.add(jbtAdd);
 
-        jButton3.setText("jButton3");
+        jButton3.setText("View Delivery Report");
         jPanel1.add(jButton3);
 
         jbtUpdate.setText("Update Deliveryman Details");
@@ -129,7 +130,12 @@ public class HRExecMenu extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        new PendingDeliveryFrame().setVisible(true);
+        PendingDeliveryFrame pdf = new PendingDeliveryFrame();
+        
+        pdf.setDmList(dmList);
+        pdf.setCaller(this);
+        this.setVisible(false);
+        pdf.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void callDMFrame(char ch, String title) {

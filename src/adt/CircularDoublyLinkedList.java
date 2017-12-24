@@ -133,4 +133,8 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
 
     }
 
+    public int getSize() {
+        return size;
+    }
+
 }

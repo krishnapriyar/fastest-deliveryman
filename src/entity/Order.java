@@ -19,6 +19,26 @@ public class Order {
     private String ETA;
     private int custID;
     private int dmID;
+    private int restaurantID;
+
+    public Order(int orderID, Date dateTime, String deliveryStatus, String ETA, int custID, int dmID, int restaurantID) {
+        this.orderID = orderID;
+        this.dateTime = dateTime;
+        this.deliveryStatus = deliveryStatus;
+        this.ETA = ETA;
+        this.custID = custID;
+        this.dmID = dmID;
+        this.restaurantID = restaurantID;
+        
+    }
+
+    public int getRestaurantID() {
+        return restaurantID;
+    }
+
+    public void setRestaurantID(int restaurantID) {
+        this.restaurantID = restaurantID;
+    }
 
     /**
      * @return the orderID

@@ -41,15 +41,20 @@ public class LinkedQueue<T> implements QueueInterface<T> {
 
     @Override
     public T dequeue() {
-        Node node = topNode;
-        topNode = topNode.getNext();
 
-        return (T) node.getData();
+        Node node = topNode;
+        if (node != null) {
+            topNode = topNode.getNext();
+
+            return (T) node.getData();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public T getFront() {
-        return (T) topNode.getData();
+        return (T) (isEmpty()?null:topNode.getData());
     }
 
     @Override
@@ -70,12 +75,11 @@ public class LinkedQueue<T> implements QueueInterface<T> {
         Node node = topNode;
 
         if (size > 0) {
-            while (node != null){
+            while (node != null) {
                 str += node.getData().toString() + "\n";
                 node = node.getNext();
             }
 
-            
         }
         return str;
 
