@@ -20,24 +20,22 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
     /**
      * Creates new form DeliverymanDetailsFrame
      */
-           
-        String dbURL = "jdbc:derby://localhost:1527/Fast"; 
+    String dbURL = "jdbc:derby://localhost:1527/Fast";
 
-        Connection dbCon = null; 
-        PreparedStatement stmt = null; 
-        ResultSet rs = null;
-        HRExecMenu caller;
-        
-        CircularDoublyLinkedList<Deliveryman> dmList = new CircularDoublyLinkedList<Deliveryman>();
-      
-        
+    Connection dbCon = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+    HRExecMenu caller;
+
+    CircularDoublyLinkedList<Deliveryman> dmList = new CircularDoublyLinkedList<Deliveryman>();
+
     public DeliverymanDetailsFrame(char ch) {
         initComponents();
         jdbStatus.setEnabled(false);
         jcbEdit.setSelected(false);
         prepFrame(ch);
     }
- 
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -74,6 +72,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jlblPlaceHolder = new javax.swing.JLabel();
         jbtUpdate = new javax.swing.JButton();
         jcbName = new javax.swing.JComboBox<>();
+        jbtRefresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -179,13 +178,20 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         });
         jPanel1.add(jbtUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 400, 100, -1));
 
-        jcbName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jcbName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbNameActionPerformed(evt);
             }
         });
         jPanel1.add(jcbName, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 220, 20));
+
+        jbtRefresh.setText("Refresh");
+        jbtRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtRefreshActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jbtRefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -204,7 +210,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
     private void jbtClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtClearActionPerformed
         // TODO add your handling code here:
         clearText();
-        
+
     }//GEN-LAST:event_jbtClearActionPerformed
 
     private void jtfPostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPostActionPerformed
@@ -238,44 +244,25 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
     private void jcbEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbEditActionPerformed
         // TODO add your handling code here:
-       jdbStatus.setEnabled(jcbEdit.isSelected());
+        jdbStatus.setEnabled(jcbEdit.isSelected());
     }//GEN-LAST:event_jcbEditActionPerformed
 
     private void jbtActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtActionActionPerformed
         // TODO add your handling code here:
-        
+
         int ID = Integer.parseInt(jtfID.getText());
         String name = jtfName.getText();
         String IC = jtfID2.getText();
         String tel = jtfTel.getText();
-        String address = jtfAdd1.getText() +"|"+ jtfAdd2.getText() +"|"+jtfPost.getText()+"|"+ jtfCity.getText();
+        String address = jtfAdd1.getText() + "|" + jtfAdd2.getText() + "|" + jtfPost.getText() + "|" + jtfCity.getText();
         String status = jdbStatus.getSelectedItem().toString();
-        
-        try{
-            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-            Connection conn = DriverManager.getConnection(dbURL);
-            
-            String insertStr = "INSERT INTO  DELIVERYMAN VALUES(?,?,?,?,?,?,?,?)";
-            stmt = conn.prepareStatement(insertStr);
 
-            stmt.setInt(1, ID);
-            stmt.setString(2, name);
-            stmt.setString(3, IC);
-            stmt.setString(4, tel);
-            stmt.setString(5, address);
-            stmt.setString(6, status);
-            stmt.setString(7, "No");
-            stmt.setString(8, status);
-            
-            stmt.executeUpdate();
-            JOptionPane.showMessageDialog(null,"Delivery man added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            clearText();
-            autogenID();
-        }catch (Exception ex){
-            
-            System.out.println(ex.getMessage());
-            JOptionPane.showMessageDialog(null,"Delivery man could not be added!", "Failed", JOptionPane.ERROR_MESSAGE);
-        }
+        Deliveryman dm = new Deliveryman(ID, name, IC, tel, address, status, "Available");
+        dmList.add(dm);
+
+        clearText();
+        autogenID();
+
     }//GEN-LAST:event_jbtActionActionPerformed
 
     private void jbtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBackActionPerformed
@@ -283,79 +270,130 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         HRExecMenu caller = getCaller();
         caller.setVisible(true);
         caller.setDmList(dmList);
+        writeToDB();
         this.dispose();
     }//GEN-LAST:event_jbtBackActionPerformed
 
     private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateActionPerformed
         // TODO add your handling code here:
-   
+
         int ID = Integer.parseInt(jtfID.getText());
         String name = jtfName.getText();
         String IC = jtfID2.getText();
         String tel = jtfTel.getText();
-        String address = jtfAdd1.getText() +"|"+ jtfAdd2.getText() +"|"+jtfPost.getText()+"|"+ jtfCity.getText();
+        String address = jtfAdd1.getText() + "|" + jtfAdd2.getText() + "|" + jtfPost.getText() + "|" + jtfCity.getText();
         String status = jdbStatus.getSelectedItem().toString();
-        
-        try{
-            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-            Connection conn = DriverManager.getConnection(dbURL);
-            
-            String updStr = "UPDATE DELIVERYMAN SET DMNAME = ?, DMIC = ?,DMTELNO = ?,DMADDRESS = ?,ACTIVESTATUS = ?, AVAILABILITY = ?, WORKINGSTATUS = ? WHERE DMID = ?";
-            stmt = conn.prepareStatement(updStr);
 
-            stmt.setInt(8, ID);
-            stmt.setString(1, name);
-            stmt.setString(2, IC);
-            stmt.setString(3, tel);
-            stmt.setString(4, address);
-            stmt.setString(5, status);
-            stmt.setString(6, "No");
-            stmt.setString(7, status);
-            
-            stmt.executeUpdate();
-            JOptionPane.showMessageDialog(null,"Delivery man updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            clearText();
-        }
-        catch(Exception ex){
-            System.out.print(ex.getMessage());
-            JOptionPane.showMessageDialog(null,"Delivery man could not be updated!", "Failed", JOptionPane.ERROR_MESSAGE);
-        }
+        Deliveryman dm = dmList.getEntry(jcbName.getSelectedIndex() + 1);
+        dmList.remove(dm);
+
+        dm = new Deliveryman(ID, name, IC, tel, address, status, "Available");
+
+        dmList.add(dm);
+
+        fillBox();
     }//GEN-LAST:event_jbtUpdateActionPerformed
 
     private void jcbNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbNameActionPerformed
         // TODO add your handling code here:
-        
-        
+
+
     }//GEN-LAST:event_jcbNameActionPerformed
 
-    private void autogenID(){
-        
-        int ID= 20001;
-        
-        try{
-                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-                Connection conn = DriverManager.getConnection(dbURL);
-                
-                String queryStr="SELECT MAX(DMID) FROM  DELIVERYMAN";
+    private void jbtRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRefreshActionPerformed
+        // TODO add your handling code here:
+        fillBox();
+    }//GEN-LAST:event_jbtRefreshActionPerformed
 
+    private void writeToDB() {
+
+        try {
+            for (int i = 0; i < dmList.getSize(); i++) {
+
+                Deliveryman dm = dmList.getEntry(i + 1);
+
+                String queryStr = "SELECT * FROM DELIVERYMAN WHERE DMID = ? ";
+
+                Connection conn = DriverManager.getConnection(dbURL);
                 stmt = conn.prepareStatement(queryStr);
+
+                stmt.setInt(1, dm.getDmID());
+
                 ResultSet rs = stmt.executeQuery();
-            
-                if(rs.next())
-                {   
-                    ID=rs.getInt(1)!=0?rs.getInt(1)+1:ID;
-             
+
+                if (rs.next()) {
+
+                    DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+
+                    String updStr = "UPDATE DELIVERYMAN SET DMNAME = ?, DMIC = ?,DMTELNO = ?,DMADDRESS = ?,ACTIVESTATUS = ?, AVAILABILITY = ?, WORKINGSTATUS = ? WHERE DMID = ?";
+                    stmt = conn.prepareStatement(updStr);
+
+                    stmt.setString(1, dm.getDmName());
+                    stmt.setString(2, dm.getDmIC());
+                    stmt.setString(3, dm.getDmTelNo());
+                    stmt.setString(4, dm.getDmAddress());
+                    stmt.setString(5, dm.getActiveStatus());
+                    stmt.setString(6, "Available");
+                    stmt.setString(7, dm.getActiveStatus());
+
+                    stmt.executeUpdate();
+
+                } else {
+
+                    String insertStr = "INSERT INTO  DELIVERYMAN VALUES(?,?,?,?,?,?,?,?)";
+                    stmt = conn.prepareStatement(insertStr);
+
+                    stmt.setInt(1, dm.getDmID());
+                    stmt.setString(2, dm.getDmName());
+                    stmt.setString(3, dm.getDmIC());
+                    stmt.setString(4, dm.getDmTelNo());
+                    stmt.setString(5, dm.getDmAddress());
+                    stmt.setString(6, dm.getActiveStatus());
+                    stmt.setString(7, "Available");
+                    stmt.setString(8, dm.getActiveStatus());
+
+                    stmt.executeUpdate();
+                    clearText();
+                    autogenID();
                 }
-                
-            }catch (Exception ex){
-                System.out.println(ex.getMessage());
+
             }
-        
-        jtfID.setText(ID+"");  
-     
+        } catch (Exception ex) {
+        }
+
     }
-    
-    private void clearText(){
+
+    public void autogenID() {
+
+        int ID = 20001;
+        
+        Deliveryman dm  = dmList.getEntry(dmList.getSize());
+
+        try {
+            DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
+            Connection conn = DriverManager.getConnection(dbURL);
+
+            String queryStr = "SELECT MAX(DMID) FROM  DELIVERYMAN";
+
+            stmt = conn.prepareStatement(queryStr);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                ID = rs.getInt(1) != 0 ? rs.getInt(1) + 1 : ID;
+            }
+
+        } catch (Exception ex) {
+
+        }
+        
+        if(dm!=null){
+            ID = dm.getDmID()+1;
+        }
+        jtfID.setText(ID + "");
+
+    }
+
+    private void clearText() {
         jtfID.setText("");
         jtfName.setText("");
         jtfID2.setText("");
@@ -365,19 +403,19 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jtfCity.setText("");
         jtfPost.setText("");
     }
-    
-    public void setCaller(HRExecMenu caller){
-    
+
+    public void setCaller(HRExecMenu caller) {
+
         this.caller = caller;
     }
-    
-    public HRExecMenu getCaller(){
-         return caller;
-     }
-    
-    private void prepFrame(char c){
 
-        switch(c){
+    public HRExecMenu getCaller() {
+        return caller;
+    }
+
+    private void prepFrame(char c) {
+
+        switch (c) {
             case 'u':
                 clearText();
                 jlblTitle.setText("Update Deliveryman");
@@ -407,39 +445,39 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
                 jbtAction.setVisible(false);
                 jbtUpdate.setVisible(false);
                 break;
-                
+
             case 'a':
                 jcbName.setVisible(false);
                 autogenID();
                 jbtUpdate.setVisible(false);
+                jbtRefresh.setVisible(false);
                 break;
-                
-            
-            
+
         }
-        
+
     }
-    
+
     public void fillBox() {
+
         jcbName.removeAllItems();
+
         for (int i = 0; i < dmList.getSize(); i++) {
 
             jcbName.addItem(dmList.getEntry(i + 1).getDmID() + "  " + dmList.getEntry(i + 1).getDmName());
 
         }
     }
-    
-    private void formatAddress(String fulladdress){
-    
-        try{
-        String[] parts = fulladdress.split("\\|");
-        jtfAdd1.setText(parts[0]);
-        jtfAdd2.setText(parts[1]);
-        jtfPost.setText(parts[2]);
-        jtfCity.setText(parts[3]);
-        }
-        catch(Exception ex ){
-        
+
+    private void formatAddress(String fulladdress) {
+
+        try {
+            String[] parts = fulladdress.split("\\|");
+            jtfAdd1.setText(parts[0]);
+            jtfAdd2.setText(parts[1]);
+            jtfPost.setText(parts[2]);
+            jtfCity.setText(parts[3]);
+        } catch (Exception ex) {
+
         }
 
     }
@@ -451,7 +489,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
     public void setDmList(CircularDoublyLinkedList<Deliveryman> dmList) {
         this.dmList = dmList;
     }
-   
+
     /**
      * @param args the command line arguments
      */
@@ -487,12 +525,13 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         });
     }
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jbtAction;
     private javax.swing.JButton jbtBack;
     private javax.swing.JButton jbtClear;
+    private javax.swing.JButton jbtRefresh;
     private javax.swing.JButton jbtUpdate;
     private javax.swing.JCheckBox jcbEdit;
     private javax.swing.JComboBox<String> jcbName;

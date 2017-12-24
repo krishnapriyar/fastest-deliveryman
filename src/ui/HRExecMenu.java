@@ -153,9 +153,12 @@ public class HRExecMenu extends javax.swing.JFrame {
     private void callDMFrame(char ch, String title) {
         // TODO add your handling code here:
         DeliverymanDetailsFrame  ddf = new DeliverymanDetailsFrame(ch);
-        ddf.setVisible(true);
+        
         ddf.setTitle(title);
         ddf.setCaller(this);
+        ddf.setDmList(dmList);
+        ddf.setVisible(true);
+        ddf.autogenID();
         this.setVisible(false);
     }
     

@@ -24,10 +24,10 @@ public class PopulateDeliverymanList {
             
             dmList = new CircularDoublyLinkedList<Deliveryman>();
 
-            dm1 = new Deliveryman(20011, "John Cena", "941207016467", "0167642876", "18 Jalan Ros|Taman Merah|81100|Johor Bahru", "Employed", "Available");
-            dm2 = new Deliveryman(20012, "Farn Meng", "971130145623", "0161234567", "56 Jalan Mawar|Taman Kuning|81800|Ulu Tiram", "Employed", "Available");
-            dm3 = new Deliveryman(20013, "John Cena", "890928146339", "0161235679", "01 Jalan Kemboja|Taman Hijau|81100|Johor Bahru", "Employed", "Available");
-            dm4 = new Deliveryman(20014, "John Cena", "941207016467", "0167642876", "45 Jalan Bakawali|Taman Biru|817500|Masai", "Employed", "Available");
+            dm1 = new Deliveryman(20031, "John Cena", "941207016467", "0167642876", "18 Jalan Ros|Taman Merah|81100|Johor Bahru", "Employed", "Available");
+            dm2 = new Deliveryman(20032, "Farn Meng", "971130145623", "0161234567", "56 Jalan Mawar|Taman Kuning|81800|Ulu Tiram", "Employed", "Available");
+            dm3 = new Deliveryman(20033, "Usha Lily", "890928146339", "0161235679", "01 Jalan Kemboja|Taman Hijau|81100|Johor Bahru", "Employed", "Available");
+            dm4 = new Deliveryman(20034, "CK Wong", "941207016467", "0167642876", "45 Jalan Bakawali|Taman Biru|817500|Masai", "Employed", "Available");
 
             Date date1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2017-12-28 07:30:00");
             Date date2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2017-12-28 08:30:30");
