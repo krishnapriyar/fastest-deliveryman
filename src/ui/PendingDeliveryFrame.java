@@ -121,48 +121,50 @@ public class PendingDeliveryFrame extends javax.swing.JFrame {
 
     private void jcbDMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbDMActionPerformed
         // TODO add your handling code here:
-        display = "No.\tOrder ID \tDate \tTime \tETA\n\n";
-        String dm = jcbDM.getSelectedItem().toString().substring(0, 5);
-        count=0;
-        for (int i = 0; i < dmList.getSize(); i++) {
-            if (dm.equals(dmList.getEntry(i + 1).getDmID()+"")) {
-                LinkedQueue q = (LinkedQueue) dmList.getEntry(i + 1).getDeliveryQueue();
-                int size = q.getSize();
+        try {
+            display = "No.\tOrder ID \tDate \tTime \tETA\n\n";
+            String dm = jcbDM.getSelectedItem().toString().substring(0, 5);
+            count = 1;
+            for (int i = 0; i < dmList.getSize(); i++) {
+                if (dm.equals(dmList.getEntry(i + 1).getDmID() + "")) {
+                    LinkedQueue q = (LinkedQueue) dmList.getEntry(i + 1).getDeliveryQueue();
+                    int size = q.getSize();
 
-                for (int j = 0; j < size; j++) {
+                    for (int j = 0; j < size; j++) {
 
-                    Order ord = (Order) q.dequeue();
-                    if (ord != null) {
-                        if (ord.getDeliveryStatus().equals("Pending")) {
+                        Order ord = (Order) q.dequeue();
+                        if (ord != null) {
+                            if (ord.getDeliveryStatus().equals("Pending")) {
 
-                            
-                            display += count++ + "\t" 
-                                    + ord.getOrderID() + " \t" 
-                                    + convertDate(ord.getDateTime().getTime())
-                                    + " \t" + convertTime(ord.getDateTime().getTime())
-                                    + " \t" + ord.getETA() + "\n";
+                                display += count++ + "\t"
+                                        + ord.getOrderID() + " \t"
+                                        + convertDate(ord.getDateTime().getTime())
+                                        + " \t" + convertTime(ord.getDateTime().getTime())
+                                        + " \t" + ord.getETA() + "\n";
+                            }
                         }
                     }
                 }
             }
-        }
 //        genFromDB(dm);
-        jtaDisplay.setText(display);
-
+            jtaDisplay.setText(display);
+        } catch (Exception ex) {
+        }
 
     }//GEN-LAST:event_jcbDMActionPerformed
 
-    public String convertTime(long time){
-    Date date = new Date(time);
-    Format format = new SimpleDateFormat("HH:mm:ss");
-    return format.format(date);
-}
+    public String convertTime(long time) {
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("HH:mm:ss");
+        return format.format(date);
+    }
 
-public String convertDate(long time){
-    Date date = new Date(time);
-    Format format = new SimpleDateFormat("dd/MM/yyyy");
-    return format.format(date);
-}
+    public String convertDate(long time) {
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("dd/MM/yyyy");
+        return format.format(date);
+    }
+
     private void jbtMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtMenuActionPerformed
         // TODO add your handling code here:
 

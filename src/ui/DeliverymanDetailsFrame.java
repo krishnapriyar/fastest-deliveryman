@@ -9,6 +9,7 @@ import java.sql.*;
 import javax.swing.*;
 import adt.*;
 import entity.*;
+import static ui.PendingDeliveryFrame.dmList;
 
 /**
  *
@@ -25,7 +26,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         Connection dbCon = null; 
         PreparedStatement stmt = null; 
         ResultSet rs = null;
-        JFrame caller;
+        HRExecMenu caller;
         
         CircularDoublyLinkedList<Deliveryman> dmList = new CircularDoublyLinkedList<Deliveryman>();
       
@@ -71,8 +72,8 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jbtBack = new javax.swing.JButton();
         jcbEdit = new javax.swing.JCheckBox();
         jlblPlaceHolder = new javax.swing.JLabel();
-        jbtSearch = new javax.swing.JButton();
         jbtUpdate = new javax.swing.JButton();
+        jcbName = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,7 +120,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
         jtfID.setEnabled(false);
         jPanel1.add(jtfID, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 74, 98, -1));
-        jPanel1.add(jtfName, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 108, 221, -1));
+        jPanel1.add(jtfName, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 221, -1));
         jPanel1.add(jtfID2, new org.netbeans.lib.awtextra.AbsoluteConstraints(466, 108, 260, -1));
         jPanel1.add(jtfTel, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 146, 221, -1));
         jPanel1.add(jtfAdd1, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 184, 573, -1));
@@ -170,14 +171,6 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jPanel1.add(jcbEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(281, 299, -1, -1));
         jPanel1.add(jlblPlaceHolder, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 430, 79, 19));
 
-        jbtSearch.setText("Search Staff");
-        jbtSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtSearchActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jbtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, -1, -1));
-
         jbtUpdate.setText("Update Staff");
         jbtUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,6 +178,14 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jbtUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 400, 100, -1));
+
+        jcbName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcbName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbNameActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jcbName, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 220, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -279,47 +280,11 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
     private void jbtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBackActionPerformed
         // TODO add your handling code here:
-        getCaller().setVisible(true);
+        HRExecMenu caller = getCaller();
+        caller.setVisible(true);
+        caller.setDmList(dmList);
         this.dispose();
     }//GEN-LAST:event_jbtBackActionPerformed
-
-    private void jbtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSearchActionPerformed
-        // TODO add your handling code here:   
-        
-        String queryStr="SELECT * FROM DELIVERYMAN WHERE DMID = ? OR DMNAME = ? OR DMIC = ?";
-        try
-        {
-            Connection conn = DriverManager.getConnection(dbURL);
-            stmt = conn.prepareStatement(queryStr);
-            stmt.setString(1,jtfID.getText());
-            stmt.setString(2,jtfName.getText());
-            stmt.setString(3,jtfID2.getText());
-            ResultSet rs = stmt.executeQuery();
-            
-            if(rs.next())
-            {   
-                jtfName.setText(rs.getString("DMNAME"));
-                jtfID2.setText(rs.getString("DMIC"));
-                jtfTel.setText(rs.getString("DMTELNO"));
-                formatAddress(rs.getString("DMADDRESS"));
-                jdbStatus.setSelectedItem(rs.getString("ACTIVESTATUS"));
-                
-                if(jbtUpdate.isVisible()){
-                    jtfTel.setEnabled(true);
-                    jtfAdd1.setEnabled(true);
-                    jtfAdd2.setEnabled(true);
-                    jtfCity.setEnabled(true);
-                    jtfPost.setEnabled(true);
-        }
-            }
-        }
-        catch(Exception ex){
-            JOptionPane.showMessageDialog(null,"No record found!!", "Empty", JOptionPane.ERROR_MESSAGE);
-        }
-        
-        
-        
-    }//GEN-LAST:event_jbtSearchActionPerformed
 
     private void jbtUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtUpdateActionPerformed
         // TODO add your handling code here:
@@ -356,6 +321,12 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Delivery man could not be updated!", "Failed", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jbtUpdateActionPerformed
+
+    private void jcbNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbNameActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_jcbNameActionPerformed
 
     private void autogenID(){
         
@@ -395,35 +366,39 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         jtfPost.setText("");
     }
     
-    public void setCaller(JFrame caller){
+    public void setCaller(HRExecMenu caller){
     
         this.caller = caller;
     }
     
-    public JFrame getCaller(){
+    public HRExecMenu getCaller(){
          return caller;
      }
     
     private void prepFrame(char c){
-        
+
         switch(c){
             case 'u':
                 clearText();
                 jlblTitle.setText("Update Deliveryman");
-                jtfID.setEnabled(true);
-                
+                jtfID.setEnabled(false);
+                jtfID2.setEnabled(false);
+                jcbName.setVisible(true);
                 jtfTel.setEnabled(false);
                 jtfAdd1.setEnabled(false);
                 jtfAdd2.setEnabled(false);
                 jtfCity.setEnabled(false);
                 jtfPost.setEnabled(false);
-                
+                jtfName.setVisible(false);
                 jbtAction.setVisible(false);
                 break;
             case 's':
+                jcbName.setVisible(true);
+                jtfName.setVisible(false);
                 clearText();
                 jlblTitle.setText("Search Deliveryman");
-                jtfID.setEnabled(true);
+                jtfID.setEnabled(false);
+                jtfID2.setEnabled(false);
                 jtfTel.setEnabled(false);
                 jtfAdd1.setEnabled(false);
                 jtfAdd2.setEnabled(false);
@@ -434,16 +409,25 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
                 break;
                 
             case 'a':
+                jcbName.setVisible(false);
                 autogenID();
-                jbtSearch.setVisible(false);
                 jbtUpdate.setVisible(false);
                 break;
                 
             
             
         }
+        
     }
     
+    public void fillBox() {
+        jcbName.removeAllItems();
+        for (int i = 0; i < dmList.getSize(); i++) {
+
+            jcbName.addItem(dmList.getEntry(i + 1).getDmID() + "  " + dmList.getEntry(i + 1).getDmName());
+
+        }
+    }
     
     private void formatAddress(String fulladdress){
     
@@ -509,9 +493,9 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
     private javax.swing.JButton jbtAction;
     private javax.swing.JButton jbtBack;
     private javax.swing.JButton jbtClear;
-    private javax.swing.JButton jbtSearch;
     private javax.swing.JButton jbtUpdate;
     private javax.swing.JCheckBox jcbEdit;
+    private javax.swing.JComboBox<String> jcbName;
     private javax.swing.JComboBox<String> jdbStatus;
     private javax.swing.JLabel jlblAdd1;
     private javax.swing.JLabel jlblAdd2;
