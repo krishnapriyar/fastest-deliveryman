@@ -1,5 +1,6 @@
 package ui;
 
+import ModuleE.entity.OrderedItemClass;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -26,20 +27,20 @@ import javax.swing.SwingConstants;
 
 public class OrderItem extends JFrame {
 
-    public List<Item> list = new ArrayList<>();
-    public List<Item> orderedList = new ArrayList<>();
+    public List<OrderedItemClass> list = new ArrayList<>();
+    public List<OrderedItemClass> orderedList = new ArrayList<>();
     public JLabel totalItemOrder = new JLabel();
 
     public OrderItem() {
 
-        list.add(new Item("Nasi Goreng", 10.0));
-        list.add(new Item("Nasi Goreng Lakna", 9.0));
-        list.add(new Item("Mee Goreng", 8.5));
-        list.add(new Item("Maggi Goreng", 9.0));
-        list.add(new Item("Roti Telur", 15.0));
-        list.add(new Item("Koren Ramen", 2.0));
-        list.add(new Item("Dry Meat", 6.0));
-        list.add(new Item("Donut", 1.0));
+//        list.add(new Item("Nasi Goreng", 10.0));
+//        list.add(new Item("Nasi Goreng Lakna", 9.0));
+//        list.add(new Item("Mee Goreng", 8.5));
+//        list.add(new Item("Maggi Goreng", 9.0));
+//        list.add(new Item("Roti Telur", 15.0));
+//        list.add(new Item("Koren Ramen", 2.0));
+//        list.add(new Item("Dry Meat", 6.0));
+//        list.add(new Item("Donut", 1.0));
 
         updateOrderedItem();
         //jpanel declaration
@@ -119,7 +120,7 @@ public class OrderItem extends JFrame {
             jbtOrder[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     jbtO.setEnabled(false);
-                    orderedList.add(new Item(name.getText(), Double.parseDouble(price.getText())));
+                    //orderedList.add(new Item(name.getText(), Double.parseDouble(price.getText())));
                     updateOrderedItem();
                 }
             });

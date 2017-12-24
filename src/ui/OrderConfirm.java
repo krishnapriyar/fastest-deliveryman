@@ -1,6 +1,7 @@
 
 package ui;
 
+import ModuleE.entity.ScheduledOrderClass;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,7 +21,7 @@ public class OrderConfirm extends JFrame{
         
     }
     
-    public void orderDetails(List<ConfirmOrder> list)
+    public void orderDetails(List<ScheduledOrderClass> list)
     {
         JPanel jpnMain = new JPanel(new GridLayout(3,1));
         JPanel topPanel = new JPanel();
@@ -55,7 +56,7 @@ public class OrderConfirm extends JFrame{
         String str = "";
         for(int i=0;i<list.size();i++)
         {
-            str += list.get(i).getItemName() +" * "+ list.get(i).getQty() +" = "+list.get(i).getTotalPrice()+"\n";
+//            str += list.get(i).getItemName() +" * "+ list.get(i).getQty() +" = "+list.get(i).getTotalPrice()+"\n";
         }
         jtextOrder.setText(str);
         jtextOrder.setEditable(false);
