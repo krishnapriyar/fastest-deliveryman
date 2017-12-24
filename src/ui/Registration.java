@@ -279,7 +279,7 @@ public class Registration extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Affliate registration successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             autogenID();
             jButton2.setEnabled(true);
-
+//run
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Failed", JOptionPane.ERROR_MESSAGE);
         }

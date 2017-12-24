@@ -48,6 +48,10 @@ public class ItemDetail extends javax.swing.JFrame {
         autogenID();
         insertItem();
         customFrame(ch);
+//run
+        jtfName.setText("");
+        jtfPrice.setText("");
+        jtfPromo.setText("");
 
     }
 
@@ -359,7 +363,6 @@ public class ItemDetail extends javax.swing.JFrame {
         System.out.println("List: " + itemList);
         JOptionPane.showMessageDialog(null, "Item delete successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-        
         try {
             if (!jcbItem.getSelectedItem().equals("Unselected")) {
                 DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
@@ -386,7 +389,7 @@ public class ItemDetail extends javax.swing.JFrame {
             }
         } catch (Exception ex) {
             System.out.print(ex.getMessage());
-            
+
         }
 
     }//GEN-LAST:event_jbtDeleteActionPerformed
@@ -515,7 +518,7 @@ public class ItemDetail extends javax.swing.JFrame {
 
             case 'a':
                 jblTitle.setText("Add Item");
-
+                autogenID();
                 jcbItem.setVisible(false);
                 jLabel8.setVisible(false);
                 jtfID.setEnabled(false);

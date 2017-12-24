@@ -134,6 +134,8 @@ public class CRUD extends javax.swing.JFrame {
 //        jtfID.setEditable(false);
 
 
+
+
     }//GEN-LAST:event_jbtViewActionPerformed
 
     private void jbtAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddItemActionPerformed
