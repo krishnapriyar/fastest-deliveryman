@@ -8,6 +8,8 @@ package ui;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import ModuleA.ui.*;
+import ModuleB.ui.*;
 
 /**
  *
