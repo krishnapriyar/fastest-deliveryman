@@ -5,6 +5,8 @@
  */
 package ui;
 
+import ModuleE.entity.ListClass;
+import ModuleE.ui.CustomerMainMenu;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -24,11 +26,17 @@ public class LoginFrame extends javax.swing.JFrame {
     PreparedStatement stmt = null;
     ResultSet rs = null;
     JFrame frame;
+    ListClass list = new ListClass();
+    String username = "";
 
     public LoginFrame() {
         initComponents();
         setTitle("Login - FastestDeliveryman");
         insertCredential();
+    }
+
+    public void setListClass(ListClass arrClass) {
+        list = arrClass;
     }
 
     /**
@@ -67,7 +75,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jlblUserType.setText("User Type :");
         jPanel1.add(jlblUserType, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, -1, -1));
 
-        jcbUserType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Customer", "Affliate", "Deliveryman", "HR Executive" }));
+        jcbUserType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Customer", "Affliate", "Deliveryman", "HR Executive", "Admin" }));
         jPanel1.add(jcbUserType, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 220, -1));
 
         jtfTitle.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -116,6 +124,9 @@ public class LoginFrame extends javax.swing.JFrame {
             case "HR Executive":
                 prefix = 'h';
                 break;
+            case "Admin":
+                prefix = 'v';
+                break;
         }
 
         if (compareLogin(prefix)) {
@@ -139,7 +150,7 @@ public class LoginFrame extends javax.swing.JFrame {
     private void goToMenu() {
         switch (jcbUserType.getSelectedItem().toString()) {
             case "Customer":
-
+                frame = new CustomerMainMenu(list, username);
                 break;
             case "Affliate":
                 frame = new ModuleA.ui.CRUD();
@@ -149,6 +160,8 @@ public class LoginFrame extends javax.swing.JFrame {
                 break;
             case "HR Executive":
                 frame = new ModuleB.ui.HRExecMenu();
+                break;
+            case "Admin":
                 break;
         }
 
@@ -173,6 +186,7 @@ public class LoginFrame extends javax.swing.JFrame {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+                username = jtfUser.getText();
                 String password = rs.getString("PASSWORD");
                 char[] fromDB = password.toCharArray();
                 char[] entered = jpfPass.getPassword();
@@ -183,9 +197,7 @@ public class LoginFrame extends javax.swing.JFrame {
                         allow = true;
                     }
                 }
-
             }
-
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootPane, "Please check and reenter your login credentials.", "Login Error", JOptionPane.ERROR_MESSAGE);
 

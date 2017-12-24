@@ -1,6 +1,8 @@
 
 package ui;
 
+import ModuleE.entity.ScheduledOrderClass;
+import ModuleE.entity.OrderedItemClass;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -30,7 +32,7 @@ import javax.swing.event.ChangeEvent;
 public class OrderQuantity extends JFrame{
     
     public double totalAmount = 0.0;
-    public void displayOrderedItem(List<Item> orderedList)
+    public void displayOrderedItem(List<OrderedItemClass> orderedList)
     {
         //orderedList = new ArrayList<>();
         //JPanel declaration
@@ -110,7 +112,7 @@ public class OrderQuantity extends JFrame{
         jbtConfirm.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e)
             {
-                List<ConfirmOrder> confirm = new ArrayList<>();
+                List<ScheduledOrderClass> confirm = new ArrayList<>();
                 for(int i=0 ; i <orderedList.size();i++)
                 {
                     String itemName = jlblItemName[i].getText();
@@ -118,7 +120,7 @@ public class OrderQuantity extends JFrame{
                     Double totalAmount = Double.parseDouble(totalPrice[i].getText());
                     int quantity = Integer.parseInt(qty[i].getValue().toString());
                     
-                    confirm.add(new ConfirmOrder(itemName, itemPrice, totalAmount, quantity));
+//                    confirm.add(new ViewMyOrderClass(itemName, itemPrice, totalAmount, quantity));
                 }
                 
                 OrderConfirm sot = new OrderConfirm();
