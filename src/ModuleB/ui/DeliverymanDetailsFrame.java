@@ -260,6 +260,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
         Deliveryman dm = new Deliveryman(ID, name, IC, tel, address, status, "Available");
         dmList.add(dm);
+        JOptionPane.showMessageDialog(null, "Deliveryman added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
         clearText();
         autogenID();
@@ -269,6 +270,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
     private void jbtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBackActionPerformed
         // TODO add your handling code here:
         HRExecMenu caller = getCaller();
+        this.setVisible(false);
         caller.setVisible(true);
         caller.setDmList(dmList);
         writeToDB();
@@ -288,22 +290,31 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         Deliveryman dm = dmList.getEntry(jcbName.getSelectedIndex() + 1);
         dmList.remove(dm);
 
-        dm = new Deliveryman(ID, name, IC, tel, address, status, "Available");
+        Deliveryman dm2 = new Deliveryman(ID, name, IC, tel, address, status, "Available", (LinkedQueue)dm.getDeliveryQueue() );
 
-        dmList.add(dm);
+        dmList.add(dm2);
 
         fillBox();
     }//GEN-LAST:event_jbtUpdateActionPerformed
 
     private void jcbNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbNameActionPerformed
         // TODO add your handling code here:
+        Deliveryman dm = dmList.getEntry(jcbName.getSelectedIndex() + 1);
+        jtfID.setText(dm.getDmID()+"");
+        jtfName.setText(dm.getDmName());
+        jtfID2.setText(dm.getDmIC());
+        jtfTel.setText(dm.getDmTelNo());
+        formatAddress(dm.getDmAddress());
+        jdbStatus.setSelectedItem(dm.getActiveStatus());
 
 
     }//GEN-LAST:event_jcbNameActionPerformed
 
     private void jbtRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRefreshActionPerformed
         // TODO add your handling code here:
-        fillBox();
+        try{
+            fillBox();
+        } catch(Exception ex){}
     }//GEN-LAST:event_jbtRefreshActionPerformed
 
     private void writeToDB() {
@@ -421,13 +432,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
                 clearText();
                 jlblTitle.setText("Update Deliveryman");
                 jtfID.setEnabled(false);
-                jtfID2.setEnabled(false);
                 jcbName.setVisible(true);
-                jtfTel.setEnabled(false);
-                jtfAdd1.setEnabled(false);
-                jtfAdd2.setEnabled(false);
-                jtfCity.setEnabled(false);
-                jtfPost.setEnabled(false);
                 jtfName.setVisible(false);
                 jbtAction.setVisible(false);
                 break;
@@ -464,7 +469,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
         for (int i = 0; i < dmList.getSize(); i++) {
 
-            jcbName.addItem(dmList.getEntry(i + 1).getDmID() + "  " + dmList.getEntry(i + 1).getDmName());
+            jcbName.addItem(dmList.getEntry(i + 1).getDmName());
 
         }
     }

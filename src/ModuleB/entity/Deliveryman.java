@@ -27,6 +27,17 @@ public class Deliveryman implements DeliverymanInterface {
         deliveryQ = new LinkedQueue<Order>();
     }
 
+    public Deliveryman(int dmID, String dmName, String dmIC, String dmTelNo, String dmAddress, String activeStatus, String availability, LinkedQueue<Order> deliveryQ) {
+        this.dmID = dmID;
+        this.dmName = dmName;
+        this.dmIC = dmIC;
+        this.dmTelNo = dmTelNo;
+        this.dmAddress = dmAddress;
+        this.activeStatus = activeStatus;
+        this.availability = availability;
+        this.deliveryQ = deliveryQ;
+    }
+
     public Deliveryman(int dmID, String dmName, String dmIC, String dmTelNo, String dmAddress, String activeStatus, String availability) {
         this.dmID = dmID;
         this.dmName = dmName;
