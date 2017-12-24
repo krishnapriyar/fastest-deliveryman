@@ -30,10 +30,10 @@ public class ItemDetail extends javax.swing.JFrame {
         ItemDetail.restaurant = restaurant;
     }
     entity.RestaurantItem item = new entity.RestaurantItem();
-    static LinkedList<entity.RestaurantItem> itemList = new LinkedList();
+    static CircularLinkedList<entity.RestaurantItem> itemList = new CircularLinkedList();
     CRUD caller;
 
-    public void setItemList(LinkedList<entity.RestaurantItem> itemList) {
+    public void setItemList(CircularLinkedList<entity.RestaurantItem> itemList) {
         this.itemList = itemList;
     }
 
@@ -214,7 +214,7 @@ public class ItemDetail extends javax.swing.JFrame {
         // TODO add your handling code here:
         caller.setItemList(itemList);
         try {
-            for (int i = 0; i < itemList.getNumberOfEntries(); i++) {
+            for (int i = 0; i < itemList.getSize(); i++) {
 
                 RestaurantItem item = itemList.getEntry(i + 1);
 
@@ -264,16 +264,18 @@ public class ItemDetail extends javax.swing.JFrame {
         String promo = jtfPromo.getText();
         String category = jtfCategory.getSelectedItem().toString();
 
-        item = itemList.getEntry(jcbItem.getSelectedIndex());
+        item = itemList.getEntry(jcbItem.getSelectedIndex() + 1);
         itemList.remove(item);
 
-        item.setItemID(itemID);
-        item.setItemName(itemName);
-        item.setPromoInfo(promoInfo);
+        item.setItemID(ID);
+        item.setItemName(name);
+        item.setPromoInfo(promo);
         item.setCategory(category);
         item.setUnitPrice(price);
 
         itemList.add(item);
+
+        insertItem();
 
         try {
             DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
@@ -307,6 +309,15 @@ public class ItemDetail extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfIDActionPerformed
 
     private void jcbItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbItemActionPerformed
+        item = itemList.getEntry(jcbItem.getSelectedIndex() + 1);
+        if (item != null) {
+            jtfID.setText(item.getItemID() + "");
+            jtfName.setText(item.getItemName() + "");
+            jtfPrice.setText(item.getUnitPrice() + "");
+            jtfCategory.setSelectedItem(item.getCategory() + "");
+            jtfPromo.setText(item.getPromoInfo() + "");
+        }
+        //test
 
         String selectedItem = (String) jcbItem.getSelectedItem();
 
@@ -341,14 +352,14 @@ public class ItemDetail extends javax.swing.JFrame {
 
     private void jbtDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDeleteActionPerformed
 
-        item.setItemID(itemID);
-        item.setItemName(itemName);
-        item.setCategory(category);
-        item.setPromoInfo(promoInfo);
-        item.setUnitPrice(price);
+        item = itemList.getEntry(jcbItem.getSelectedIndex() + 1);
 
         itemList.remove(item);
+        insertItem();
+        System.out.println("List: " + itemList);
+        JOptionPane.showMessageDialog(null, "Item delete successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
+        
         try {
             if (!jcbItem.getSelectedItem().equals("Unselected")) {
                 DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
@@ -375,7 +386,7 @@ public class ItemDetail extends javax.swing.JFrame {
             }
         } catch (Exception ex) {
             System.out.print(ex.getMessage());
-            JOptionPane.showMessageDialog(null, "Item could not be updated!", "Failed", JOptionPane.ERROR_MESSAGE);
+            
         }
 
     }//GEN-LAST:event_jbtDeleteActionPerformed
@@ -525,7 +536,8 @@ public class ItemDetail extends javax.swing.JFrame {
 
     private void insertItem() {
 
-        for (int i = 0; i < itemList.getNumberOfEntries(); i++) {
+        jcbItem.removeAllItems();
+        for (int i = 0; i < itemList.getSize(); i++) {
 
             jcbItem.addItem(itemList.getEntry(i + 1).getItemName());
         }
@@ -555,7 +567,7 @@ public class ItemDetail extends javax.swing.JFrame {
     }
 
     public void setCaller(JFrame caller) {
-        this.caller = (CRUD)caller;
+        this.caller = (CRUD) caller;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

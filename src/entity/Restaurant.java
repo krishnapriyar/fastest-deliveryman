@@ -20,7 +20,7 @@ public class Restaurant {
     private String address;
     private int telNo;
     private String GPS;
-    private LinkedList<RestaurantItem> menu;
+    private CircularLinkedList<RestaurantItem> menu;
 
     public Restaurant() {
     }
@@ -34,7 +34,7 @@ public class Restaurant {
         this.address = address;
         this.telNo = telNo;
         this.GPS = GPS;
-        menu = new LinkedList<RestaurantItem>();
+        menu = new CircularLinkedList<RestaurantItem>();
     }
 
     public int getAffID() {
@@ -106,11 +106,11 @@ public class Restaurant {
         return "Restaurant{" + "affID=" + affID + ", bussName=" + bussName + ", bussRegNo=" + bussRegNo + ", gstRegNo=" + gstRegNo + ", personInCharged=" + personInCharged + ", address=" + address + ", telNo=" + telNo + ", GPS=" + GPS + '}';
     }
 
-    public LinkedList<RestaurantItem> getMenu() {
+    public CircularLinkedList<RestaurantItem> getMenu() {
         return menu;
     }
 
-    public void setMenu(LinkedList<RestaurantItem> menu) {
+    public void setMenu(CircularLinkedList<RestaurantItem> menu) {
         this.menu = menu;
     }
 
