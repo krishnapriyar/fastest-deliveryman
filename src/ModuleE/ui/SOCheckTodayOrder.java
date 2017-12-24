@@ -28,11 +28,11 @@ public class SOCheckTodayOrder extends JFrame {
     private Font titleFont = new Font("Arial", Font.BOLD, 20);
     public ListClass arrList = new ListClass();
     
-    public void setListClass(ListClass list) {
+    public void setData(ListClass list) {
         arrList = list;
     }
     
-    public SOCheckTodayOrder(ListClass arrClass, String dmName) {
+    public SOCheckTodayOrder(ListClass arrClass, int dmID) {
         arrList = arrClass;
         displayCurrentDateTime();
         JPanel topPanel = new JPanel(new GridLayout(1, 2));
@@ -58,7 +58,7 @@ public class SOCheckTodayOrder extends JFrame {
         JButton jbtBack = new JButton("Back");
         
         for (int i = 0; i < arrList.getScOrderClass().size(); i++) {
-            if (dmName.equals(arrList.getScOrderClass().getEntry(i).getDmName())) {
+            if (dmID == arrList.getScOrderClass().getEntry(i).getDmID()) {
                 jlblDistanceTitle[i] = new JLabel("Estimated distance :");
                 jlblCustAddressTitle[i] = new JLabel("Recipient Address :");
                 jlblOrderIDTitle[i] = new JLabel("Order ID :");

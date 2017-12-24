@@ -1,20 +1,26 @@
 package ModuleE.ui;
 
+import ModuleB.entity.Deliveryman;
 import ModuleE.adt.ListImplementation;
 import ModuleE.adt.myListInterface;
+import ModuleE.entity.Customer;
 import ModuleE.entity.ListClass;
-import ModuleE.entity.DeliveryManClass;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import ui.LoginFrame;
 
 /**
  *
@@ -22,53 +28,104 @@ import javax.swing.JPanel;
  */
 public class DMMainMenu extends JFrame {
 
+    private static String dbURL = "jdbc:derby://localhost:1527/Fast";
+    private static Connection conn = null;
+    private static PreparedStatement prepare;
+    private static ResultSet rs = null;
     static ListClass arrClass = new ListClass();
     private Font font = new Font("Arial", Font.PLAIN, 20);
-
-    public void setListClass(ListClass arrList) {
+    private int dmID = 0;
+    private JLabel jlblDMName = new JLabel();
+    private String username;
+    
+    public void setData(ListClass arrList, String name) {
         arrClass = arrList;
-    }
+        username = name;
 
-    public DMMainMenu(String username) {
-
-        JPanel jpnCenter1 = new JPanel(new GridLayout(1, 2));
-        JPanel jpnCenter2 = new JPanel();
-        JPanel jpnSouth1 = new JPanel(new GridLayout(1, 2));
-
+        getDMInfo(username);
+        JPanel jpnSouth1 = new JPanel(new GridLayout(2, 2));
+        
         JLabel jlblPageTitle = new JLabel("Delivery Man Menu");
         JButton jbtCheckTodayOrder = new JButton("Check Today's Order");
-        JButton jbtBack = new JButton("Back");
-
+        JButton jbtClockInOut = new JButton("Clock In and Out");
+        
+        JButton jbtLogout = new JButton("Logout");
+        jlblDMName.setFont(font);
         jlblPageTitle.setFont(font);
         jbtCheckTodayOrder.setFont(font);
-        jbtBack.setFont(font);
+        jbtLogout.setFont(font);
+        jbtClockInOut.setFont(font);
 
         jbtCheckTodayOrder.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              
-                DMMainMenu.this.dispose();
+                SOCheckTodayOrder so = new SOCheckTodayOrder(arrClass, dmID);
+                DMMainMenu.this.setVisible(false);
             }
         });
 
-        jbtBack.addActionListener(new ActionListener() {
+        jbtLogout.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                LoginFrame login = new LoginFrame();
+                login.setListClass(arrClass);
+                DMMainMenu.this.setVisible(false);
+            }
+        });
+        
+        jbtClockInOut.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            
             }
         });
 
         jpnSouth1.add(jbtCheckTodayOrder);
-        jpnSouth1.add(jbtBack);
-
-        jpnCenter2.add(jpnCenter1);
+        jpnSouth1.add(jbtLogout);
+        jpnSouth1.add(jbtClockInOut);
 
         add(jlblPageTitle, BorderLayout.NORTH);
-        add(jpnCenter2, BorderLayout.CENTER);
+        add(jlblDMName, BorderLayout.CENTER);
         add(jpnSouth1, BorderLayout.SOUTH);
 
         setSize(600, 300);
         setVisible(true);
         setLocationRelativeTo(null);
         setTitle("Delivery Man Main Menu");
+    }
+
+    private void getDMInfo(String username) {
+        if (connection() == true) {
+            try {
+                arrClass.getCustList().clearList();
+                prepare = conn.prepareStatement("SELECT * FROM DELIVERYMAN");
+                rs = prepare.executeQuery();
+
+                while (rs.next()) {
+                    if (rs.getString(2).replace(" ", "").equalsIgnoreCase(username)) {
+                        dmID = rs.getInt(1);
+                        jlblDMName.setText("Welcome "+rs.getString(2));
+                        arrClass.getDmList().addNewItem(new Deliveryman(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)));
+                    }
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
+
+    private boolean connection() {
+        boolean isSuccess = false;
+
+        try {
+            conn = DriverManager.getConnection(dbURL);
+            if (conn != null) {
+                isSuccess = true;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return isSuccess;
     }
 
 }

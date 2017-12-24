@@ -62,7 +62,6 @@ public class SOSelectDateTime extends JFrame {
     }
 
     public void makeScheduleOrder(ListClass arrClass, int custID, String userName) {
-        JOptionPane.showMessageDialog(null, arrClass.getCustList().getSize());
         displayCurrentDateTime();
         initializeComponent();
         jlblCurrentDate.setFont(font1);

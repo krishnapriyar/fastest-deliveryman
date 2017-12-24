@@ -1,13 +1,20 @@
-
 package ui;
 
 import ModuleD.ui.AcceptDeliveryJob;
 import ModuleD.ui.DeliverymanWorkStatus;
+import ModuleE.entity.ListClass;
+import ModuleE.ui.SOAssignDeliveryJob;
+import ModuleE.ui.SOCheckTodayOrder;
+import javax.swing.JOptionPane;
 
 public class AdminMenu extends javax.swing.JFrame {
 
+    ListClass arrList = new ListClass();
+    String username = "";
+
     public AdminMenu() {
         initComponents();
+
     }
 
     /**
@@ -100,9 +107,19 @@ public class AdminMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void setData(ListClass arrClass, String name) {
+        arrList = arrClass;
+        username = name;
+    }
+
     private void jbtnDeliveryJobActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeliveryJobActionPerformed
-        this.setVisible(false);
-        new AcceptDeliveryJob().setVisible(true);
+
+        SOAssignDeliveryJob assignJob = new SOAssignDeliveryJob();
+        assignJob.setData(arrList, username);
+        
+        LoginFrame login = new LoginFrame();
+        login.setListClass(arrList);
+        AdminMenu.this.setVisible(false);
     }//GEN-LAST:event_jbtnDeliveryJobActionPerformed
 
     private void jbtnWorkStat1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnWorkStat1ActionPerformed
@@ -111,12 +128,15 @@ public class AdminMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnWorkStat1ActionPerformed
 
     private void jbtnDeliveryJob1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeliveryJob1ActionPerformed
+        LoginFrame login = new LoginFrame();
+        login.setListClass(arrList);
+        login.setVisible(true);
         this.setVisible(false);
-        new LoginFrame().setVisible(true);
     }//GEN-LAST:event_jbtnDeliveryJob1ActionPerformed
 
     private void jbtnDeliveryJob2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeliveryJob2ActionPerformed
-        // TODO add your handling code here:
+
+
     }//GEN-LAST:event_jbtnDeliveryJob2ActionPerformed
 
     /**

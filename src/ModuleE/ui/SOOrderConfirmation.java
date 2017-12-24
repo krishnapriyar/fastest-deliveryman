@@ -205,7 +205,7 @@ public class SOOrderConfirmation extends JFrame {
                         int distance = getDistance(address);
                         // add data to schedule order list   
                         int scheduleOrderID = 1000 + arrList.getScOrderClass().size();
-                        ScheduledOrderClass order = new ScheduledOrderClass(scheduleOrderID, receiveDate, receiveTime, "Pending...", distance, Double.parseDouble(jlblShowTotalAmount.getText().toString()), custID, "-");
+                        ScheduledOrderClass order = new ScheduledOrderClass(scheduleOrderID, receiveDate, receiveTime, "Pending...", distance, Double.parseDouble(jlblShowTotalAmount.getText().toString()), custID, 0);
                         arrList.getScOrderClass().addEntry(order);
 
                         for (int i = 0; i < arrList.getItemlist().getSize(); i++) {

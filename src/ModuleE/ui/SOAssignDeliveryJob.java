@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import ui.AdminMenu;
 
 public class SOAssignDeliveryJob extends JFrame {
 
@@ -23,12 +24,11 @@ public class SOAssignDeliveryJob extends JFrame {
     private SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy");
     private SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm aa");
     private ListClass arrList = new ListClass();
-    public SOAssignDeliveryJob() {
-    }
+    private String username;
     
-    public SOAssignDeliveryJob(ListClass arrClass){
-        jlblTitle.setFont(fontTitle);
+    public void setData(ListClass arrClass, String name){
         arrList = arrClass;
+        jlblTitle.setFont(fontTitle);
         
         // jpanel declaration
         JPanel jpnWrap = new JPanel();
@@ -137,7 +137,8 @@ public class SOAssignDeliveryJob extends JFrame {
                         for (int i = 0; i < arrList.getScOrderClass().size(); i++) {
                             if (orderID == arrList.getScOrderClass().getEntry(i).getOrderID()) {
                                 arrList.getScOrderClass().getEntry(i).setStatus("Declined");
-                                new SOAssignDeliveryJob(arrList);
+                                SOAssignDeliveryJob assignJob = new SOAssignDeliveryJob();
+                                assignJob.setData(arrList, username);
                                 SOAssignDeliveryJob.this.setVisible(false);
                             }
                         }
@@ -149,10 +150,12 @@ public class SOAssignDeliveryJob extends JFrame {
                     public void actionPerformed(ActionEvent e) {
                         for (int j = 0; j < arrList.getScOrderClass().size(); j++) {
                             if (orderID == arrList.getScOrderClass().getEntry(j).getOrderID()) {
-                                arrList.getScOrderClass().getEntry(j).setDmName(dmName.getSelectedItem().toString());
+                                //arrList.getScOrderClass().getEntry(j).setDmName(dmName.getSelectedItem().toString());
                                 arrList.getScOrderClass().getEntry(j).setStatus("Accepted");
                                 JOptionPane.showMessageDialog(null, "Job Assign Successfully to " + dmName.getSelectedItem().toString());
-                                new SOAssignDeliveryJob(arrList);
+                               
+                                SOAssignDeliveryJob assignJob = new SOAssignDeliveryJob();
+                                assignJob.setData(arrList, username);
                                 SOAssignDeliveryJob.this.setVisible(false);
                             }
                         }
@@ -163,12 +166,9 @@ public class SOAssignDeliveryJob extends JFrame {
 
         jbtBack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-//                main.arrClass.setScOrderList(arrList.getScOrderList());
-//                main.arrClass.setCustList(arrList.getCustList());
-//                main.arrClass.setScOrderItemList(arrList.getScOrderItemList());
-//                main.arrClass.setItemlist(arrList.getItemlist());
-//                main.arrClass.setDmList(arrList.getDmList());
-
+                AdminMenu admin = new AdminMenu();
+                admin.setData(arrList, username);
+                admin.setVisible(true);
                 SOAssignDeliveryJob.this.setVisible(false);
             }
         });
@@ -181,6 +181,5 @@ public class SOAssignDeliveryJob extends JFrame {
         setSize(900, 600);
         setVisible(true);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 }

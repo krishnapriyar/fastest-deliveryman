@@ -7,6 +7,7 @@ package ui;
 
 import ModuleE.entity.ListClass;
 import ModuleE.ui.CustomerMainMenu;
+import ModuleE.ui.DMMainMenu;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -156,12 +157,17 @@ public class LoginFrame extends javax.swing.JFrame {
                 frame = new ModuleA.ui.CRUD();
                 break;
             case "Deliveryman":
-
+                DMMainMenu main = new DMMainMenu();
+                main.setData(list, username);
+                frame = main;
                 break;
             case "HR Executive":
                 frame = new ModuleB.ui.HRExecMenu();
                 break;
             case "Admin":
+                AdminMenu admin = new AdminMenu();
+                admin.setData(list, username);
+                frame = admin;
                 break;
         }
 
