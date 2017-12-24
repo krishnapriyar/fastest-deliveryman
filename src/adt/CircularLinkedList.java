@@ -140,4 +140,10 @@ public class CircularLinkedList<T> implements ListInterface<T> {
         return str;
     }
 
+    public int getSize() {
+        return size;
+    }
+    
+    
+
 }

@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 public class Registration extends javax.swing.JFrame {
 
     static entity.Restaurant restaurant = new entity.Restaurant();
-    static LinkedList<entity.Restaurant> restaurantList = new LinkedList();
+    static CircularLinkedList<entity.Restaurant> restaurantList = new CircularLinkedList();
 
     String BussName, BussRegNo, address, password, userName, Person, GPSCo, email;
     int TelNo, affID, GSTRegNo;
@@ -334,7 +334,7 @@ public class Registration extends javax.swing.JFrame {
         return restaurant;
     }
 
-    public static LinkedList<Restaurant> getRestaurantList() {
+    public static CircularLinkedList<Restaurant> getRestaurantList() {
         return restaurantList;
     }
 

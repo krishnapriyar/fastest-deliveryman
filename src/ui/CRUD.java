@@ -28,7 +28,7 @@ public class CRUD extends javax.swing.JFrame {
     private String tableName = "ITEM";
     private Connection conn;
     private PreparedStatement stmt;
-    static LinkedList<entity.RestaurantItem> itemList = new LinkedList();
+    static CircularLinkedList<entity.RestaurantItem> itemList = new CircularLinkedList();
     
     static Restaurant restaurant;
 
@@ -36,7 +36,7 @@ public class CRUD extends javax.swing.JFrame {
         this.restaurant = restaurant;
     }
 
-    public void setItemList(LinkedList<RestaurantItem> itemList) {
+    public void setItemList(CircularLinkedList<RestaurantItem> itemList) {
         this.itemList = itemList;
     }
 
