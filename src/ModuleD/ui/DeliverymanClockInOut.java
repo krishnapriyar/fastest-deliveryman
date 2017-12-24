@@ -1,5 +1,7 @@
 package ModuleD.ui;
 
+import ModuleB.ui.HRExecMenu;
+import ModuleB.ui.DeliverymanDetailsFrame;
 import ModuleD.entity.DMClockInOut;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,11 +38,7 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
     private SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
     private DMListInterface<DMClockInOut> list = new DMListImplementation<>();
-
-    private Connection con;
-    private Statement stmt;
-    private ResultSet rSet;
-    private PreparedStatement prepare;
+    private HRExecMenu hrExec = new HRExecMenu();
 
     public DeliverymanClockInOut() {
         initComponents();
@@ -49,60 +47,53 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
         checkInDate = jlblDate.getText();
         jcbDMan.addItem("-- Select --");
 
+//        for (int i = 1; i < hrExec.getDmList().getSize(); i++) {
+//            System.out.print(hrExec.getDmList().getEntry(i).getDmName() + " ");
+//        }
+        for (int i = 1; i <= hrExec.getDmList().getSize(); i++) {
+            jcbDMan.addItem(hrExec.getDmList().getEntry(i).getDmName());
+        }
         try {
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/Fast");
-            prepare = con.prepareStatement("SELECT * FROM DELIVERYMAN");
-            rSet = prepare.executeQuery();
-
-            while (rSet.next()) {
-                jcbDMan.addItem(rSet.getString("DMNAME"));
-                numOfRecord++;
-
-                tempName = rSet.getString("DMNAME");
-                tempID = rSet.getString("DMID");
-                tempStatus = rSet.getString("WORKINGSTATUS");
-
-                try {
-                    list.addNewEntry(new DMClockInOut(tempName, Integer.valueOf(tempID), tempStatus, sdfDate.parse("12/12/2017"), sdfTime.parse("00:00 AM"), sdfTime.parse("00:00 AM")));
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+            for (int i = 1; i <= hrExec.getDmList().getSize(); i++) {
+                list.addNewEntry(new DMClockInOut(hrExec.getDmList().getEntry(i).getDmName(),
+                        hrExec.getDmList().getEntry(i).getDmID(), "Available",
+                        sdfDate.parse("12/12/2017"), sdfTime.parse("00:00 AM"), sdfTime.parse("00:00 AM")));
             }
-
-//            for (int i = 0; i < numOfRecord; i++) {
-//                System.out.println(list.retrieveAllEntry(i).getDmID());
-//            }
-        } catch (SQLException ex) {
-            System.err.println(ex);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
+//        try {
+//            list.addNewEntry(new DMClockInOut(tempName, Integer.valueOf(tempID), tempStatus, sdfDate.parse("12/12/2017"), sdfTime.parse("00:00 AM"), sdfTime.parse("00:00 AM")));
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
         jcbDMan.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DMname = jcbDMan.getSelectedItem().toString();
-                getDMID();
+//                DMname = jcbDMan.getSelectedItem().toString();
+//                getDMID();
+
+                selectedItem = jcbDMan.getSelectedItem().toString();
+
+                for (int i = 1; i <= hrExec.getDmList().getSize(); i++) {
+                    if (hrExec.getDmList().getEntry(i).getDmName().equals(selectedItem)) {
+                        jlblDManID.setText(String.valueOf(hrExec.getDmList().getEntry(i).getDmID()));
+                    }
+                }
             }
         });
     }
 
-    void storeInList() {
-
-    }
-
-    void getDMID() {
-        try {
-            prepare = con.prepareStatement("SELECT DMID FROM DELIVERYMAN WHERE DMNAME = ?");
-            prepare.setString(1, DMname);
-            rSet = prepare.executeQuery();
-
-            if (rSet.next()) {
-                jlblDManID.setText(rSet.getString("DMID"));
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-    }
-
+//    void getDMID() {
+//        
+//        
+//            if(hrExec.getDmList().getEntry(i).equals(DMname)){
+//                jlblDManID.setText(hrExec.getDmList().getEntry(i).getDmName());
+//            }else{
+//                System.out.println("not same");
+//            }
+//    }
     void showDate() {
         date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -239,29 +230,28 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
         if (jlblDManID.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Select a deliveryman!");
         } else {
-            for (int i = 0; i < list.retrieveSize(); i++) {
-                if (list.retrieveAllEntry(i).getDmName().equals(selectedItem)) {
-                    try {
-                        if (list.retrieveAllEntry(i).getClockInDate().equals(sdfDate.parse("24/12/2017"))) {
+            try {
+                for (int j = 0; j < list.retrieveSize(); j++) {
+                    if (list.retrieveAllEntry(j).getDmName().equals(selectedItem)) {
+                        if (list.retrieveAllEntry(j).getClockInDate().equals(sdfDate.parse("25/12/2017"))) {
                             JOptionPane.showMessageDialog(null, "Already clock in!");
                         } else {
                             try {
                                 checkInTime = sdfTime.parse(jlblTime.getText());
-
-                                list.retrieveAllEntry(i).setClockInDate(sdfDate.parse(checkInDate));
-                                list.retrieveAllEntry(i).setClockInTime(checkInTime);
+                                list.retrieveAllEntry(j).setClockInDate(sdfDate.parse(checkInDate));
+                                list.retrieveAllEntry(j).setClockInTime(checkInTime);
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
                             JOptionPane.showMessageDialog(null, "Clock in success!");
                         }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
                     }
                 }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
-        for (int i = 0; i < numOfRecord; i++) {
+        for (int i = 0; i < list.retrieveSize(); i++) {
             System.out.println(list.retrieveAllEntry(i).getDmID()
                     + " " + sdfDate.format(list.retrieveAllEntry(i).getClockInDate())
                     + " " + sdfTime.format(list.retrieveAllEntry(i).getClockInTime())
@@ -275,17 +265,21 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
         if (jlblDManID.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Select a deliveryman!");
         } else {
-            for (int i = 0; i < list.retrieveSize(); i++) {
-                if (list.retrieveAllEntry(i).getDmName().equals(selectedItem)) {
+//            for (int i = 1; i <= hrExec.getDmList().getSize(); i++) {
+//                if (hrExec.getDmList().getEntry(i).getDmName().equals(selectedItem)) {
+            for (int j = 0; j < list.retrieveSize(); j++) {
+                if (list.retrieveAllEntry(j).getDmName().equals(selectedItem)) {
+
                     try {
-                        if (list.retrieveAllEntry(i).getClockInDate().equals(sdfDate.parse("24/12/2017"))) {
-                            if (list.retrieveAllEntry(i).getClockInTime() != null) {
-                                if (list.retrieveAllEntry(i).getClockOutTime() != sdfTime.parse("12:00 AM")) {
-                                    JOptionPane.showMessageDialog(null, "Clock out not success!");
-                                } else {
+                        if (list.retrieveAllEntry(j).getClockInDate().equals(sdfDate.parse("25/12/2017"))) {
+                            if (list.retrieveAllEntry(j).getClockInTime() != null) {
+                                if (list.retrieveAllEntry(j).getClockOutTime().equals(sdfTime.parse("12:00 AM"))) {
+
                                     checkOutTime = sdfTime.parse(jlblTime.getText());
-                                    list.retrieveAllEntry(i).setClockOutTime(checkOutTime);
+                                    list.retrieveAllEntry(j).setClockOutTime(checkOutTime);
                                     JOptionPane.showMessageDialog(null, "Clock out success!");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Operation not allowed!");
                                 }
                             } else {
                                 JOptionPane.showMessageDialog(null, "Clock out not availabe!");
@@ -299,7 +293,7 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
                 }
             }
         }
-        for (int i = 0; i < numOfRecord; i++) {
+        for (int i = 0; i < list.retrieveSize(); i++) {
             System.out.println(list.retrieveAllEntry(i).getDmID()
                     + " " + sdfDate.format(list.retrieveAllEntry(i).getClockInDate())
                     + " " + sdfTime.format(list.retrieveAllEntry(i).getClockInTime())

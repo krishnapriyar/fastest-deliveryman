@@ -1,5 +1,6 @@
 package ModuleD.ui;
 
+import ModuleB.ui.HRExecMenu;
 import ModuleD.entity.OrderClass;
 import ModuleD.entity.DMClockInOut;
 import java.awt.*;
@@ -39,26 +40,26 @@ public class DeliverymanWorkStatus extends javax.swing.JFrame {
         jlblCurrentStat.setFont(new Font("Tahoma", Font.BOLD, 11));
         orderNo.setEnabled(false);
 
-        // NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-        try {
-            listDM.addNewEntry(new DMClockInOut("John", 10000, "Available", sdfDate.parse("12/12/2017"), sdfTime.parse("12:00 AM"), sdfTime.parse("06:00 AM")));
-            listDM.addNewEntry(new DMClockInOut("Adam", 10001, "Break", sdfDate.parse("12/12/2017"), sdfTime.parse("11:11 AM"), sdfTime.parse("09:09 AM")));
-            listDM.addNewEntry(new DMClockInOut("Smith", 10002, "On Leave", sdfDate.parse("12/12/2017"), sdfTime.parse("07:07 AM"), sdfTime.parse("08:08 AM")));
+//        NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+//        try {
+//            listDM.addNewEntry(new DMClockInOut("John", 10000, "Available", sdfDate.parse("12/12/2017"), sdfTime.parse("12:00 AM"), sdfTime.parse("06:00 AM")));
+//            listDM.addNewEntry(new DMClockInOut("Adam", 10001, "Break", sdfDate.parse("12/12/2017"), sdfTime.parse("11:11 AM"), sdfTime.parse("09:09 AM")));
+//            listDM.addNewEntry(new DMClockInOut("Smith", 10002, "On Leave", sdfDate.parse("12/12/2017"), sdfTime.parse("07:07 AM"), sdfTime.parse("08:08 AM")));
 //            queueOrder.add(new OrderClass(20002, "Available", 99, 19.19, "91019191919", 10000));
 //            queueOrder.add(new OrderClass(30003, "Unavailable", 88, 19.19, "12345678233", 10001));
 //            queueOrder.add(new OrderClass(40004, "OTW", 77, 19.19, "68273673678", 10002));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        for (int i = 0; i < listDM.retrieveSize(); i++) {
-            jcbDMname.addItem(listDM.retrieveAllEntry(i).getDmName());
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+        for (int i = 0; i < HRExecMenu.getDmList().getSize(); i++) {
+            jcbDMname.addItem(HRExecMenu.getDmList().getEntry(i));
         }
 
         jcbDMname.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String selectedItem = jcbDMname.getSelectedItem().toString();
 
-                for (int i = 0; i < listDM.retrieveSize(); i++) {
+                for (int i = 0; i < HRExecMenu.getDmList().getSize(); i++) {
                     if (listDM.retrieveAllEntry(i).getDmName().equals(selectedItem)) {
                         jlblDMID.setText(String.valueOf(listDM.retrieveAllEntry(i).getDmID()));
                         jlblCurrentStat.setText(listDM.retrieveAllEntry(i).getStatus());

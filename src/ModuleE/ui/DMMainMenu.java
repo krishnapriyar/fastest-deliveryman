@@ -1,6 +1,7 @@
 package ModuleE.ui;
 
 import ModuleB.entity.Deliveryman;
+import ModuleD.ui.DeliverymanClockInOut;
 import ModuleE.adt.ListImplementation;
 import ModuleE.adt.myListInterface;
 import ModuleE.entity.Customer;
@@ -74,6 +75,8 @@ public class DMMainMenu extends JFrame {
         jbtClockInOut.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
             
+               new DeliverymanClockInOut().setVisible(true);
+                DMMainMenu.this.setVisible(false);
             }
         });
 
