@@ -5,9 +5,8 @@
  */
 package ModuleB.ui;
 
-import ui.*;
-import adt.*;
-import entity.*;
+import ModuleB.adt.*;
+import ModuleB.entity.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

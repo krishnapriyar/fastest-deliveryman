@@ -5,9 +5,9 @@
  */
 package ModuleB.ui;
 
-import ui.*;
-import adt.*;
-import entity.*;
+
+import ModuleB.adt.*;
+import ModuleB.entity.*;
 
 /**
  *
@@ -146,7 +146,7 @@ public class HRExecMenu extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        new LoginFrame().setVisible(true);
+        new ui.LoginFrame().setVisible(true);
         this.dispose();
         
     }//GEN-LAST:event_jButton6ActionPerformed

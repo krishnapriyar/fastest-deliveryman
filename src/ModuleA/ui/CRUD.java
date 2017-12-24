@@ -1,14 +1,9 @@
 package ModuleA.ui;
 
-import ui.*;
-import adt.*;
-import entity.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import ModuleA.adt.*;
+import ModuleA.entity.*;
+import java.sql.*;
 import javax.naming.spi.DirStateFactory.Result;
 import javax.swing.JOptionPane;
 
@@ -29,7 +24,7 @@ public class CRUD extends javax.swing.JFrame {
     private String tableName = "ITEM";
     private Connection conn;
     private PreparedStatement stmt;
-    static CircularLinkedList<entity.RestaurantItem> itemList = new CircularLinkedList();
+    static CircularLinkedList<RestaurantItem> itemList = new CircularLinkedList();
     
     static Restaurant restaurant;
 

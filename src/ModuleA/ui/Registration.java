@@ -5,9 +5,9 @@
  */
 package ModuleA.ui;
 
-import ui.*;
-import adt.*;
-import entity.Restaurant;
+
+import ModuleA.adt.*;
+import ModuleA.entity.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -21,8 +21,8 @@ import javax.swing.JOptionPane;
  */
 public class Registration extends javax.swing.JFrame {
 
-    static entity.Restaurant restaurant = new entity.Restaurant();
-    static CircularLinkedList<entity.Restaurant> restaurantList = new CircularLinkedList();
+    static Restaurant restaurant = new Restaurant();
+    static CircularLinkedList<Restaurant> restaurantList = new CircularLinkedList();
 
     String BussName, BussRegNo, address, password, userName, Person, GPSCo, email;
     int TelNo, affID, GSTRegNo;

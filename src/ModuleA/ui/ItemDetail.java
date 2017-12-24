@@ -1,10 +1,10 @@
 package ModuleA.ui;
 
-import ui.*;
+
 import java.sql.*;
 import javax.swing.JOptionPane;
-import adt.*;
-import entity.*;
+import ModuleA.adt.*;
+import ModuleA.entity.*;
 import javax.swing.JFrame;
 
 /*
@@ -30,11 +30,11 @@ public class ItemDetail extends javax.swing.JFrame {
     public static void setRestaurant(Restaurant restaurant) {
         ItemDetail.restaurant = restaurant;
     }
-    entity.RestaurantItem item = new entity.RestaurantItem();
-    static CircularLinkedList<entity.RestaurantItem> itemList = new CircularLinkedList();
+    RestaurantItem item = new RestaurantItem();
+    static CircularLinkedList<RestaurantItem> itemList = new CircularLinkedList();
     CRUD caller;
 
-    public void setItemList(CircularLinkedList<entity.RestaurantItem> itemList) {
+    public void setItemList(CircularLinkedList<RestaurantItem> itemList) {
         this.itemList = itemList;
     }
 
@@ -173,7 +173,7 @@ public class ItemDetail extends javax.swing.JFrame {
 
     private void jbtAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtAddActionPerformed
         // TODO add your handling code here:
-        entity.RestaurantItem item = new entity.RestaurantItem();
+        RestaurantItem item = new RestaurantItem();
         itemID = Integer.parseInt(jtfID.getText());
         itemName = jtfName.getText();
         category = jtfCategory.getSelectedItem().toString();

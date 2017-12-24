@@ -5,10 +5,10 @@
  */
 package ModuleB.ui;
 
-import ui.*;
-import adt.*;
+
+import ModuleB.adt.*;
 import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
-import entity.*;
+import ModuleB.entity.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

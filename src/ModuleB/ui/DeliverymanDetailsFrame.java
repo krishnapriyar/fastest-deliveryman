@@ -8,8 +8,8 @@ package ModuleB.ui;
 
 import java.sql.*;
 import javax.swing.*;
-import adt.*;
-import entity.*;
+import ModuleB.adt.*;
+import ModuleB.entity.*;
 import static ModuleB.ui.PendingDeliveryFrame.dmList;
 
 /**

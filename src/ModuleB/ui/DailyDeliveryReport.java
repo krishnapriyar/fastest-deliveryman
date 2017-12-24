@@ -5,13 +5,10 @@
  */
 package ModuleB.ui;
 
-import ui.*;
-import adt.*;
-import entity.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
+import ModuleB.adt.*;
+import ModuleB.entity.*;
+import java.sql.*;
 import java.util.GregorianCalendar;
 
 /**

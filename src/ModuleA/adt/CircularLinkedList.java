@@ -5,8 +5,8 @@
  */
 package ModuleA.adt;
 
-import adt.*;
-import entity.Node;
+
+import ModuleA.entity.Node;
 
 /**
  *

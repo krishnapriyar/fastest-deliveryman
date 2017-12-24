@@ -5,7 +5,6 @@
  */
 package ModuleB.entity;
 
-import entity.*;
 import java.util.Date;
 
 /**

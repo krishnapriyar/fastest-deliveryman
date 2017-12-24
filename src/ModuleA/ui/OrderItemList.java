@@ -5,10 +5,10 @@
  */
 package ModuleA.ui;
 
-import ui.*;
-import adt.LinkedList;
-import entity.*;
-import adt.*;
+
+
+import ModuleA.entity.*;
+import ModuleA.adt.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,15 +20,15 @@ import java.sql.ResultSet;
  */
 public class OrderItemList extends javax.swing.JFrame {
 
-    LinkedList<RestaurantItem> itemList = new LinkedList<RestaurantItem>();
+    CircularLinkedList<RestaurantItem> itemList = new CircularLinkedList<RestaurantItem>();
 
     String dbURL = "jdbc:derby://localhost:1527/Fast";
 
-    public void setItemList(LinkedList<RestaurantItem> itemList) {
+    public void setItemList(CircularLinkedList<RestaurantItem> itemList) {
         this.itemList = itemList;
     }
 
-    public LinkedList<RestaurantItem> getItemList() {
+    public CircularLinkedList<RestaurantItem> getItemList() {
         return itemList;
     }
 
@@ -172,7 +172,7 @@ public class OrderItemList extends javax.swing.JFrame {
     public void sortByNewest() {
         
         int itemID = 40001;
-        int listSize = itemList.getNumberOfEntries();
+        int listSize = itemList.getSize();
 
         LinkedStack<RestaurantItem> tempStack = new LinkedStack();
 
@@ -202,7 +202,7 @@ public class OrderItemList extends javax.swing.JFrame {
     public void sortByOldest() {
 
         int itemID = 40001;
-        int listSize = itemList.getNumberOfEntries();
+        int listSize = itemList.getSize();
 
         CircularLinkedQueue<RestaurantItem> tempQueue = new CircularLinkedQueue();
 
@@ -231,11 +231,11 @@ public class OrderItemList extends javax.swing.JFrame {
 
     public void sortByPromo() {
 
-        LinkedList tempList1 = new LinkedList<RestaurantItem>();
-        LinkedList tempList2 = new LinkedList<RestaurantItem>();
+        CircularLinkedList tempList1 = new CircularLinkedList<RestaurantItem>();
+        CircularLinkedList tempList2 = new CircularLinkedList<RestaurantItem>();
         RestaurantItem item;
 
-        for (int i = 0; i < itemList.getNumberOfEntries(); i++) {
+        for (int i = 0; i < itemList.getSize(); i++) {
 
             item = itemList.getEntry(i + 1);
 
@@ -248,14 +248,14 @@ public class OrderItemList extends javax.swing.JFrame {
 
         }
 
-        for (int i = 0; i < tempList2.getNumberOfEntries(); i++) {
+        for (int i = 0; i < tempList2.getSize(); i++) {
             tempList1.add(tempList2.getEntry(i + 1));
         }
 
         itemList = tempList1;
         String displayStr = "Item ID\t Item Name\t Price\t Promotional Item\n";
 
-        for (int i = 0; i < itemList.getNumberOfEntries(); i++) {
+        for (int i = 0; i < itemList.getSize(); i++) {
             item = itemList.getEntry(i + 1);
 
             displayStr += item.getItemID() + "\t" + item.getItemName() + "\t" + item.getUnitPrice() + "\t " + item.getPromoInfo() + "\n";

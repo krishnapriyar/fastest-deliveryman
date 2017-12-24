@@ -5,7 +5,7 @@
  */
 package ModuleB.adt;
 
-import adt.*;
+
 
 /**
  *
