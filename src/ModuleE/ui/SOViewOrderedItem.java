@@ -32,6 +32,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import javax.swing.SwingConstants;
 import static javax.swing.SwingConstants.CENTER;
 import javax.swing.SwingUtilities;
@@ -49,6 +50,7 @@ public class SOViewOrderedItem extends JFrame {
     private double totalAmount = 0.0;
     private Font font = new Font("Arial", Font.BOLD, 18);
     private JLabel jlblShowCustName = new JLabel();
+    private DecimalFormat decimalFormat = new DecimalFormat("#00");
 
     public void displayOrderedItem(ListClass arrClass, int custID, String receiveDate, String receiveTime, String userName) {
           
@@ -144,7 +146,7 @@ public class SOViewOrderedItem extends JFrame {
                         itemQty.setValue(1);
                     } else {
                         itemTotalPrice.setText(String.valueOf(totalPrice(Integer.parseInt(itemQty.getValue().toString()), Double.parseDouble(itemPrice.getText()))));
-                        jlblTotalPrice.setText("Total Amount : RM " + String.valueOf(getTotalAmount(Double.parseDouble(itemPrice.getText()))));
+                        jlblTotalPrice.setText("Total Amount : RM " + String.valueOf(Math.round(getTotalAmount(Double.parseDouble(itemPrice.getText())) * 100) /100));
                     }
                 }
             });

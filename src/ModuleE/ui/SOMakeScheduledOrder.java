@@ -7,6 +7,7 @@ import ModuleE.entity.ScheduledOrderItem;
 import ModuleE.adt.ListImplementation;
 import ModuleE.adt.myListInterface;
 import ModuleE.entity.ListClass;
+import ModuleE.entity.RestaurantClass;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -47,6 +48,7 @@ public class SOMakeScheduledOrder extends JFrame {
     private static PreparedStatement prepare;
     private static ResultSet rs = null;
 
+    private myListInterface<RestaurantClass> resList = new ListImplementation<>();
     private myListInterface<OrderedItemClass> orderedList = new ListImplementation<>();
     private JPanel pnlMain = new JPanel(new GridLayout(1, 1));
     private JPanel pnlOrderDetails = new JPanel(new GridLayout(6, 2));
@@ -65,20 +67,20 @@ public class SOMakeScheduledOrder extends JFrame {
     private JComboBox jcbRestaurant = new JComboBox();
     private Font displayFont = new Font("Arial", Font.PLAIN, 20);
 
-    public void placeOrder() {  
+    public void placeOrder() {
     }
 
     public void orderPage(ListClass arrClass, int custID, String deliveryDate, String deliveryTime, String userName) {
-        
+
         initializeComponent();
         jlblDisplayDate.setText(deliveryDate);
         jlblDisplayTime.setText(deliveryTime);
-        
+
         JButton jbtSearch = new JButton("Get Menu");
         JButton jbtCheckout = new JButton("View Ordered Item(s)");
         JButton jbtClear = new JButton("Clear Menu List");
         jbtCheckout.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        
+
         jcbState.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (jcbState.getSelectedItem().toString().equals("-- Select --")) {
@@ -89,12 +91,14 @@ public class SOMakeScheduledOrder extends JFrame {
                 }
             }
         });
-        
-        jcbCity.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+
+        jcbCity.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 if (jcbCity.getSelectedItem().toString().equals("-- Select --")) {
+                    jcbRestaurant.removeAllItems();
                     jcbRestaurant.enable(false);
-                } else {                    
+                } else {
+                    jcbRestaurant.removeAllItems();
                     getRestaurant(jcbCity.getSelectedItem().toString());
                     jcbRestaurant.enable(true);
                 }
@@ -104,15 +108,19 @@ public class SOMakeScheduledOrder extends JFrame {
         //search button action listener
         jbtSearch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
-                if (jcbState.getSelectedIndex() != 0 && jcbCity.getSelectedIndex()!=0 && jcbRestaurant.getSelectedIndex() != 0) {
-                    String[] restaurantSplit = jcbRestaurant.getSelectedItem().toString().split(" ");
-                    ItemListingPage listingPage = new ItemListingPage();
-                    listingPage.setListClass(arrClass);
-                    listingPage.ItemListingPage(Integer.parseInt(restaurantSplit[0]));
-                    arrClass.setItemlist(orderedList);
-                }else{
-                    JOptionPane.showMessageDialog(null,"Choose your preference state, city and restaurant to get Menu !");
+                if (jcbState.getSelectedIndex() != 0 && jcbCity.getSelectedIndex() != 0 && jcbRestaurant.getSelectedIndex() != -1) {
+                    for (int i = 0; i < resList.getSize(); i++) {
+                        if (jcbRestaurant.getSelectedItem().toString().equals(resList.getAllData(i).getResName())) {  
+                           
+                            ItemListingPage listingPage = new ItemListingPage();
+                            listingPage.setListClass(arrClass);
+                            listingPage.ItemListingPage(resList.getAllData(i).getResID());
+                            arrClass.setItemlist(orderedList);
+                        }
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Choose your preference state, city and restaurant to get Menu !");
                 }
             }
         });
@@ -149,7 +157,7 @@ public class SOMakeScheduledOrder extends JFrame {
         jcbRestaurant.setFont(displayFont);
         jbtClear.setFont(displayFont);
         jbtSearch.setFont(displayFont);
-        
+
         JPanel nPanel = new JPanel();
         pnlOrderDetails.add(jlblDeliveryDate);
         pnlOrderDetails.add(jlblDisplayDate);
@@ -229,7 +237,7 @@ public class SOMakeScheduledOrder extends JFrame {
                 while (rs.next()) {
                     jcbCity.addItem(rs.getString("CITY"));
                 }
-                 
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -240,14 +248,20 @@ public class SOMakeScheduledOrder extends JFrame {
     }
 
     public void getRestaurant(String cityName) {
-        jcbRestaurant.revalidate();
-        jcbRestaurant.addItem("-- Select --");
+        //jcbRestaurant.addItem("-- Select --");
+        resList.clearList();
         if (connection() == true) {
             try {
                 prepare = conn.prepareStatement("SELECT AFFID, BUSINESSNAME, ADDRESS FROM AFFILIATE WHERE AFFILIATE.ADDRESS LIKE '%" + cityName + "%'");
                 rs = prepare.executeQuery();
                 while (rs.next()) {
-                    jcbRestaurant.addItem(rs.getInt("AFFID") + " " + rs.getString("BUSINESSNAME"));
+                    resList.addNewItem(new RestaurantClass(rs.getInt("AFFID"), rs.getString("BUSINESSNAME")));
+                }
+
+                if (resList.getSize() > 0) {
+                    for (int i = 0; i < resList.getSize(); i++) {
+                        jcbRestaurant.addItem(resList.getAllData(i).getResName());
+                    }
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -256,5 +270,5 @@ public class SOMakeScheduledOrder extends JFrame {
             JOptionPane.showMessageDialog(null, "Fail to connect with database");
         }
     }
-    
+
 }

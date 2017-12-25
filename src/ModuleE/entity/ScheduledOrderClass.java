@@ -107,9 +107,9 @@ public class ScheduledOrderClass implements Comparable<ScheduledOrderClass>{
 
     @Override
     public int compareTo(ScheduledOrderClass o) {
-        if(this.getReceiveDate().compareTo(o.receiveDate) == 0){
+        if(this.getReceiveDate().compareTo(o.receiveDate) == 0)
             return this.getReceiveTime().compareTo(o.receiveTime);
-        }
+        
         return this.getReceiveDate().compareTo(o.receiveDate);
     }
 

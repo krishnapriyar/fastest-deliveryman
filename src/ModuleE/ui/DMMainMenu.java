@@ -2,39 +2,25 @@ package ModuleE.ui;
 
 import ModuleB.entity.Deliveryman;
 import ModuleD.ui.DeliverymanClockInOut;
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.myListInterface;
-import ModuleE.entity.Customer;
 import ModuleE.entity.ListClass;
 import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import ui.LoginFrame;
 
 /**
  *
- * @author chong
+ * @author Chong Kun Ming
  */
 public class DMMainMenu extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
-    private static Connection conn = null;
-    private static PreparedStatement prepare;
-    private static ResultSet rs = null;
+    private static java.sql.Connection conn = null;
+    private static  java.sql.PreparedStatement prepare;
+    private static java.sql.ResultSet rs = null;
     static ListClass arrClass = new ListClass();
-    private Font font = new Font("Arial", Font.PLAIN, 20);
+    private java.awt.Font font = new java.awt.Font("Arial", java.awt.Font.PLAIN, 20);
     private int dmID = 0;
     private JLabel jlblDMName = new JLabel();
     private String username;
@@ -44,36 +30,36 @@ public class DMMainMenu extends JFrame {
         username = name;
 
         getDMInfo(username);
-        JPanel jpnSouth1 = new JPanel(new GridLayout(2, 2));
+        JPanel jpnSouth1 = new JPanel(new java.awt.GridLayout(2, 2));
         
         JLabel jlblPageTitle = new JLabel("Delivery Man Menu");
         JButton jbtCheckTodayOrder = new JButton("Check Today's Order");
-        JButton jbtClockInOut = new JButton("Clock In and Out");
-        
+        JButton jbtClockInOut = new JButton("Clock In and Out");   
         JButton jbtLogout = new JButton("Logout");
+        
         jlblDMName.setFont(font);
         jlblPageTitle.setFont(font);
         jbtCheckTodayOrder.setFont(font);
         jbtLogout.setFont(font);
         jbtClockInOut.setFont(font);
 
-        jbtCheckTodayOrder.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        jbtCheckTodayOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
                 SOCheckTodayOrder so = new SOCheckTodayOrder(arrClass, dmID);
                 DMMainMenu.this.setVisible(false);
             }
         });
 
-        jbtLogout.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                LoginFrame login = new LoginFrame();
+        jbtLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                ui.LoginFrame login = new ui.LoginFrame();
                 login.setListClass(arrClass);
                 DMMainMenu.this.setVisible(false);
             }
         });
         
-        jbtClockInOut.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        jbtClockInOut.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent e){
             
                new DeliverymanClockInOut().setVisible(true);
                 DMMainMenu.this.setVisible(false);
@@ -120,7 +106,7 @@ public class DMMainMenu extends JFrame {
         boolean isSuccess = false;
 
         try {
-            conn = DriverManager.getConnection(dbURL);
+            conn = java.sql.DriverManager.getConnection(dbURL);
             if (conn != null) {
                 isSuccess = true;
             }

@@ -15,42 +15,34 @@ public class SortedListImplementation<T extends Comparable<T>> implements Sorted
     @Override
     public void addEntry(T newEntry) {
         Node newNode = new Node(newEntry);
+        Node tempNode = firstNode;
+        Node nodeBefore = null;
 
         if (firstNode == null) {
             firstNode = newNode;
         } else {
-            if (firstNode.next == null) {
-                if (firstNode.data.compareTo(newNode.data) <= 0) {
-                    firstNode.next = newNode;
-                } else {
-                    newNode.next = firstNode;
-                    firstNode = newNode;
-                }
+            if (tempNode != null && tempNode.data.compareTo(newNode.data) > 0) {
+                newNode.next = tempNode;
+                tempNode = newNode;
+                firstNode = tempNode;
             } else {
-
-                Node tempNode = firstNode;
-                Node currentNode = null;
-                if (tempNode.data.compareTo(newNode.data) > 0) {
-                    newNode.next = tempNode;
-                    firstNode = newNode;
-                } else {
-                    while (tempNode.data.compareTo(newNode.data) <= 0) {
-                        currentNode = tempNode;
-                        if (tempNode.next == null) {
-                            tempNode.next = newNode;
-                        }
-                        tempNode = tempNode.next;
+                while (tempNode != null && tempNode.data.compareTo(newNode.data) < 0) {
+                    nodeBefore = tempNode;
+                    if (tempNode.next == null) {
+                        tempNode.next = newNode;
                     }
-                    if (tempNode.data.compareTo(newNode.data) > 0) {
-                        currentNode.next = newNode;
-                        newNode.next = tempNode;
-                    }
+                    tempNode = tempNode.next;
                 }
+                if (tempNode.data.compareTo(newNode.data) > 0) {
+                    nodeBefore.next = newNode;
+                    newNode.next = tempNode;
+                }
+
             }
         }
         numberOfEntries++;
     }
-    
+
     @Override
     public T getEntry(int position) {
         T data = null;

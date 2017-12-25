@@ -86,11 +86,13 @@
                   <Component id="jlblDate" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jlblName" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="DMID" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jcbDMname" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jlblDMID" alignment="1" min="-2" pref="17" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jlblName" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="DMID" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jcbDMname" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
