@@ -132,7 +132,7 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
             String display = "No.\tDM ID \t Name \tTotal Deliveries \tDistance Travelled\n\n";
             int count = 1;
             LinkedStack<Integer> stack = new LinkedStack();
-            stack.push(0);
+
             LinkedStack<String> stack2 = new LinkedStack();
             
             for (int i = 0; i < dmList.getSize(); i++) {
