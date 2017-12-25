@@ -9,7 +9,7 @@ package ModuleA.entity;
 
 /**
  *
- * @author Priya
+ * @author Lysan Chen
  */
 public class Node<T> {
     
