@@ -49,6 +49,7 @@ public class SortedListImplementation<T extends Comparable<T>> implements Sorted
 
         return data;
     }
+   
 
     @Override
     public int size() {
