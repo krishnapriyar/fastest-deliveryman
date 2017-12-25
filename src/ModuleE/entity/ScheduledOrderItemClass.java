@@ -1,13 +1,13 @@
 
 package ModuleE.entity;
 
-public class ScheduledOrderItem{
+public class ScheduledOrderItemClass{
     private double itemUnitPrice;
     private String itemName;
     private int qty;
     private int scheduleOrderID;
 
-    public ScheduledOrderItem(double itemUnitPrice, int qty, String itemName, int scheduleOrderID){
+    public ScheduledOrderItemClass(double itemUnitPrice, int qty, String itemName, int scheduleOrderID){
       
         this.itemUnitPrice = itemUnitPrice;
         this.qty = qty;

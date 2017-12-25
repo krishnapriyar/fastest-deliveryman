@@ -18,7 +18,7 @@ import org.jdesktop.swingx.JXDatePicker;
  * @author chong kun ming RSD 3
  */
 
-public class SOSelectDateTime extends JFrame {
+public class SelectDateTimeUI extends JFrame {
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
     private static Connection conn = null;
     private static PreparedStatement prepare;
@@ -44,7 +44,7 @@ public class SOSelectDateTime extends JFrame {
     private JLabel jlblCurrentDate = new JLabel();
     private JLabel jlblCurrentTime = new JLabel();
     private JLabel jlblCustomerName = new JLabel();
-    public SOSelectDateTime() {
+    public SelectDateTimeUI() {
 
     }
 
@@ -111,9 +111,9 @@ public class SOSelectDateTime extends JFrame {
                             String deliverDate = sdf2.format(receiveDate);
                             String deliverTime = sdf1.format(receiveTime);
                             
-                            SOMakeScheduledOrder so = new SOMakeScheduledOrder();
+                            MakeNewOrderUI so = new MakeNewOrderUI();
                             so.orderPage(arrClass, custID, deliverDate, deliverTime, userName);
-                            SOSelectDateTime.this.dispose();
+                            SelectDateTimeUI.this.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Receive date cannot before today's date");
                         }

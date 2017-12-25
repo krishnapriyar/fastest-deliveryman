@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author chong kun ming RSD 3
  */
 
-public class SOViewMyOrder extends JFrame {
+public class ViewMyOrderUI extends JFrame {
 
     private JPanel jpnTop = new JPanel(new GridLayout(3, 2));
     private JLabel jlblCurrentDate = new JLabel();
@@ -31,7 +31,7 @@ public class SOViewMyOrder extends JFrame {
     private Font itemFont = new Font("Arial", Font.PLAIN, 20);
     public ListGetterSetter arrClass = new ListGetterSetter();
 
-    public SOViewMyOrder() {
+    public ViewMyOrderUI() {
 
     }
 
@@ -99,7 +99,7 @@ public class SOViewMyOrder extends JFrame {
                 jbtViewOrderedItem[i].addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         String schedule_orderID = sc_orderID.getText();
-                        ViewItemOrdered view = new ViewItemOrdered();
+                        ViewOrderedItemUI view = new ViewOrderedItemUI();
                         view.pageContent(Integer.parseInt(schedule_orderID), arrClass.getScOrderItemList(), arrClass.getItemlist());
                     }
                 });
@@ -109,8 +109,8 @@ public class SOViewMyOrder extends JFrame {
 
         jbtOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new CustomerMainMenu(arrClass, userName);
-                SOViewMyOrder.this.setVisible(false);
+                new CustomerMainMenuUI(arrClass, userName);
+                ViewMyOrderUI.this.setVisible(false);
             }
         });
 

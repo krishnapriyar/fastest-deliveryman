@@ -8,17 +8,17 @@ import ModuleE.adt.SortedListInterface;
 import ModuleE.adt.myListInterface;
 
 public class ListGetterSetter {
-    private myListInterface<ScheduledOrderClass> scOrderList = new ListImplementation<>();
-    private myListInterface<ScheduledOrderItem> scOrderItemList = new ListImplementation<>();
+    private myListInterface<ScheduleOrderClass> scOrderList = new ListImplementation<>();
+    private myListInterface<ScheduledOrderItemClass> scOrderItemList = new ListImplementation<>();
     private myListInterface<Customer> custList = new ListImplementation<>();
     private myListInterface<OrderedItemClass> itemlist = new ListImplementation<>();
     private myListInterface<Deliveryman> dmList = new ListImplementation<>();
-    private SortedListInterface<ScheduledOrderClass> scOrderClass = new SortedListImplementation<>();
+    private SortedListInterface<ScheduleOrderClass> scOrderClass = new SortedListImplementation<>();
     
     public ListGetterSetter(){
     }
     
-    public ListGetterSetter(myListInterface<ScheduledOrderClass> scOrderList, myListInterface<ScheduledOrderItem> scOrderItemList, myListInterface<Customer> custList, myListInterface<OrderedItemClass> itemlist, myListInterface<Deliveryman> dmList, SortedListInterface<ScheduledOrderClass> scOrderClass) {
+    public ListGetterSetter(myListInterface<ScheduleOrderClass> scOrderList, myListInterface<ScheduledOrderItemClass> scOrderItemList, myListInterface<Customer> custList, myListInterface<OrderedItemClass> itemlist, myListInterface<Deliveryman> dmList, SortedListInterface<ScheduleOrderClass> scOrderClass) {
         this.scOrderList = scOrderList;
         this.scOrderItemList = scOrderItemList;
         this.custList = custList;
@@ -27,7 +27,7 @@ public class ListGetterSetter {
         this.scOrderClass = scOrderClass;
     }
     
-    public ListGetterSetter(myListInterface<ScheduledOrderClass> scOrderList, myListInterface<ScheduledOrderItem> scOrderItemList, myListInterface<OrderedItemClass> itemlist, myListInterface<Deliveryman> dmList, SortedListInterface<ScheduledOrderClass> scOrderClass) {
+    public ListGetterSetter(myListInterface<ScheduleOrderClass> scOrderList, myListInterface<ScheduledOrderItemClass> scOrderItemList, myListInterface<OrderedItemClass> itemlist, myListInterface<Deliveryman> dmList, SortedListInterface<ScheduleOrderClass> scOrderClass) {
         this.scOrderList = scOrderList;
         this.scOrderItemList = scOrderItemList;
         this.itemlist = itemlist;
@@ -51,19 +51,19 @@ public class ListGetterSetter {
         this.itemlist = itemlist;
     }
 
-    public myListInterface<ScheduledOrderClass> getScOrderList() {
+    public myListInterface<ScheduleOrderClass> getScOrderList() {
         return this.scOrderList;
     }
 
-    public void setScOrderList(myListInterface<ScheduledOrderClass> scOrderList) {
+    public void setScOrderList(myListInterface<ScheduleOrderClass> scOrderList) {
         this.scOrderList = scOrderList;
     }
 
-    public myListInterface<ScheduledOrderItem> getScOrderItemList() {
+    public myListInterface<ScheduledOrderItemClass> getScOrderItemList() {
         return this.scOrderItemList;
     }
 
-    public void setScOrderItemList(myListInterface<ScheduledOrderItem> scOrderItemList) {
+    public void setScOrderItemList(myListInterface<ScheduledOrderItemClass> scOrderItemList) {
         this.scOrderItemList = scOrderItemList;
     }
 
@@ -75,11 +75,11 @@ public class ListGetterSetter {
         this.dmList = dmList;
     } 
 
-    public SortedListInterface<ScheduledOrderClass> getScOrderClass() {
+    public SortedListInterface<ScheduleOrderClass> getScOrderClass() {
         return scOrderClass;
     }
 
-    public void setScOrderClass(SortedListInterface<ScheduledOrderClass> scOrderClass) {
+    public void setScOrderClass(SortedListInterface<ScheduleOrderClass> scOrderClass) {
         this.scOrderClass = scOrderClass;
     }
     

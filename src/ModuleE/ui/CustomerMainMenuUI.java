@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  *
  * @author chong kun ming RSD 3
  */
-public class CustomerMainMenu extends JFrame {
+public class CustomerMainMenuUI extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
     private static java.sql.Connection conn = null;
@@ -23,11 +23,11 @@ public class CustomerMainMenu extends JFrame {
     private int custID;
     public ModuleE.entity.ListGetterSetter arrList = new ModuleE.entity.ListGetterSetter();
     
-    public CustomerMainMenu() {
+    public CustomerMainMenuUI() {
         
     }
     
-    public CustomerMainMenu(ModuleE.entity.ListGetterSetter arrClass, String username) {
+    public CustomerMainMenuUI(ModuleE.entity.ListGetterSetter arrClass, String username) {
         arrList = arrClass;
         getCustInfo(username);
         
@@ -54,18 +54,18 @@ public class CustomerMainMenu extends JFrame {
         
         jbtViewScheduledOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                SOViewMyOrder view = new SOViewMyOrder();
+                ViewMyOrderUI view = new ViewMyOrderUI();
                 
                 view.pageContent(arrClass, custID, username);
-                CustomerMainMenu.this.setVisible(false);
+                CustomerMainMenuUI.this.setVisible(false);
             }
         });
         
         jbtMakeScheduleOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                SOSelectDateTime makeBooking = new SOSelectDateTime();
+                SelectDateTimeUI makeBooking = new SelectDateTimeUI();
                 makeBooking.makeScheduleOrder(arrClass, custID, username);
-                CustomerMainMenu.this.setVisible(false);
+                CustomerMainMenuUI.this.setVisible(false);
             }
         });
         
@@ -74,7 +74,7 @@ public class CustomerMainMenu extends JFrame {
                 ui.LoginFrame login = new ui.LoginFrame();
                 login.setListClass(arrList);
                 login.setVisible(true);
-                CustomerMainMenu.this.setVisible(false);
+                CustomerMainMenuUI.this.setVisible(false);
             }
         });
         

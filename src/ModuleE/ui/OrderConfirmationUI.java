@@ -15,7 +15,7 @@ import org.jdesktop.swingx.JXDatePicker;
  * @author chong kun ming RSD 3
  */
 
-public class SOOrderConfirmation extends JFrame {
+public class OrderConfirmationUI extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
     private static Connection conn = null;
@@ -45,11 +45,11 @@ public class SOOrderConfirmation extends JFrame {
     private myListInterface<String> cityList = new ListImplementation<>();
     public myListInterface<Customer> custList = new ListImplementation<Customer>();
     private DecimalFormat decimalFormat = new DecimalFormat("#00");
-    private SortedListInterface<ScheduledOrderClass> scOrderClass = new SortedListImplementation<>();
+    private SortedListInterface<ScheduleOrderClass> scOrderClass = new SortedListImplementation<>();
     private ListGetterSetter arrList = new ListGetterSetter();
     private int custID = 0;
     private String address = "";
-    public SOOrderConfirmation() {
+    public OrderConfirmationUI() {
 
     }
 
@@ -177,18 +177,18 @@ public class SOOrderConfirmation extends JFrame {
                     } else if (!receiveDate.before(currentDate)) {
                         int distance = getDistance(address);
                         int scheduleOrderID = 1000 + arrList.getScOrderClass().size();
-                        ScheduledOrderClass order = new ScheduledOrderClass(scheduleOrderID, receiveDate, receiveTime, "Pending...", distance, Double.parseDouble(jlblShowTotalAmount.getText().toString()), custID, 0);
+                        ScheduleOrderClass order = new ScheduleOrderClass(scheduleOrderID, receiveDate, receiveTime, "Pending...", distance, Double.parseDouble(jlblShowTotalAmount.getText().toString()), custID, 0);
                         arrList.getScOrderClass().addEntry(order);
 
                         for (int i = 0; i < arrList.getItemlist().getSize(); i++) {
-                            ScheduledOrderItem scOrder = new ScheduledOrderItem(arrList.getItemlist().getAllData(i).getItemPrice(), arrList.getItemlist().getAllData(i).getQty(), arrList.getItemlist().getAllData(i).getItemName(), order.getOrderID());
+                            ScheduledOrderItemClass scOrder = new ScheduledOrderItemClass(arrList.getItemlist().getAllData(i).getItemPrice(), arrList.getItemlist().getAllData(i).getQty(), arrList.getItemlist().getAllData(i).getItemName(), order.getOrderID());
                             arrList.getScOrderItemList().addNewItem(scOrder);
                         }
 
-                        SOViewMyOrder view = new SOViewMyOrder();
+                        ViewMyOrderUI view = new ViewMyOrderUI();
 
                         view.pageContent(arrList, custID, userName);
-                        SOOrderConfirmation.this.dispose();
+                        OrderConfirmationUI.this.dispose();
    
                     } else {
                         JOptionPane.showMessageDialog(null, "Receive date cannot ealier than today's date");

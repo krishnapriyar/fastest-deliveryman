@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
  *
  * @author chong kun ming RSD 3
  */
-public class SOViewOrderedItem extends JFrame {
+public class SelectedItemListingUI extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
     private static Connection conn = null;
@@ -129,9 +129,9 @@ public class SOViewOrderedItem extends JFrame {
             jbtRemove[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     arrClass.getItemlist().removeItem(Integer.parseInt(action) + 1);
-                    SOViewOrderedItem s = new SOViewOrderedItem();
+                    SelectedItemListingUI s = new SelectedItemListingUI();
                     s.displayOrderedItem(arrClass, custID, receiveDate, receiveTime, userName);
-                    SOViewOrderedItem.this.setVisible(false);
+                    SelectedItemListingUI.this.setVisible(false);
                 }
             });
         }
@@ -154,17 +154,17 @@ public class SOViewOrderedItem extends JFrame {
                     oList.addNewItem(new OrderedItemClass(itemID, itemName, itemPrice, totalAmount, quantity));
                 }
                 arrClass.setItemlist(oList);
-                SOOrderConfirmation sot = new SOOrderConfirmation();
+                OrderConfirmationUI sot = new OrderConfirmationUI();
                 sot.orderDetails(arrClass, custID, receiveDate, receiveTime, userName);
-                SOViewOrderedItem.this.setVisible(false);
+                SelectedItemListingUI.this.setVisible(false);
             }
         });
 
         jbtBack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new SOMakeScheduledOrder().orderPage(arrClass, custID, receiveDate, receiveTime, userName);
+                new MakeNewOrderUI().orderPage(arrClass, custID, receiveDate, receiveTime, userName);
                 setVisible(true);
-                SOViewOrderedItem.this.dispose();
+                SelectedItemListingUI.this.dispose();
             }
         });
 

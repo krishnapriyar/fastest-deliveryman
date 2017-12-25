@@ -11,7 +11,7 @@ import javax.swing.JPanel;
  *
  * @author chong kun ming RSD 3
  */
-public class DeliveryDetails extends JFrame {
+public class ViewDeliveryDetailsUI extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
     private static java.sql.Connection conn = null;
@@ -32,11 +32,11 @@ public class DeliveryDetails extends JFrame {
     private JLabel jlblDesc  = new JLabel();
     private java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("#.00");
 
-    public DeliveryDetails() {
+    public ViewDeliveryDetailsUI() {
 
     }
 
-    public DeliveryDetails(int orderID, ModuleE.entity.ListGetterSetter arrList, int custID) {
+    public ViewDeliveryDetailsUI(int orderID, ModuleE.entity.ListGetterSetter arrList, int custID) {
         getDMInfo(custID);
         arrClass = arrList;
         JPanel jpn = new JPanel(new GridLayout(7, 2));
@@ -104,7 +104,7 @@ public class DeliveryDetails extends JFrame {
 
         jbtOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                DeliveryDetails.this.setVisible(false);
+                ViewDeliveryDetailsUI.this.setVisible(false);
             }
         });
 

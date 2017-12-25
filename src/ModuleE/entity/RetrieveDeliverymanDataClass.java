@@ -4,7 +4,7 @@ package ModuleE.entity;
  *
  * @author chong kun ming RSD 3
  */
-public class RetrieveDeliverymanData {
+public class RetrieveDeliverymanDataClass {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
     private static java.sql.Connection conn = null;
@@ -20,7 +20,7 @@ public class RetrieveDeliverymanData {
         return list;
     }
 
-    public RetrieveDeliverymanData() {
+    public RetrieveDeliverymanDataClass() {
         getDMInfo();
     }
 

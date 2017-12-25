@@ -9,7 +9,7 @@ import javax.swing.*;
  * @author chong kun ming RSD 3
  */
 
-public class SOCheckTodayOrder extends JFrame {
+public class ViewTodayTaskUI extends JFrame {
 
     private JLabel jlblCurrentDate = new JLabel();
     private JLabel jlblCurrentTime = new JLabel();
@@ -27,7 +27,7 @@ public class SOCheckTodayOrder extends JFrame {
         arrList = list;
     }
     
-    public SOCheckTodayOrder(ModuleE.entity.ListGetterSetter arrClass, int dmID) {
+    public ViewTodayTaskUI(ModuleE.entity.ListGetterSetter arrClass, int dmID) {
         arrList = arrClass;
         
         for(int i = 0 ; i < arrList.getDmList().getSize(); i ++){
@@ -116,13 +116,13 @@ public class SOCheckTodayOrder extends JFrame {
                 JLabel id = jlblOrderID[i];
                 jbtOrderedItems[i].addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent e) {
-                        new ViewItemOrdered().pageContent(Integer.parseInt(id.getText()), arrList.getScOrderItemList(), arrList.getItemlist());
+                        new ViewOrderedItemUI().pageContent(Integer.parseInt(id.getText()), arrList.getScOrderItemList(), arrList.getItemlist());
                     }
                 });
                 
                 jbtDeliveryDetails[i].addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent e) {
-                        new DeliveryDetails(Integer.parseInt(id.getText()), arrList, custID).setVisible(true);
+                        new ViewDeliveryDetailsUI(Integer.parseInt(id.getText()), arrList, custID).setVisible(true);
                     }
                 });
             }
@@ -130,10 +130,10 @@ public class SOCheckTodayOrder extends JFrame {
         
         jbtBack.addActionListener(new java.awt.event.ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent e){
-                DMMainMenu main = new DMMainMenu();
+                DMMainMenuUI main = new DMMainMenuUI();
                 main.setData(arrList, dmName);
                 main.setVisible(true);
-                SOCheckTodayOrder.this.setVisible(false);
+                ViewTodayTaskUI.this.setVisible(false);
             }
         });
         

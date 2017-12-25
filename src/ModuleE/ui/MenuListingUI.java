@@ -11,7 +11,7 @@ import javax.swing.JPanel;
  *
  * @author chong kun ming RSD 3
  */
-public class ItemListingPage extends JFrame {
+public class MenuListingUI extends JFrame {
 
     private ModuleE.adt.myListInterface<ModuleE.entity.OrderedItemClass> list = new ModuleE.adt.ListImplementation<>();
     private ModuleE.adt.myListInterface<ModuleE.entity.OrderedItemClass> orderedlist = new ModuleE.adt.ListImplementation<>();
@@ -76,7 +76,7 @@ public class ItemListingPage extends JFrame {
 
         jbtOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                ItemListingPage.this.setVisible(false);
+                MenuListingUI.this.setVisible(false);
             }
         });
 

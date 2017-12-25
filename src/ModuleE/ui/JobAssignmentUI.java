@@ -14,7 +14,7 @@ import javax.swing.JScrollPane;
  * @author chong kun ming RSD 3
  */
 
-public class SOAssignDeliveryJob extends JFrame {
+public class JobAssignmentUI extends JFrame {
 
     private JLabel jlblTitle = new JLabel("Assign Job to delivery man");
     private java.awt.Font fontTitle = new java.awt.Font("Arial", java.awt.Font.PLAIN, 28);
@@ -23,7 +23,7 @@ public class SOAssignDeliveryJob extends JFrame {
     private java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("hh:mm aa");
     private ModuleE.entity.ListGetterSetter arrList = new ModuleE.entity.ListGetterSetter();
     private String username, dmName;
-    private ModuleE.entity.RetrieveDeliverymanData t = new ModuleE.entity.RetrieveDeliverymanData();
+    private ModuleE.entity.RetrieveDeliverymanDataClass t = new ModuleE.entity.RetrieveDeliverymanDataClass();
     private int dmID = 0;
 
     public void setData(ModuleE.entity.ListGetterSetter arrClass, String name) {
@@ -150,9 +150,9 @@ public class SOAssignDeliveryJob extends JFrame {
                         for (int i = 0; i < arrList.getScOrderClass().size(); i++) {
                             if (orderID == arrList.getScOrderClass().getEntry(i).getOrderID()) {
                                 arrList.getScOrderClass().getEntry(i).setStatus("Declined");
-                                SOAssignDeliveryJob assignJob = new SOAssignDeliveryJob();
+                                JobAssignmentUI assignJob = new JobAssignmentUI();
                                 assignJob.setData(arrList, username);
-                                SOAssignDeliveryJob.this.setVisible(false);
+                                JobAssignmentUI.this.setVisible(false);
                             }
                         }
                     }
@@ -169,9 +169,9 @@ public class SOAssignDeliveryJob extends JFrame {
                                     arrList.getScOrderClass().getEntry(j).setStatus("Accepted");
                                     JOptionPane.showMessageDialog(null, "Job Assign Successfully to " + dmName);
 
-                                    SOAssignDeliveryJob assignJob = new SOAssignDeliveryJob();
+                                    JobAssignmentUI assignJob = new JobAssignmentUI();
                                     assignJob.setData(arrList, username);
-                                    SOAssignDeliveryJob.this.setVisible(false);
+                                    JobAssignmentUI.this.setVisible(false);
                                 }
                             }
                         }
@@ -185,7 +185,7 @@ public class SOAssignDeliveryJob extends JFrame {
                 ui.AdminMenu admin = new ui.AdminMenu();
                 admin.setData(arrList, username);
                 admin.setVisible(true);
-                SOAssignDeliveryJob.this.setVisible(false);
+                JobAssignmentUI.this.setVisible(false);
             }
         });
 

@@ -13,7 +13,7 @@ import javax.swing.*;
  * @author chong kun ming RSD 3
  */
 
-public class SOMakeScheduledOrder extends JFrame {
+public class MakeNewOrderUI extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
     private static java.sql.Connection conn = null;
@@ -84,7 +84,7 @@ public class SOMakeScheduledOrder extends JFrame {
                     for (int i = 0; i < resList.getSize(); i++) {
                         if (jcbRestaurant.getSelectedItem().toString().equals(resList.getAllData(i).getResName())) {  
                            
-                            ItemListingPage listingPage = new ItemListingPage();
+                            MenuListingUI listingPage = new MenuListingUI();
                             listingPage.setListClass(arrClass);
                             listingPage.ItemListingPage(resList.getAllData(i).getResID());
                             arrClass.setItemlist(orderedList);
@@ -108,8 +108,8 @@ public class SOMakeScheduledOrder extends JFrame {
                 if (orderedList.getSize() < 1) {
                     JOptionPane.showMessageDialog(null, "You do not have order any item !");
                 } else {
-                    new SOViewOrderedItem().displayOrderedItem(arrClass, custID, deliveryDate, deliveryTime, userName);
-                    SOMakeScheduledOrder.this.setVisible(false);
+                    new SelectedItemListingUI().displayOrderedItem(arrClass, custID, deliveryDate, deliveryTime, userName);
+                    MakeNewOrderUI.this.setVisible(false);
                 }
             }
         });

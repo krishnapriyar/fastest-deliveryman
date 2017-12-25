@@ -8,17 +8,17 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
-public class ViewItemOrdered extends JFrame{
-    private myListInterface<ScheduledOrderItem> list = new ListImplementation<>();
+public class ViewOrderedItemUI extends JFrame{
+    private myListInterface<ScheduledOrderItemClass> list = new ListImplementation<>();
     
-    public ViewItemOrdered(){
+    public ViewOrderedItemUI(){
     
     }
     
-    public void pageContent(int scheduleOrderID, myListInterface<ScheduledOrderItem> orderItem, myListInterface<OrderedItemClass> itemlist){
+    public void pageContent(int scheduleOrderID, myListInterface<ScheduledOrderItemClass> orderItem, myListInterface<OrderedItemClass> itemlist){
         for(int i = 0 ; i < orderItem.getSize() ; i ++){
             if(scheduleOrderID == orderItem.getAllData(i).getScheduleOrderID()){
-                list.addNewItem(new ScheduledOrderItem(orderItem.getAllData(i).getUnitPrice(), orderItem.getAllData(i).getQty(), orderItem.getAllData(i).getItemName(), orderItem.getAllData(i).getScheduleOrderID()));
+                list.addNewItem(new ScheduledOrderItemClass(orderItem.getAllData(i).getUnitPrice(), orderItem.getAllData(i).getQty(), orderItem.getAllData(i).getItemName(), orderItem.getAllData(i).getScheduleOrderID()));
             }
         }
         
@@ -77,7 +77,7 @@ public class ViewItemOrdered extends JFrame{
         
         jbtOK.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                ViewItemOrdered.this.setVisible(false);
+                ViewOrderedItemUI.this.setVisible(false);
             }
         });
         

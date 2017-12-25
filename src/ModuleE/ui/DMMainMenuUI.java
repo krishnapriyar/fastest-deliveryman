@@ -13,7 +13,7 @@ import javax.swing.JPanel;
  *
  * @author chong kun ming RSD 3
  */
-public class DMMainMenu extends JFrame {
+public class DMMainMenuUI extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
     private static java.sql.Connection conn = null;
@@ -45,8 +45,8 @@ public class DMMainMenu extends JFrame {
 
         jbtCheckTodayOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                SOCheckTodayOrder so = new SOCheckTodayOrder(arrClass, dmID);
-                DMMainMenu.this.setVisible(false);
+                ViewTodayTaskUI so = new ViewTodayTaskUI(arrClass, dmID);
+                DMMainMenuUI.this.setVisible(false);
             }
         });
 
@@ -55,7 +55,7 @@ public class DMMainMenu extends JFrame {
                 ui.LoginFrame login = new ui.LoginFrame();
                 login.setListClass(arrClass);
                 login.setVisible(true);
-                DMMainMenu.this.setVisible(false);
+                DMMainMenuUI.this.setVisible(false);
             }
         });
         
@@ -63,7 +63,7 @@ public class DMMainMenu extends JFrame {
             public void actionPerformed(java.awt.event.ActionEvent e){
             
                new DeliverymanClockInOut().setVisible(true);
-                DMMainMenu.this.setVisible(false);
+                DMMainMenuUI.this.setVisible(false);
             }
         });
 
