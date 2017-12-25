@@ -335,6 +335,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
                     stmt.setString(5, dm.getActiveStatus());
                     stmt.setString(6, "Available");
                     stmt.setString(7, dm.getActiveStatus());
+                     stmt.setInt(8, dm.getDmID());
 
                     stmt.executeUpdate();
 
