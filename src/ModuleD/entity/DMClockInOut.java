@@ -18,6 +18,8 @@ public class DMClockInOut {
     private Date setClockInDate;
     private Date setClockInTime;
     private Date setClockOutTime;
+    private int OrderID;
+    private int custID;
 
     public DMClockInOut(String dmName, int dmID, String status) {
         this.dmName = dmName;
@@ -34,6 +36,29 @@ public class DMClockInOut {
         this.setClockOutTime = setClockOutTime;
     }
     
+    public DMClockInOut(String dmName, int dmID, String status, int OrderID, int custID) {
+        this.dmName = dmName;
+        this.dmID = dmID;
+        this.status = status;
+        this.OrderID = OrderID;
+        this.custID = custID;
+    }
+
+    public int getOrderID() {
+        return OrderID;
+    }
+
+    public void setOrderID(int OrderID) {
+        this.OrderID = OrderID;
+    }
+
+    public int getCustID() {
+        return custID;
+    }
+
+    public void setCustID(int custID) {
+        this.custID = custID;
+    }
     
     public String getDmName() {
         return dmName;
