@@ -9,14 +9,9 @@ package ModuleB.ui;
 import ModuleB.adt.*;
 import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import ModuleB.entity.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.sql.*;
+import java.text.*;
+import java.util.*;
 
 /**
  *
@@ -155,13 +150,13 @@ public class PendingDeliveryFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jcbDMActionPerformed
 
     public String convertTime(long time) {
-        Date date = new Date(time);
+        java.util.Date date = new java.util.Date(time);
         Format format = new SimpleDateFormat("HH:mm:ss");
         return format.format(date);
     }
 
     public String convertDate(long time) {
-        Date date = new Date(time);
+        java.util.Date date = new java.util.Date(time);
         Format format = new SimpleDateFormat("dd/MM/yyyy");
         return format.format(date);
     }
@@ -175,7 +170,11 @@ public class PendingDeliveryFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        fillBox();
+        try{
+            fillBox();
+        }catch(Exception ex){
+            System.out.print(ex.getMessage());
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private String genFromDB(String dmid) {

@@ -59,9 +59,9 @@ public class PopulateDeliverymanList {
             Order ord9 = new Order(80001, date1, "Completed" , "00:20", 30001, 20011,40002);
             Order ord10 = new Order(80002, date3, "Completed" , "00:30", 30002, 20011,40002);
             Order ord11 = new Order(80003, date2, "Completed" , "00:20", 30003, 20011,40003);
-            dm1.addDelivery(ord9);
-            dm1.addDelivery(ord10);
-            dm1.addDelivery(ord11);
+            dm4.addDelivery(ord9);
+            dm4.addDelivery(ord10);
+            dm4.addDelivery(ord11);
             
             Order ord12 = new Order(80004, date1, "Completed" , "00:50", 30004, 20012,40001);
             Order ord13 = new Order(80005, date4, "Completed" , "00:30", 30005, 20013,40003);
@@ -74,7 +74,7 @@ public class PopulateDeliverymanList {
             dm3.addDelivery(ord15);
             
             Order ord16 = new Order(80008, date4, "Completed" , "00:20", 30008, 20013,40003);
-            dm4.addDelivery(ord16);   
+            dm1.addDelivery(ord16);   
             
         } catch (Exception ex) {
             

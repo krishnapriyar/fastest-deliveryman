@@ -127,4 +127,9 @@ public class LinkedList<T> implements ListInterface<T> {
         return numberOfEntries;
     }
 
+    @Override
+    public int getSize() {
+        return getNumberOfEntries();
+    }
+
 }

@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ModuleA.adt;
+package ModuleB.adt;
 
 /**
  *
- * @author Lysan Chen
+ * @author Priya
  */
 public interface StackInterface<T> {
 
@@ -20,6 +20,7 @@ public interface StackInterface<T> {
     boolean isEmpty();
 
     void clear();
+    
+    T replaceTop(T newEntry);
 
-} // end StackInterface
-
+}

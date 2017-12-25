@@ -72,6 +72,7 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jbtGen = new javax.swing.JButton();
+        jbtBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -99,6 +100,15 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
         });
         getContentPane().add(jbtGen, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 73, 180, 30));
 
+        jbtBack.setText("Back To Menu");
+        jbtBack.setActionCommand("back");
+        jbtBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtBackActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jbtBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 80, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -106,6 +116,12 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
         // TODO add your handling code here:
         genReport();
     }//GEN-LAST:event_jbtGenActionPerformed
+
+    private void jbtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBackActionPerformed
+        // TODO add your handling code here:
+       getCaller().setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_jbtBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -115,6 +131,10 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
         try {
             String display = "No.\tDM ID \t Name \tTotal Deliveries \tDistance Travelled\n\n";
             int count = 1;
+            LinkedStack<Integer> stack = new LinkedStack();
+            stack.push(0);
+            LinkedStack<String> stack2 = new LinkedStack();
+            
             for (int i = 0; i < dmList.getSize(); i++) {
 
                 int noOfDelivery = 0;
@@ -133,19 +153,62 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
                             distance += genDistance();
 
                         }
-                    }
+                    }  
                 }
-             DecimalFormat df = new DecimalFormat(".####");
-             display += count++ + "\t"+ dm.getDmID() + " \t" + dm.getDmName()+ " \t" + ""+noOfDelivery + " \t\t" + df.format(distance) + "\n";
+                DecimalFormat df = new DecimalFormat(".##");
+                String str = "\t"+ dm.getDmID() + " \t" + dm.getDmName()+ " \t" + ""+noOfDelivery + " \t\t" + df.format(distance) + "\n";
+                
+                sortedInsert(stack, noOfDelivery, stack2, str );
+                
             }
+            
+            int size = stack.getSize();
+            for (int i = 0; i < size; i++) {
+                
+                display+=count++ + stack2.pop();
+            
+            }
+            
             jtaDisplay.setText(display);
         } catch (Exception ex) {
+            System.out.print(ex.getMessage());
+            
+        }
+    }
+    
+    
+     void sortedInsert(LinkedStack<Integer> stack1, int x, LinkedStack<String> stack2, String str)
+    {
+        // Base case: Either stack is empty or newly inserted
+        if (stack1.isEmpty() || x > stack1.peek())
+        {
+            stack1.push(x);
+            stack2.push(str);
+            return;
+        }
+
+        int temp = stack1.pop();
+        String tempStr = stack2.pop();
+        sortedInsert(stack1, x, stack2, str);
+        stack1.push(temp);
+        stack2.push(tempStr);
+    }
+      
+    // Method to sort stack
+    void sortStack(LinkedStack<Integer> s, LinkedStack<String> s2)
+    {
+        if (!s.isEmpty())
+        {
+            int x = s.pop();
+            String str = s2.pop();
+            sortStack(s,s2);
+            sortedInsert(s, x, s2, str);
         }
     }
 
     private double genDistance() {
+        
         //Generate for around Selangor area
-
         double minLat = 3.0;
         double maxLat = 3.2;
         double minLon = 101.00;
@@ -218,6 +281,7 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jbtBack;
     private javax.swing.JButton jbtGen;
     private javax.swing.JTextArea jtaDisplay;
     // End of variables declaration//GEN-END:variables
