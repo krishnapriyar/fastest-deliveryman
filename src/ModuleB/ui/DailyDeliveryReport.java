@@ -75,6 +75,7 @@ public class DailyDeliveryReport extends javax.swing.JFrame {
         jbtBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Daily Delivery Report");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jtaDisplay.setEditable(false);
