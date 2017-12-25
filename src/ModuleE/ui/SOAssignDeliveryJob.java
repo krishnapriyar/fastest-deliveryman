@@ -1,35 +1,27 @@
 package ModuleE.ui;
 
-import ModuleE.entity.ListClass;
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import test.TestPurpose;
-import ui.AdminMenu;
 
 public class SOAssignDeliveryJob extends JFrame {
 
     private JLabel jlblTitle = new JLabel("Assign Job to delivery man");
-    private Font fontTitle = new Font("Arial", Font.PLAIN, 28);
-    private Font fontDisplay = new Font("Arial", Font.PLAIN, 23);
-    private SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy");
-    private SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm aa");
-    private ListClass arrList = new ListClass();
+    private java.awt.Font fontTitle = new java.awt.Font("Arial", java.awt.Font.PLAIN, 28);
+    private java.awt.Font fontDisplay = new java.awt.Font("Arial", java.awt.Font.PLAIN, 23);
+    private java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("dd/MM/yyyy");
+    private java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("hh:mm aa");
+    private ModuleE.entity.ListClass arrList = new ModuleE.entity.ListClass();
     private String username, dmName;
-    private TestPurpose t = new TestPurpose();
+    private ModuleE.entity.RetrieveDeliverymanData t = new ModuleE.entity.RetrieveDeliverymanData();
     private int dmID = 0;
 
-    public void setData(ListClass arrClass, String name) {
+    public void setData(ModuleE.entity.ListClass arrClass, String name) {
         arrList = arrClass;
         jlblTitle.setFont(fontTitle);
 
@@ -58,7 +50,7 @@ public class SOAssignDeliveryJob extends JFrame {
         //controls declaration
         JButton[] jbtAssign = new JButton[arrList.getScOrderClass().size()];
         JButton[] jbtDecline = new JButton[arrList.getScOrderClass().size()];
-        JComboBox[] jcbDM = new JComboBox[arrList.getScOrderClass().size()];
+        javax.swing.JComboBox[] jcbDM = new javax.swing.JComboBox[arrList.getScOrderClass().size()];
         JButton jbtBack = new JButton("Back");
 
         for (int i = 0; i < arrList.getScOrderClass().size(); i++) {
@@ -79,7 +71,7 @@ public class SOAssignDeliveryJob extends JFrame {
                 jlblTotalAMT[i] = new JLabel(String.valueOf(arrList.getScOrderClass().getEntry(i).getTotalAmount()));
                 jlblDeliveryDate[i] = new JLabel(sdfDate.format(arrList.getScOrderClass().getEntry(i).getReceiveDate()));
                 jlblStatus[i] = new JLabel(arrList.getScOrderClass().getEntry(i).getStatus());
-                jcbDM[i] = new JComboBox();
+                jcbDM[i] = new javax.swing.JComboBox();
                 jbtAssign[i] = new JButton("Accept");
                 jbtDecline[i] = new JButton("Decline");
 
@@ -135,9 +127,9 @@ public class SOAssignDeliveryJob extends JFrame {
                 itemDetailListing.add(itemOrderedListing[i]);
                 jpnWrap.add(itemDetailListing);
 
-                JComboBox jcb = jcbDM[i];
-                jcbDM[i].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
+                javax.swing.JComboBox jcb = jcbDM[i];
+                jcbDM[i].addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
                         for (int i = 0; i < t.getList().getSize(); i++) {
                             if (jcb.getSelectedItem().toString().equals(t.getList().getAllData(i).getDmName())) {
                                 dmID = t.getList().getAllData(i).getDmID();
@@ -148,8 +140,8 @@ public class SOAssignDeliveryJob extends JFrame {
                 });
 
                 int orderID = Integer.parseInt(jlblOrderID[i].getText().toString());
-                jbtDecline[i].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
+                jbtDecline[i].addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
                         for (int i = 0; i < arrList.getScOrderClass().size(); i++) {
                             if (orderID == arrList.getScOrderClass().getEntry(i).getOrderID()) {
                                 arrList.getScOrderClass().getEntry(i).setStatus("Declined");
@@ -161,8 +153,8 @@ public class SOAssignDeliveryJob extends JFrame {
                     }
                 });
 
-                jbtAssign[i].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
+                jbtAssign[i].addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
                         for (int j = 0; j < arrList.getScOrderClass().size(); j++) {
                             if (orderID == arrList.getScOrderClass().getEntry(j).getOrderID()) {
                                 if (jcb.getSelectedItem().toString().equals("-- Select --")) {
@@ -183,9 +175,9 @@ public class SOAssignDeliveryJob extends JFrame {
             }
         }
 
-        jbtBack.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                AdminMenu admin = new AdminMenu();
+        jbtBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                ui.AdminMenu admin = new ui.AdminMenu();
                 admin.setData(arrList, username);
                 admin.setVisible(true);
                 SOAssignDeliveryJob.this.setVisible(false);

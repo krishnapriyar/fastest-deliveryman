@@ -1,8 +1,6 @@
 
 package ModuleE.entity;
 
-import java.util.Date;
-
 public class ScheduledOrderItem{
     private double itemUnitPrice;
     private String itemName;

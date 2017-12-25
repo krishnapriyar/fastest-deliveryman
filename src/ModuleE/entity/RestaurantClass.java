@@ -3,7 +3,7 @@ package ModuleE.entity;
 
 /**
  *
- * @author chong kun ming
+ * @author chong kun ming RSD 3
  */
 public class RestaurantClass {
     private int resID;

@@ -1,7 +1,6 @@
 package ModuleE.ui;
 
 import ModuleE.entity.Customer;
-import ModuleE.entity.OrderedItemClass;
 import ModuleE.entity.PostalCodeClass;
 import ModuleE.entity.ScheduledOrderClass;
 import ModuleE.entity.ScheduledOrderItem;
@@ -17,14 +16,10 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Reader;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,11 +31,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import org.jdesktop.swingx.JXDatePicker;
-import org.jdesktop.swingx.renderer.StringValue;
 
 public class SOOrderConfirmation extends JFrame {
 

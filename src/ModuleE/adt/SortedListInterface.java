@@ -2,7 +2,8 @@ package ModuleE.adt;
 
 /**
  *
- * @author chong
+ * @author chong kun ming RSD 3
+ * @param <T>
  */
 public interface SortedListInterface<T extends Comparable<T>> {
     

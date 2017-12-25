@@ -1,28 +1,10 @@
 package ModuleE.ui;
 
-import ModuleB.entity.Deliveryman;
-import ModuleE.entity.ListClass;
-import static ModuleE.ui.DMMainMenu.arrClass;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -32,14 +14,14 @@ import javax.swing.JPanel;
 public class DeliveryDetails extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
-    private static Connection conn = null;
-    private static PreparedStatement prepare;
-    private static ResultSet rs = null;
-    private ListClass arrClass = new ListClass();
-    private Font mainFont = new Font("Arial", Font.BOLD, 28);
-    private Font titleFont = new Font("Arial", Font.BOLD, 19);
-    private Font displayFont = new Font("Arial", Font.PLAIN, 19);
-    private SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm aa");
+    private static java.sql.Connection conn = null;
+    private static java.sql.PreparedStatement prepare;
+    private static java.sql.ResultSet rs = null;
+    private ModuleE.entity.ListClass arrClass = new ModuleE.entity.ListClass();
+    private java.awt.Font mainFont = new java.awt.Font("Arial", java.awt.Font.BOLD, 28);
+    private java.awt.Font titleFont = new java.awt.Font("Arial", java.awt.Font.BOLD, 19);
+    private java.awt.Font displayFont = new java.awt.Font("Arial", java.awt.Font.PLAIN, 19);
+    private java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("hh:mm aa");
 
     private JLabel jlblCustTel = new JLabel();
     private JLabel jlblCustName = new JLabel();
@@ -48,13 +30,13 @@ public class DeliveryDetails extends JFrame {
     private JLabel jlblED = new JLabel();
     private JLabel jlblETA = new JLabel();
     private JLabel jlblDesc  = new JLabel();
-    private DecimalFormat decimalFormat = new DecimalFormat("#.00");
+    private java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("#.00");
 
     public DeliveryDetails() {
 
     }
 
-    public DeliveryDetails(int orderID, ListClass arrList, int custID) {
+    public DeliveryDetails(int orderID, ModuleE.entity.ListClass arrList, int custID) {
         getDMInfo(custID);
         arrClass = arrList;
         JPanel jpn = new JPanel(new GridLayout(7, 2));
@@ -87,7 +69,7 @@ public class DeliveryDetails extends JFrame {
         jlblDesc.setFont(displayFont);
 
         double distance = 0;
-        Calendar cal = Calendar.getInstance();
+        java.util.Calendar cal = java.util.Calendar.getInstance();
         for (int i = 0; i < arrList.getScOrderClass().size(); i++) {
             if (orderID == arrList.getScOrderClass().getEntry(i).getOrderID()) {
                 distance = Math.round(arrList.getScOrderClass().getEntry(i).getDistance());
@@ -97,7 +79,7 @@ public class DeliveryDetails extends JFrame {
             }
         }
         double timeToDeliver = (distance / 40);
-        cal.add(Calendar.MINUTE, 0 - Integer.parseInt(String.valueOf(Math.round(timeToDeliver))));
+        cal.add(java.util.Calendar.MINUTE, 0 - Integer.parseInt(String.valueOf(Math.round(timeToDeliver))));
         
         String eta, desc;
         if(Math.round(timeToDeliver) <= 0){
@@ -105,7 +87,7 @@ public class DeliveryDetails extends JFrame {
             desc = "-";
         }else{
             eta = Math.round(timeToDeliver) + " Minutes";
-            desc = "Estimated time to deliver the order "+ new SimpleDateFormat("hh:mm aa").format(cal.getTime());
+            desc = "Estimated time to deliver the order "+ new java.text.SimpleDateFormat("hh:mm aa").format(cal.getTime());
         }
         
         jlblETA.setText(eta);
@@ -120,8 +102,8 @@ public class DeliveryDetails extends JFrame {
             }
         }
 
-        jbtOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        jbtOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
                 DeliveryDetails.this.setVisible(false);
             }
         });
@@ -164,7 +146,7 @@ public class DeliveryDetails extends JFrame {
         boolean isSuccess = false;
 
         try {
-            conn = DriverManager.getConnection(dbURL);
+            conn = java.sql.DriverManager.getConnection(dbURL);
             if (conn != null) {
                 isSuccess = true;
             }

@@ -1,18 +1,12 @@
 package ModuleE.ui;
 
-import ModuleE.entity.Customer;
 import ModuleE.entity.OrderedItemClass;
-import ModuleE.entity.ScheduledOrderClass;
-import ModuleE.entity.ScheduledOrderItem;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.event.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,22 +14,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
-import org.jdesktop.swingx.JXDatePicker;
 import ModuleE.adt.ListImplementation;
 import ModuleE.adt.myListInterface;
 import ModuleE.entity.ListClass;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import javax.swing.SwingConstants;
-import static javax.swing.SwingConstants.CENTER;
-import javax.swing.SwingUtilities;
 
 /**
  *

@@ -1,11 +1,8 @@
 package ModuleE.adt;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  *
- * @author chong kun ming
+ * @author chong kun ming RSD 3
  */
 public class SortedListImplementation<T extends Comparable<T>> implements SortedListInterface<T> {
 

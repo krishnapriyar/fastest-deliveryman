@@ -1,9 +1,6 @@
 
 package ModuleE.entity;
 
-import ModuleE.adt.ListImplementation;
-import adt.ListInterface;
-
 public class Customer {
 
     private String custName;

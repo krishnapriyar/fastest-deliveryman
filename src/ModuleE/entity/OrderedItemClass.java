@@ -1,8 +1,5 @@
 package ModuleE.entity;
 
-import java.util.Date;
-
-
 public class OrderedItemClass {
     private int id;
     private String itemName;

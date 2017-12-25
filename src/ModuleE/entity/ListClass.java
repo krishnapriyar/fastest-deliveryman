@@ -8,11 +8,11 @@ import ModuleE.adt.SortedListInterface;
 import ModuleE.adt.myListInterface;
 
 public class ListClass {
-    private myListInterface<ScheduledOrderClass> scOrderList = new ListImplementation<ScheduledOrderClass>();
-    private myListInterface<ScheduledOrderItem> scOrderItemList = new ListImplementation<ScheduledOrderItem>();
-    private myListInterface<Customer> custList = new ListImplementation<Customer>();
-    private myListInterface<OrderedItemClass> itemlist = new ListImplementation<OrderedItemClass>();
-    private myListInterface<Deliveryman> dmList = new ListImplementation<Deliveryman>();
+    private myListInterface<ScheduledOrderClass> scOrderList = new ListImplementation<>();
+    private myListInterface<ScheduledOrderItem> scOrderItemList = new ListImplementation<>();
+    private myListInterface<Customer> custList = new ListImplementation<>();
+    private myListInterface<OrderedItemClass> itemlist = new ListImplementation<>();
+    private myListInterface<Deliveryman> dmList = new ListImplementation<>();
     private SortedListInterface<ScheduledOrderClass> scOrderClass = new SortedListImplementation<>();
     
     public ListClass(){
@@ -30,7 +30,6 @@ public class ListClass {
     public ListClass(myListInterface<ScheduledOrderClass> scOrderList, myListInterface<ScheduledOrderItem> scOrderItemList, myListInterface<OrderedItemClass> itemlist, myListInterface<Deliveryman> dmList, SortedListInterface<ScheduledOrderClass> scOrderClass) {
         this.scOrderList = scOrderList;
         this.scOrderItemList = scOrderItemList;
-        this.custList = custList;
         this.itemlist = itemlist;
         this.dmList = dmList;
         this.scOrderClass = scOrderClass;
