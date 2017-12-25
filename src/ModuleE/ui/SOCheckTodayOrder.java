@@ -28,12 +28,21 @@ public class SOCheckTodayOrder extends JFrame {
     private Font titleFont = new Font("Arial", Font.BOLD, 20);
     public ListClass arrList = new ListClass();
     private int custID = 0;
+    private String dmName = "";
+    
     public void setData(ListClass list) {
         arrList = list;
     }
     
     public SOCheckTodayOrder(ListClass arrClass, int dmID) {
         arrList = arrClass;
+        
+        for(int i = 0 ; i < arrList.getDmList().getSize(); i ++){
+            if(dmID == arrList.getDmList().getAllData(i).getDmID()){
+                dmName = arrList.getDmList().getAllData(i).getDmName();
+            }
+        }
+        
         displayCurrentDateTime();
         JPanel topPanel = new JPanel(new GridLayout(1, 2));
         JPanel[] itemOrderedListing = new JPanel[arrList.getScOrderClass().size()];
@@ -128,8 +137,9 @@ public class SOCheckTodayOrder extends JFrame {
         
         jbtBack.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-//                DMMainMenu main = new DMMainMenu();
-//                main.setListClass(arrList);
+                DMMainMenu main = new DMMainMenu();
+                main.setData(arrList, dmName);
+                main.setVisible(true);
                 SOCheckTodayOrder.this.setVisible(false);
             }
         });

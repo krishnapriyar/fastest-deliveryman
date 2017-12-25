@@ -54,6 +54,7 @@ public class DMMainMenu extends JFrame {
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 ui.LoginFrame login = new ui.LoginFrame();
                 login.setListClass(arrClass);
+                login.setVisible(true);
                 DMMainMenu.this.setVisible(false);
             }
         });

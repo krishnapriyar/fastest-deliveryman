@@ -198,12 +198,11 @@ public class SOOrderConfirmation extends JFrame {
                     Date receiveTime = sdfTime2.parse(reTime);
                     Date currentDate = sdfDate.parse(jlblCurrentDate.getText());
                     Date currentTime = sdfTime2.parse(sdfTime2.format(current));
-
+                    
                     if (receiveTime.before(currentTime) && receiveDate.equals(currentDate)) {
                         JOptionPane.showMessageDialog(null, "Check your receive time before proceed !");
                     } else if (!receiveDate.before(currentDate)) {
                         int distance = getDistance(address);
-                        // add data to schedule order list   
                         int scheduleOrderID = 1000 + arrList.getScOrderClass().size();
                         ScheduledOrderClass order = new ScheduledOrderClass(scheduleOrderID, receiveDate, receiveTime, "Pending...", distance, Double.parseDouble(jlblShowTotalAmount.getText().toString()), custID, 0);
                         arrList.getScOrderClass().addEntry(order);
@@ -263,7 +262,10 @@ public class SOOrderConfirmation extends JFrame {
                 rs = prepare.executeQuery();
 
                 while (rs.next()) {
-                    postCodeList.addNewItem(new PostalCodeClass(rs.getString("POSTALCODE"), rs.getString("CITY"), rs.getString("STATE"), rs.getDouble("LATITUDE"), rs.getDouble("LONGITUDE")));
+                    postCodeList.addNewItem(new PostalCodeClass(rs.getString("POSTALCODE"), rs.getString("CITY"), 
+                            rs.getString("STATE"), 
+                            rs.getDouble("LATITUDE"), 
+                            rs.getDouble("LONGITUDE")));
                 }
 
                 for (int i = 0; i < postCodeList.getSize(); i++) {

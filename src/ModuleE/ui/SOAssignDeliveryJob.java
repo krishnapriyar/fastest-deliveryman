@@ -25,13 +25,14 @@ public class SOAssignDeliveryJob extends JFrame {
     private SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy");
     private SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm aa");
     private ListClass arrList = new ListClass();
-    private String username;
+    private String username, dmName;
     private TestPurpose t = new TestPurpose();
-    
-    public void setData(ListClass arrClass, String name){
+    private int dmID = 0;
+
+    public void setData(ListClass arrClass, String name) {
         arrList = arrClass;
         jlblTitle.setFont(fontTitle);
-        
+
         // jpanel declaration
         JPanel jpnWrap = new JPanel();
         JPanel[] itemOrderedListing = new JPanel[arrList.getScOrderClass().size()];
@@ -82,8 +83,9 @@ public class SOAssignDeliveryJob extends JFrame {
                 jbtAssign[i] = new JButton("Accept");
                 jbtDecline[i] = new JButton("Decline");
 
+                jcbDM[i].addItem("-- Select --");
                 for (int j = 0; j < t.getList().getSize(); j++) {
-                    jcbDM[i].addItem(t.getList().getAllData(i).getDmID()+" "+t.getList().getAllData(j).getDmName());
+                    jcbDM[i].addItem(t.getList().getAllData(j).getDmName());
                 }
 
                 jlblOrderIDTitle[i].setFont(fontDisplay);
@@ -133,6 +135,18 @@ public class SOAssignDeliveryJob extends JFrame {
                 itemDetailListing.add(itemOrderedListing[i]);
                 jpnWrap.add(itemDetailListing);
 
+                JComboBox jcb = jcbDM[i];
+                jcbDM[i].addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        for (int i = 0; i < t.getList().getSize(); i++) {
+                            if (jcb.getSelectedItem().toString().equals(t.getList().getAllData(i).getDmName())) {
+                                dmID = t.getList().getAllData(i).getDmID();
+                                dmName = t.getList().getAllData(i).getDmName();
+                            }
+                        }
+                    }
+                });
+
                 int orderID = Integer.parseInt(jlblOrderID[i].getText().toString());
                 jbtDecline[i].addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
@@ -147,18 +161,21 @@ public class SOAssignDeliveryJob extends JFrame {
                     }
                 });
 
-                final String[] str = jcbDM[i].getSelectedItem().toString().split(" ");
                 jbtAssign[i].addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         for (int j = 0; j < arrList.getScOrderClass().size(); j++) {
                             if (orderID == arrList.getScOrderClass().getEntry(j).getOrderID()) {
-                                arrList.getScOrderClass().getEntry(j).setDmID(Integer.parseInt(str[0]));
-                                arrList.getScOrderClass().getEntry(j).setStatus("Accepted");
-                                JOptionPane.showMessageDialog(null, "Job Assign Successfully to " + str[1]);
-                               
-                                SOAssignDeliveryJob assignJob = new SOAssignDeliveryJob();
-                                assignJob.setData(arrList, username);
-                                SOAssignDeliveryJob.this.setVisible(false);
+                                if (jcb.getSelectedItem().toString().equals("-- Select --")) {
+                                    JOptionPane.showMessageDialog(null, "Please select a delivery man !");
+                                } else {
+                                    arrList.getScOrderClass().getEntry(j).setDmID(dmID);
+                                    arrList.getScOrderClass().getEntry(j).setStatus("Accepted");
+                                    JOptionPane.showMessageDialog(null, "Job Assign Successfully to " + dmName);
+
+                                    SOAssignDeliveryJob assignJob = new SOAssignDeliveryJob();
+                                    assignJob.setData(arrList, username);
+                                    SOAssignDeliveryJob.this.setVisible(false);
+                                }
                             }
                         }
                     }

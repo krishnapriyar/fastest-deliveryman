@@ -21,23 +21,20 @@ public class SortedListImplementation<T extends Comparable<T>> implements Sorted
         if (firstNode == null) {
             firstNode = newNode;
         } else {
-            if (tempNode != null && tempNode.data.compareTo(newNode.data) > 0) {
+            if (tempNode != null && tempNode.data.compareTo(newNode.data) >= 0) { //add at top
                 newNode.next = tempNode;
                 tempNode = newNode;
                 firstNode = tempNode;
             } else {
-                while (tempNode != null && tempNode.data.compareTo(newNode.data) < 0) {
+                while (tempNode != null && tempNode.data.compareTo(newNode.data) < 0) { //add at last
                     nodeBefore = tempNode;
-                    if (tempNode.next == null) {
-                        tempNode.next = newNode;
-                    }
                     tempNode = tempNode.next;
                 }
-                if (tempNode.data.compareTo(newNode.data) > 0) {
+                
+                if (numberOfEntries != 0 && nodeBefore !=null) {//add at middle
                     nodeBefore.next = newNode;
                     newNode.next = tempNode;
                 }
-
             }
         }
         numberOfEntries++;
