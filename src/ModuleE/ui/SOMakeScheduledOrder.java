@@ -1,35 +1,24 @@
 package ModuleE.ui;
 
-import ModuleE.entity.OrderedItemClass;
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.myListInterface;
-import ModuleE.entity.ListClass;
-import ModuleE.entity.RestaurantClass;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
+import ModuleE.entity.*;
+import ModuleE.adt.*;
+import java.awt.*;
 import java.awt.event.*;
-import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
+
+/**
+ *
+ * @author chong kun ming RSD 3
+ */
 
 public class SOMakeScheduledOrder extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
-    private static Connection conn = null;
-    private static PreparedStatement prepare;
-    private static ResultSet rs = null;
+    private static java.sql.Connection conn = null;
+    private static java.sql.PreparedStatement prepare;
+    private static java.sql.ResultSet rs = null;
 
     private myListInterface<RestaurantClass> resList = new ListImplementation<>();
     private myListInterface<OrderedItemClass> orderedList = new ListImplementation<>();
@@ -53,7 +42,7 @@ public class SOMakeScheduledOrder extends JFrame {
     public void placeOrder() {
     }
 
-    public void orderPage(ListClass arrClass, int custID, String deliveryDate, String deliveryTime, String userName) {
+    public void orderPage(ListGetterSetter arrClass, int custID, String deliveryDate, String deliveryTime, String userName) {
 
         initializeComponent();
         jlblDisplayDate.setText(deliveryDate);

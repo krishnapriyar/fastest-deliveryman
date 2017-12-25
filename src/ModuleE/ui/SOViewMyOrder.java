@@ -1,20 +1,16 @@
 package ModuleE.ui;
 
-import ModuleE.entity.ListClass;
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import ModuleE.entity.ListGetterSetter;
+import java.awt.*;
+import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import javax.swing.Timer;
+import javax.swing.*;
+
+/**
+ *
+ * @author chong kun ming RSD 3
+ */
 
 public class SOViewMyOrder extends JFrame {
 
@@ -33,13 +29,13 @@ public class SOViewMyOrder extends JFrame {
     private Font dateTimeFont = new Font("Arial", Font.PLAIN, 30);
     private Font font = new Font("Arial", Font.BOLD, 18);
     private Font itemFont = new Font("Arial", Font.PLAIN, 20);
-    public ListClass arrClass = new ListClass();
+    public ListGetterSetter arrClass = new ListGetterSetter();
 
     public SOViewMyOrder() {
 
     }
 
-    public void pageContent(ListClass arrList, int custID, String userName) {
+    public void pageContent(ListGetterSetter arrList, int custID, String userName) {
         arrClass = arrList;
         displayCurrentDateTime();
         

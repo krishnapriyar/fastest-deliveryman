@@ -1,39 +1,19 @@
 package ModuleE.ui;
 
-import ModuleE.entity.Customer;
-import ModuleE.entity.PostalCodeClass;
-import ModuleE.entity.ScheduledOrderClass;
-import ModuleE.entity.ScheduledOrderItem;
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.SortedListImplementation;
-import ModuleE.adt.SortedListInterface;
-import ModuleE.adt.myListInterface;
-import ModuleE.entity.ListClass;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import ModuleE.entity.*;
+import ModuleE.adt.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.text.*;
 import java.util.Date;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
-import javax.swing.Timer;
+import javax.swing.*;
 import org.jdesktop.swingx.JXDatePicker;
+
+/**
+ *
+ * @author chong kun ming RSD 3
+ */
 
 public class SOOrderConfirmation extends JFrame {
 
@@ -66,14 +46,14 @@ public class SOOrderConfirmation extends JFrame {
     public myListInterface<Customer> custList = new ListImplementation<Customer>();
     private DecimalFormat decimalFormat = new DecimalFormat("#00");
     private SortedListInterface<ScheduledOrderClass> scOrderClass = new SortedListImplementation<>();
-    private ListClass arrList = new ListClass();
+    private ListGetterSetter arrList = new ListGetterSetter();
     private int custID = 0;
     private String address = "";
     public SOOrderConfirmation() {
 
     }
 
-    public void orderDetails(ListClass arrClass, int custID, String receiveDate,String receiveTime, String userName) {
+    public void orderDetails(ListGetterSetter arrClass, int custID, String receiveDate,String receiveTime, String userName) {
 
         initializeComponent(receiveDate, receiveTime);
         displayCurrentDateTime();

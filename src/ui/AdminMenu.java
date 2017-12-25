@@ -2,14 +2,14 @@ package ui;
 
 import ModuleD.ui.AcceptDeliveryJob;
 import ModuleD.ui.DeliverymanWorkStatus;
-import ModuleE.entity.ListClass;
+import ModuleE.entity.ListGetterSetter;
 import ModuleE.ui.SOAssignDeliveryJob;
 import ModuleE.ui.SOCheckTodayOrder;
 import javax.swing.JOptionPane;
 
 public class AdminMenu extends javax.swing.JFrame {
 
-    ListClass arrList = new ListClass();
+    ListGetterSetter arrList = new ListGetterSetter();
     String username = "";
 
     public AdminMenu() {
@@ -107,7 +107,7 @@ public class AdminMenu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void setData(ListClass arrClass, String name) {
+    public void setData(ListGetterSetter arrClass, String name) {
         arrList = arrClass;
         username = name;
     }

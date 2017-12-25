@@ -97,6 +97,7 @@ public class ListImplementation<T> implements myListInterface<T> {
     @Override
     public void clearList() {
         numberOfEntries = 0;
+        firstNode = null;
     }
 
     @Override

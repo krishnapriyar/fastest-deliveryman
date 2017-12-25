@@ -1,20 +1,11 @@
 
 package ModuleE.ui;
 
-import ModuleE.entity.OrderedItemClass;
-import ModuleE.entity.ScheduledOrderItem;
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.myListInterface;
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import ModuleE.entity.*;
+import ModuleE.adt.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 
 public class ViewItemOrdered extends JFrame{
@@ -22,7 +13,6 @@ public class ViewItemOrdered extends JFrame{
     
     public ViewItemOrdered(){
     
-        
     }
     
     public void pageContent(int scheduleOrderID, myListInterface<ScheduledOrderItem> orderItem, myListInterface<OrderedItemClass> itemlist){

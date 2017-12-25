@@ -60,6 +60,11 @@ public class SortedListImplementation<T extends Comparable<T>> implements Sorted
         return firstNode == null;
     }
 
+    public void clearList(){
+        numberOfEntries = 0;
+        firstNode = null;
+    }
+    
     private class Node {
 
         private Node next;

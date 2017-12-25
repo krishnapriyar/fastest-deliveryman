@@ -1,34 +1,33 @@
 package ModuleE.ui;
 
-import ModuleE.entity.ListClass;
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
+import java.awt.*;
 import java.util.Date;
 import javax.swing.*;
+
+/**
+ *
+ * @author chong kun ming RSD 3
+ */
 
 public class SOCheckTodayOrder extends JFrame {
 
     private JLabel jlblCurrentDate = new JLabel();
     private JLabel jlblCurrentTime = new JLabel();
-    private SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy");
-    private SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm:ss aa");
-    private SimpleDateFormat sdfDisplayTime = new SimpleDateFormat("hh:mm aa");
+    private java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("dd/MM/yyyy");
+    private java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("hh:mm:ss aa");
+    private java.text.SimpleDateFormat sdfDisplayTime = new java.text.SimpleDateFormat("hh:mm aa");
     private Font dateTimeFont = new Font("Arial", Font.BOLD, 25);
     private Font itemListingFont = new Font("Arial", Font.PLAIN, 20);
     private Font titleFont = new Font("Arial", Font.BOLD, 20);
-    public ListClass arrList = new ListClass();
+    public ModuleE.entity.ListGetterSetter arrList = new ModuleE.entity.ListGetterSetter();
     private int custID = 0;
     private String dmName = "";
     
-    public void setData(ListClass list) {
+    public void setData(ModuleE.entity.ListGetterSetter list) {
         arrList = list;
     }
     
-    public SOCheckTodayOrder(ListClass arrClass, int dmID) {
+    public SOCheckTodayOrder(ModuleE.entity.ListGetterSetter arrClass, int dmID) {
         arrList = arrClass;
         
         for(int i = 0 ; i < arrList.getDmList().getSize(); i ++){
@@ -115,22 +114,22 @@ public class SOCheckTodayOrder extends JFrame {
                 jpnWrapItemListing.add(itemDetailListing);
                 
                 JLabel id = jlblOrderID[i];
-                jbtOrderedItems[i].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
+                jbtOrderedItems[i].addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
                         new ViewItemOrdered().pageContent(Integer.parseInt(id.getText()), arrList.getScOrderItemList(), arrList.getItemlist());
                     }
                 });
                 
-                jbtDeliveryDetails[i].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
+                jbtDeliveryDetails[i].addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
                         new DeliveryDetails(Integer.parseInt(id.getText()), arrList, custID).setVisible(true);
                     }
                 });
             }
         }
         
-        jbtBack.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        jbtBack.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent e){
                 DMMainMenu main = new DMMainMenu();
                 main.setData(arrList, dmName);
                 main.setVisible(true);
@@ -159,8 +158,8 @@ public class SOCheckTodayOrder extends JFrame {
     }
     
     private void displayCurrentDateTime() {
-        new Timer(0, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        new Timer(0, new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
                 Date d = new Date();
                 jlblCurrentDate.setText(sdfDate.format(d));
                 jlblCurrentTime.setText(sdfTime.format(d));

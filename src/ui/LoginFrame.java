@@ -5,7 +5,7 @@
  */
 package ui;
 
-import ModuleE.entity.ListClass;
+import ModuleE.entity.ListGetterSetter;
 import ModuleE.ui.CustomerMainMenu;
 import ModuleE.ui.DMMainMenu;
 import java.sql.*;
@@ -27,7 +27,7 @@ public class LoginFrame extends javax.swing.JFrame {
     PreparedStatement stmt = null;
     ResultSet rs = null;
     JFrame frame;
-    ListClass list = new ListClass();
+    ListGetterSetter list = new ListGetterSetter();
     String username = "";
 
     public LoginFrame() {
@@ -36,7 +36,7 @@ public class LoginFrame extends javax.swing.JFrame {
         insertCredential();
     }
 
-    public void setListClass(ListClass arrClass) {
+    public void setListClass(ListGetterSetter arrClass) {
         list = arrClass;
     }
 

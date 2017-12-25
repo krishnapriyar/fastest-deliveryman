@@ -1,29 +1,22 @@
 package ModuleE.ui;
 
-import ModuleE.entity.ListClass;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import ModuleE.entity.ListGetterSetter;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.text.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import javax.swing.JPanel;
 import org.jdesktop.swingx.JXDatePicker;
+
+/**
+ *
+ * @author chong kun ming RSD 3
+ */
 
 public class SOSelectDateTime extends JFrame {
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
@@ -55,7 +48,7 @@ public class SOSelectDateTime extends JFrame {
 
     }
 
-    public void makeScheduleOrder(ListClass arrClass, int custID, String userName) {
+    public void makeScheduleOrder(ListGetterSetter arrClass, int custID, String userName) {
         displayCurrentDateTime();
         initializeComponent();
         jlblCurrentDate.setFont(font1);

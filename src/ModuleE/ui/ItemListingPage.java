@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author chong kun ming
+ * @author chong kun ming RSD 3
  */
 public class ItemListingPage extends JFrame {
 
@@ -25,9 +25,9 @@ public class ItemListingPage extends JFrame {
     private JLabel jlblShowResName = new JLabel();
     private JLabel jlblShowResAdd = new JLabel();
     private JButton jbtOK = new JButton("Ok");
-    static ModuleE.entity.ListClass arrClass = new ModuleE.entity.ListClass();
+    static ModuleE.entity.ListGetterSetter arrClass = new ModuleE.entity.ListGetterSetter();
 
-    public void setListClass(ModuleE.entity.ListClass listClass) {
+    public void setListClass(ModuleE.entity.ListGetterSetter listClass) {
         arrClass = listClass;
     }
 

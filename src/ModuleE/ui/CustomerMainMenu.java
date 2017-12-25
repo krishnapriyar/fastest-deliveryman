@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 /**
  *
  * @author chong kun ming RSD 3
- *
  */
 public class CustomerMainMenu extends JFrame {
 
@@ -22,13 +21,13 @@ public class CustomerMainMenu extends JFrame {
     private JPanel jpnPanel1 = new JPanel(new GridLayout(1, 2));
     private JPanel jpnPanel2 = new JPanel(new GridLayout(3, 2));
     private int custID;
-    public ModuleE.entity.ListClass arrList = new ModuleE.entity.ListClass();
+    public ModuleE.entity.ListGetterSetter arrList = new ModuleE.entity.ListGetterSetter();
     
     public CustomerMainMenu() {
         
     }
     
-    public CustomerMainMenu(ModuleE.entity.ListClass arrClass, String username) {
+    public CustomerMainMenu(ModuleE.entity.ListGetterSetter arrClass, String username) {
         arrList = arrClass;
         getCustInfo(username);
         

@@ -9,6 +9,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+/**
+ *
+ * @author chong kun ming RSD 3
+ */
+
 public class SOAssignDeliveryJob extends JFrame {
 
     private JLabel jlblTitle = new JLabel("Assign Job to delivery man");
@@ -16,12 +21,12 @@ public class SOAssignDeliveryJob extends JFrame {
     private java.awt.Font fontDisplay = new java.awt.Font("Arial", java.awt.Font.PLAIN, 23);
     private java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("dd/MM/yyyy");
     private java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("hh:mm aa");
-    private ModuleE.entity.ListClass arrList = new ModuleE.entity.ListClass();
+    private ModuleE.entity.ListGetterSetter arrList = new ModuleE.entity.ListGetterSetter();
     private String username, dmName;
     private ModuleE.entity.RetrieveDeliverymanData t = new ModuleE.entity.RetrieveDeliverymanData();
     private int dmID = 0;
 
-    public void setData(ModuleE.entity.ListClass arrClass, String name) {
+    public void setData(ModuleE.entity.ListGetterSetter arrClass, String name) {
         arrList = arrClass;
         jlblTitle.setFont(fontTitle);
 

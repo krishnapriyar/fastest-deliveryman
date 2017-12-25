@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author chong kun ming
+ * @author chong kun ming RSD 3
  */
 public class DeliveryDetails extends JFrame {
 
@@ -17,7 +17,7 @@ public class DeliveryDetails extends JFrame {
     private static java.sql.Connection conn = null;
     private static java.sql.PreparedStatement prepare;
     private static java.sql.ResultSet rs = null;
-    private ModuleE.entity.ListClass arrClass = new ModuleE.entity.ListClass();
+    private ModuleE.entity.ListGetterSetter arrClass = new ModuleE.entity.ListGetterSetter();
     private java.awt.Font mainFont = new java.awt.Font("Arial", java.awt.Font.BOLD, 28);
     private java.awt.Font titleFont = new java.awt.Font("Arial", java.awt.Font.BOLD, 19);
     private java.awt.Font displayFont = new java.awt.Font("Arial", java.awt.Font.PLAIN, 19);
@@ -36,7 +36,7 @@ public class DeliveryDetails extends JFrame {
 
     }
 
-    public DeliveryDetails(int orderID, ModuleE.entity.ListClass arrList, int custID) {
+    public DeliveryDetails(int orderID, ModuleE.entity.ListGetterSetter arrList, int custID) {
         getDMInfo(custID);
         arrClass = arrList;
         JPanel jpn = new JPanel(new GridLayout(7, 2));

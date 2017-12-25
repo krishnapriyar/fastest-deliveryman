@@ -2,7 +2,7 @@ package ModuleE.ui;
 
 import ModuleB.entity.Deliveryman;
 import ModuleD.ui.DeliverymanClockInOut;
-import ModuleE.entity.ListClass;
+import ModuleE.entity.ListGetterSetter;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Chong Kun Ming
+ * @author chong kun ming RSD 3
  */
 public class DMMainMenu extends JFrame {
 
@@ -19,13 +19,13 @@ public class DMMainMenu extends JFrame {
     private static java.sql.Connection conn = null;
     private static  java.sql.PreparedStatement prepare;
     private static java.sql.ResultSet rs = null;
-    static ListClass arrClass = new ListClass();
+    static ListGetterSetter arrClass = new ListGetterSetter();
     private java.awt.Font font = new java.awt.Font("Arial", java.awt.Font.PLAIN, 20);
     private int dmID = 0;
     private JLabel jlblDMName = new JLabel();
     private String username;
     
-    public void setData(ListClass arrList, String name) {
+    public void setData(ListGetterSetter arrList, String name) {
         arrClass = arrList;
         username = name;
 

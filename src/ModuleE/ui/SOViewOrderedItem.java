@@ -1,33 +1,19 @@
 package ModuleE.ui;
 
-import ModuleE.entity.OrderedItemClass;
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.event.ChangeListener;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.event.ChangeEvent;
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.myListInterface;
-import ModuleE.entity.ListClass;
-import java.awt.Dimension;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import javax.swing.*;
+import javax.swing.event.*;
+import ModuleE.adt.*;
+import ModuleE.entity.*;
+import java.sql.*;
 import java.text.DecimalFormat;
 import javax.swing.SwingConstants;
 
 /**
  *
- * @author chong
+ * @author chong kun ming RSD 3
  */
 public class SOViewOrderedItem extends JFrame {
 
@@ -40,7 +26,7 @@ public class SOViewOrderedItem extends JFrame {
     private JLabel jlblShowCustName = new JLabel();
     private DecimalFormat decimalFormat = new DecimalFormat("#00");
 
-    public void displayOrderedItem(ListClass arrClass, int custID, String receiveDate, String receiveTime, String userName) {
+    public void displayOrderedItem(ListGetterSetter arrClass, int custID, String receiveDate, String receiveTime, String userName) {
           
         for(int i = 0 ; i < arrClass.getCustList().getSize(); i ++){
             if(arrClass.getCustList().getAllData(i).getCustID() == custID){
