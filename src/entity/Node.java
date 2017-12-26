@@ -12,7 +12,7 @@ package entity;
 public class Node<T> {
     
     private T data;
-    private Node next;
+    public Node next;
     private Node previous;
 
 

@@ -1,54 +1,38 @@
 package ModuleD.ui;
 
 import ModuleD.entity.OrderClass;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import javax.swing.JOptionPane;
-import javax.swing.Timer;
 import ModuleD.adt.DMListImplementation;
 import ModuleD.adt.DMListInterface;
+import ModuleD.entity.CalculateDistance;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class TrackOrder extends javax.swing.JFrame {
 
     int x;
-    private DMListInterface<OrderClass> listDM = new DMListImplementation<>();
+    int tempID = 0;
+    public DMListInterface<OrderClass> listDM = new DMListImplementation<>();
     private Queue<OrderClass> queueOrder = new ArrayBlockingQueue<OrderClass>(100);
+    private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    static DMListInterface<OrderClass> parseList;
+    private Date date = new Date();
+    public int orderID1;
 
     public TrackOrder() {
         initComponents();
-//        listDM.addNewEntry(new OrderClass(10001, "Preparing", 200, 10.10, "9090909090", 10001));
-//        listDM.addNewEntry(new OrderClass(10002, "OTW", 300, 20.10, "8080808080", 10002));
-//        listDM.addNewEntry(new OrderClass(10003, "Delivered", 400, 30.10, "8080808080", 10003));
-//        queueOrder.add(new OrderClass(20002, "Available", 99, 19.19, "91019191919", 10000));
-//        queueOrder.add(new OrderClass(30003, "Unavailable", 88, 19.19, "12345678233", 10001));
-//        queueOrder.add(new OrderClass(40004, "OTW", 77, 19.19, "68273673678", 10002));
-    }
 
-    public void getOrder(String DMname) {
-//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-//        String hourFormat = "";
-//        //Date dateTemp = sdf.parse(rSet.getString("TRANTIME"));
-//        Calendar gc = new GregorianCalendar();
-//
-//        gc.add(Calendar.HOUR, 1);
-//        Date d2 = gc.getTime();
-//
-//        String dateFormatted = sdf.format(d2);
-//        eta.setText(dateFormatted + hourFormat);
+        queueOrder.offer(new OrderClass(2000, 19.19, 999, "address1", 0124212070, "OTW", 40000));
+        queueOrder.offer(new OrderClass(2001, 19.19, 998, "address2", 0124212072, "Preparing", 50000));
+        queueOrder.offer(new OrderClass(2002, 19.19, 997, "address3", 0124212071, "Delivered", 60000));
+
+        while (!queueOrder.isEmpty()) {
+            OrderClass order = queueOrder.poll();
+            listDM.addNewEntry(order);
+        }
     }
 
     /**
@@ -74,6 +58,8 @@ public class TrackOrder extends javax.swing.JFrame {
         deliveryStatus = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jbtnFindOrder = new javax.swing.JButton();
+        showDistance = new javax.swing.JLabel();
+        javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -132,6 +118,10 @@ public class TrackOrder extends javax.swing.JFrame {
             }
         });
 
+        showDistance.setForeground(new java.awt.Color(255, 0, 0));
+
+        jLabel1.setText("Hour(s)");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -149,10 +139,6 @@ public class TrackOrder extends javax.swing.JFrame {
                                 .addGap(45, 45, 45)
                                 .addComponent(jbtnFindOrder))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(eta, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel4))
@@ -163,7 +149,16 @@ public class TrackOrder extends javax.swing.JFrame {
                                 .addGap(33, 33, 33)
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(orderTime, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(orderTime, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(showDistance, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(eta, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(105, 105, 105)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -197,8 +192,11 @@ public class TrackOrder extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(eta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                    .addComponent(eta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(showDistance, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
@@ -213,6 +211,7 @@ public class TrackOrder extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.setVisible(false);
+        //new AdminMenu().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jtfOrderIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfOrderIDActionPerformed
@@ -220,23 +219,26 @@ public class TrackOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfOrderIDActionPerformed
 
     private void jbtnFindOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnFindOrderActionPerformed
-        int int1;
+
         try {
-            int1 = Integer.parseInt(jtfOrderID.getText());
+            orderID1 = Integer.parseInt(jtfOrderID.getText());
             jtfOrderID.requestFocusInWindow();
+            int calDistance = 0;
             for (int i = 0; i < listDM.retrieveSize(); i++) {
-                if (int1 == listDM.retrieveAllEntry(i).getOrderID()) {
-                    deliveryStatus.setText(listDM.retrieveAllEntry(i).getStatus());
-                }
+                if (listDM.retrieveAllEntry(i).getOrderID() == orderID1) {
+                    deliveryStatus.setText(listDM.retrieveAllEntry(i).getStatusDelivery());
+                    orderDate.setText(dateFormat.format(date));
+                    orderTime.setText(String.valueOf(listDM.retrieveAllEntry(i).getOrderTime()));
+                    deliveryStatus.setText(listDM.retrieveAllEntry(i).getStatusDelivery());
+                    calDistance = CalculateDistance.resDistance(orderID1);
 
-                Integer tempID = Integer.valueOf(queueOrder.element().getOrderID());
-
-                for (int j = 0; j < queueOrder.size(); j++) {
-                    if (queueOrder.element().getOrderID() == tempID) {
-                        orderDate.setText(String.valueOf(queueOrder.element().getOrderDate()));
-                        orderTime.setText(String.valueOf(queueOrder.element().getOrderTime()));
+                    if (calDistance <= 20) {
+                        eta.setText("1");
+                        showDistance.setText("You are "+calDistance+"KM away from us!");
                     } else {
-                        JOptionPane.showMessageDialog(null, "No record");
+                        double res = calDistance / 20;
+                        eta.setText("Approximately " + Math.round(res));
+                        showDistance.setText("You are "+calDistance+"KM away from us!");
                     }
                 }
             }
@@ -294,5 +296,6 @@ public class TrackOrder extends javax.swing.JFrame {
     private javax.swing.JTextField jtfOrderID;
     private javax.swing.JTextField orderDate;
     private javax.swing.JTextField orderTime;
+    private javax.swing.JLabel showDistance;
     // End of variables declaration//GEN-END:variables
 }
