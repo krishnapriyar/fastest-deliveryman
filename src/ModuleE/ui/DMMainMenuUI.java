@@ -62,8 +62,8 @@ public class DMMainMenuUI extends JFrame {
         jbtClockInOut.addActionListener(new java.awt.event.ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent e){
             
-               new DeliverymanClockInOut().setVisible(true);
-                DMMainMenuUI.this.setVisible(false);
+                 new DeliverymanClockInOut().setVisible(true);
+                //DMMainMenuUI.this.setVisible(false);
             }
         });
 
