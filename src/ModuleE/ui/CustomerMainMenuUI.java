@@ -33,7 +33,7 @@ public class CustomerMainMenuUI extends JFrame {
         
         JButton jbtMakeOrder = new JButton("Make order");
         JButton jbtMakeScheduleOrder = new JButton("Make Schedule Order");
-        JButton jbtViewScheduledOrder = new JButton("View My Order");
+        JButton jbtViewScheduledOrder = new JButton("View My Schedule Order");
         JButton jbtTrackOrder = new JButton("Track my order");
         JButton jbtLogout = new JButton("Logout");
         JLabel jlblTitle = new JLabel("Customer Main Menu");
