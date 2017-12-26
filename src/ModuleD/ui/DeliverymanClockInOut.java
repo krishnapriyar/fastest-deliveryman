@@ -279,8 +279,9 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
     }//GEN-LAST:event_jcbDManActionPerformed
 
     private void jbtnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBackActionPerformed
-        this.setVisible(false);
+        
         new DMMainMenuUI().setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jbtnBackActionPerformed
 
     public void reset() {
