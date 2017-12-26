@@ -1,7 +1,7 @@
 
 package ui;
 
-import ModuleE.entity.ScheduledOrderClass;
+import ModuleE.entity.ScheduleOrderClass;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -21,7 +21,7 @@ public class OrderConfirm extends JFrame{
         
     }
     
-    public void orderDetails(List<ScheduledOrderClass> list)
+    public void orderDetails(List<ScheduleOrderClass> list)
     {
         JPanel jpnMain = new JPanel(new GridLayout(3,1));
         JPanel topPanel = new JPanel();

@@ -3,8 +3,8 @@ package ui;
 import ModuleD.ui.AcceptDeliveryJob;
 import ModuleD.ui.DeliverymanWorkStatus;
 import ModuleE.entity.ListGetterSetter;
-import ModuleE.ui.SOAssignDeliveryJob;
-import ModuleE.ui.SOCheckTodayOrder;
+import ModuleE.ui.JobAssignmentUI;
+import ModuleE.ui.ViewTodayTaskUI;
 import javax.swing.JOptionPane;
 
 public class AdminMenu extends javax.swing.JFrame {
@@ -114,7 +114,7 @@ public class AdminMenu extends javax.swing.JFrame {
 
     private void jbtnDeliveryJobActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeliveryJobActionPerformed
 
-        SOAssignDeliveryJob assignJob = new SOAssignDeliveryJob();
+        JobAssignmentUI assignJob = new JobAssignmentUI();
         assignJob.setData(arrList, username);
         
         LoginFrame login = new LoginFrame();

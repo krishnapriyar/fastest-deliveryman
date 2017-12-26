@@ -242,7 +242,7 @@ public class OrderConfirmationUI extends JFrame {
                 }
 
                 for (int i = 0; i < postCodeList.getSize(); i++) {
-                    if (custAddress.contains(postCodeList.getAllData(i).getPostalCode())) {
+                    if (custAddress.trim().replace(",", "").contains(postCodeList.getAllData(i).getPostalCode())) {
                         custLatitude = postCodeList.getAllData(i).getLatitude();
                         custLongitude = postCodeList.getAllData(i).getLongitude();
                     }

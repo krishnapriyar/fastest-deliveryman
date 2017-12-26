@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -50,7 +51,7 @@ public class ViewDeliveryDetailsUI extends JFrame {
         JLabel jlblTimeToDeliverTitle = new JLabel("Time to receive");
         JLabel jlblEDTitle = new JLabel("Estimated Distance : ");
         JLabel jlblETATitle = new JLabel("ETA : ");
-        JLabel jlblDescTitle = new JLabel("Description");
+        JLabel jlblDescTitle = new JLabel("ET to start deliver order : ");
 
         jlblCustNumberTitle.setFont(titleFont);
         jlblCustNameTitle.setFont(titleFont);
@@ -79,14 +80,17 @@ public class ViewDeliveryDetailsUI extends JFrame {
             }
         }
         double timeToDeliver = (distance / 40);
-        cal.add(java.util.Calendar.MINUTE, 0 - Integer.parseInt(String.valueOf(Math.round(timeToDeliver))));
+        
+        
         
         String eta, desc;
         if(Math.round(timeToDeliver) <= 0){
-            eta = "-";
-            desc = "-";
+            eta = Math.round(timeToDeliver * 100) + " Minutes";
+            cal.add(java.util.Calendar.MINUTE, 0 - Integer.parseInt(String.valueOf(Math.round(timeToDeliver * 100))));
+            desc = "Estimated time to deliver the order "+ new java.text.SimpleDateFormat("hh:mm aa").format(cal.getTime());
         }else{
-            eta = Math.round(timeToDeliver) + " Minutes";
+            eta = Math.round(timeToDeliver) + " Hour(s)";
+            cal.add(java.util.Calendar.MINUTE, 0 - (Integer.parseInt(String.valueOf(Math.round(timeToDeliver))) * 60));
             desc = "Estimated time to deliver the order "+ new java.text.SimpleDateFormat("hh:mm aa").format(cal.getTime());
         }
         

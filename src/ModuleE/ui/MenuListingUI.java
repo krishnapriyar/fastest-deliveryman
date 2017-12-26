@@ -90,6 +90,7 @@ public class MenuListingUI extends JFrame {
         add(jsp1, BorderLayout.CENTER);
         add(jbtOK, BorderLayout.SOUTH);
 
+        setTitle(jlblShowResName.getText() + "'s Menus");
         setVisible(true);
         setSize(1100, 500);
         setResizable(false);
