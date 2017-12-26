@@ -1,7 +1,7 @@
 
 package ui;
 
-import ModuleE.entity.ScheduledOrderClass;
+import ModuleE.entity.ScheduleOrderClass;
 import ModuleE.entity.OrderedItemClass;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -112,7 +112,7 @@ public class OrderQuantity extends JFrame{
         jbtConfirm.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e)
             {
-                List<ScheduledOrderClass> confirm = new ArrayList<>();
+                List<ScheduleOrderClass> confirm = new ArrayList<>();
                 for(int i=0 ; i <orderedList.size();i++)
                 {
                     String itemName = jlblItemName[i].getText();

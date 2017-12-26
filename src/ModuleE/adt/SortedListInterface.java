@@ -2,7 +2,8 @@ package ModuleE.adt;
 
 /**
  *
- * @author chong
+ * @author chong kun ming RSD 3
+ * @param <T>
  */
 public interface SortedListInterface<T extends Comparable<T>> {
     
@@ -13,5 +14,7 @@ public interface SortedListInterface<T extends Comparable<T>> {
     public int size();
     
     public boolean isEmpty();
+    
+    public void clearList();
     
 }

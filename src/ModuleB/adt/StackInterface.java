@@ -9,15 +9,18 @@ package ModuleB.adt;
  *
  * @author Priya
  */
-public interface QueueInterface<T> {
+public interface StackInterface<T> {
 
-    void enqueue(T newEntry);
+    void push(T newEntry);
 
-    T dequeue();
+    T pop();
 
-    T getFront();
+    T peek();
 
     boolean isEmpty();
 
     void clear();
+    
+    T replaceTop(T newEntry);
+
 }

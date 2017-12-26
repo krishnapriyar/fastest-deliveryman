@@ -1,48 +1,33 @@
 package ModuleE.ui;
 
-import ModuleE.entity.Customer;
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.myListInterface;
-import ModuleE.entity.ListClass;
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import ui.LoginFrame;
 
 /**
  *
- * @author chong kun ming
- *
+ * @author chong kun ming RSD 3
  */
-public class CustomerMainMenu extends JFrame {
+public class CustomerMainMenuUI extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
-    private static Connection conn = null;
-    private static PreparedStatement prepare;
-    private static ResultSet rs = null;
+    private static java.sql.Connection conn = null;
+    private static java.sql.PreparedStatement prepare;
+    private static java.sql.ResultSet rs = null;
     private JPanel jpnPanel1 = new JPanel(new GridLayout(1, 2));
     private JPanel jpnPanel2 = new JPanel(new GridLayout(3, 2));
     private int custID;
-    // public myListInterface<Customer> custList = new ListImplementation<Customer>();
-    public ListClass arrList = new ListClass();
+    public ModuleE.entity.ListGetterSetter arrList = new ModuleE.entity.ListGetterSetter();
     
-    public CustomerMainMenu() {
+    public CustomerMainMenuUI() {
         
     }
     
-    public CustomerMainMenu(ListClass arrClass, String username) {
+    public CustomerMainMenuUI(ModuleE.entity.ListGetterSetter arrClass, String username) {
         arrList = arrClass;
         getCustInfo(username);
         
@@ -53,7 +38,7 @@ public class CustomerMainMenu extends JFrame {
         JButton jbtLogout = new JButton("Logout");
         JLabel jlblTitle = new JLabel("Customer Main Menu");
         
-        Font font = new Font("Arial", Font.PLAIN, 20);
+        java.awt.Font font = new java.awt.Font("Arial", java.awt.Font.PLAIN, 20);
         jlblTitle.setFont(font);
         jbtMakeOrder.setFont(font);
         jbtMakeScheduleOrder.setFont(font);
@@ -61,35 +46,35 @@ public class CustomerMainMenu extends JFrame {
         jbtTrackOrder.setFont(font);
         jbtLogout.setFont(font);
         
-        jbtMakeOrder.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        jbtMakeOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
                 
             }
         });
         
-        jbtViewScheduledOrder.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SOViewMyOrder view = new SOViewMyOrder();
+        jbtViewScheduledOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                ViewMyOrderUI view = new ViewMyOrderUI();
                 
                 view.pageContent(arrClass, custID, username);
-                CustomerMainMenu.this.setVisible(false);
+                CustomerMainMenuUI.this.setVisible(false);
             }
         });
         
-        jbtMakeScheduleOrder.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                SOSelectDateTime makeBooking = new SOSelectDateTime();
+        jbtMakeScheduleOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                SelectDateTimeUI makeBooking = new SelectDateTimeUI();
                 makeBooking.makeScheduleOrder(arrClass, custID, username);
-                CustomerMainMenu.this.setVisible(false);
+                CustomerMainMenuUI.this.setVisible(false);
             }
         });
         
-        jbtLogout.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                LoginFrame login = new LoginFrame();
+        jbtLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                ui.LoginFrame login = new ui.LoginFrame();
                 login.setListClass(arrList);
                 login.setVisible(true);
-                CustomerMainMenu.this.setVisible(false);
+                CustomerMainMenuUI.this.setVisible(false);
             }
         });
         
@@ -120,12 +105,11 @@ public class CustomerMainMenu extends JFrame {
                 while (rs.next()) {
                     if (rs.getString(2).replace(" ", "").equalsIgnoreCase(username)) {
                         custID = rs.getInt(1);
-                        arrList.getCustList().addNewItem(new Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+                        arrList.getCustList().addNewItem(new ModuleE.entity.Customer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
                     }                    
                 }
                 
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            } catch (SQLException ex) {
             }
             
         }
@@ -135,12 +119,11 @@ public class CustomerMainMenu extends JFrame {
         boolean isSuccess = false;
         
         try {
-            conn = DriverManager.getConnection(dbURL);
+            conn = java.sql.DriverManager.getConnection(dbURL);
             if (conn != null) {
                 isSuccess = true;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (SQLException ex) {
         }
         
         return isSuccess;

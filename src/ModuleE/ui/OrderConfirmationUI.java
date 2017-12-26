@@ -1,48 +1,21 @@
 package ModuleE.ui;
 
-import ModuleE.entity.Customer;
-import ModuleE.entity.OrderedItemClass;
-import ModuleE.entity.PostalCodeClass;
-import ModuleE.entity.ScheduledOrderClass;
-import ModuleE.entity.ScheduledOrderItem;
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.SortedListImplementation;
-import ModuleE.adt.SortedListInterface;
-import ModuleE.adt.myListInterface;
-import ModuleE.entity.ListClass;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.Reader;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import ModuleE.entity.*;
+import ModuleE.adt.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.text.*;
 import java.util.Date;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.Timer;
+import javax.swing.*;
 import org.jdesktop.swingx.JXDatePicker;
-import org.jdesktop.swingx.renderer.StringValue;
 
-public class SOOrderConfirmation extends JFrame {
+/**
+ *
+ * @author chong kun ming RSD 3
+ */
+
+public class OrderConfirmationUI extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
     private static Connection conn = null;
@@ -72,15 +45,15 @@ public class SOOrderConfirmation extends JFrame {
     private myListInterface<String> cityList = new ListImplementation<>();
     public myListInterface<Customer> custList = new ListImplementation<Customer>();
     private DecimalFormat decimalFormat = new DecimalFormat("#00");
-    private SortedListInterface<ScheduledOrderClass> scOrderClass = new SortedListImplementation<>();
-    private ListClass arrList = new ListClass();
+    private SortedListInterface<ScheduleOrderClass> scOrderClass = new SortedListImplementation<>();
+    private ListGetterSetter arrList = new ListGetterSetter();
     private int custID = 0;
     private String address = "";
-    public SOOrderConfirmation() {
+    public OrderConfirmationUI() {
 
     }
 
-    public void orderDetails(ListClass arrClass, int custID, String receiveDate,String receiveTime, String userName) {
+    public void orderDetails(ListGetterSetter arrClass, int custID, String receiveDate,String receiveTime, String userName) {
 
         initializeComponent(receiveDate, receiveTime);
         displayCurrentDateTime();
@@ -198,25 +171,24 @@ public class SOOrderConfirmation extends JFrame {
                     Date receiveTime = sdfTime2.parse(reTime);
                     Date currentDate = sdfDate.parse(jlblCurrentDate.getText());
                     Date currentTime = sdfTime2.parse(sdfTime2.format(current));
-
+                    
                     if (receiveTime.before(currentTime) && receiveDate.equals(currentDate)) {
                         JOptionPane.showMessageDialog(null, "Check your receive time before proceed !");
                     } else if (!receiveDate.before(currentDate)) {
                         int distance = getDistance(address);
-                        // add data to schedule order list   
                         int scheduleOrderID = 1000 + arrList.getScOrderClass().size();
-                        ScheduledOrderClass order = new ScheduledOrderClass(scheduleOrderID, receiveDate, receiveTime, "Pending...", distance, Double.parseDouble(jlblShowTotalAmount.getText().toString()), custID, 0);
+                        ScheduleOrderClass order = new ScheduleOrderClass(scheduleOrderID, receiveDate, receiveTime, "Pending...", distance, Double.parseDouble(jlblShowTotalAmount.getText().toString()), custID, 0);
                         arrList.getScOrderClass().addEntry(order);
 
                         for (int i = 0; i < arrList.getItemlist().getSize(); i++) {
-                            ScheduledOrderItem scOrder = new ScheduledOrderItem(arrList.getItemlist().getAllData(i).getItemPrice(), arrList.getItemlist().getAllData(i).getQty(), arrList.getItemlist().getAllData(i).getItemName(), order.getOrderID());
+                            ScheduledOrderItemClass scOrder = new ScheduledOrderItemClass(arrList.getItemlist().getAllData(i).getItemPrice(), arrList.getItemlist().getAllData(i).getQty(), arrList.getItemlist().getAllData(i).getItemName(), order.getOrderID());
                             arrList.getScOrderItemList().addNewItem(scOrder);
                         }
 
-                        SOViewMyOrder view = new SOViewMyOrder();
+                        ViewMyOrderUI view = new ViewMyOrderUI();
 
                         view.pageContent(arrList, custID, userName);
-                        SOOrderConfirmation.this.dispose();
+                        OrderConfirmationUI.this.dispose();
    
                     } else {
                         JOptionPane.showMessageDialog(null, "Receive date cannot ealier than today's date");
@@ -263,11 +235,14 @@ public class SOOrderConfirmation extends JFrame {
                 rs = prepare.executeQuery();
 
                 while (rs.next()) {
-                    postCodeList.addNewItem(new PostalCodeClass(rs.getString("POSTALCODE"), rs.getString("CITY"), rs.getString("STATE"), rs.getDouble("LATITUDE"), rs.getDouble("LONGITUDE")));
+                    postCodeList.addNewItem(new PostalCodeClass(rs.getString("POSTALCODE"), rs.getString("CITY"), 
+                            rs.getString("STATE"), 
+                            rs.getDouble("LATITUDE"), 
+                            rs.getDouble("LONGITUDE")));
                 }
 
                 for (int i = 0; i < postCodeList.getSize(); i++) {
-                    if (custAddress.contains(postCodeList.getAllData(i).getPostalCode())) {
+                    if (custAddress.trim().replace(",", "").contains(postCodeList.getAllData(i).getPostalCode())) {
                         custLatitude = postCodeList.getAllData(i).getLatitude();
                         custLongitude = postCodeList.getAllData(i).getLongitude();
                     }

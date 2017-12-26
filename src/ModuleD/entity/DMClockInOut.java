@@ -21,6 +21,10 @@ public class DMClockInOut {
     private int OrderID;
     private int custID;
 
+    public DMClockInOut(){
+    
+    }
+    
     public DMClockInOut(String dmName, int dmID, String status) {
         this.dmName = dmName;
         this.dmID = dmID;

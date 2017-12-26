@@ -1,11 +1,8 @@
 package ModuleE.adt;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  *
- * @author chong kun ming
+ * @author chong kun ming RSD 3
  */
 public class SortedListImplementation<T extends Comparable<T>> implements SortedListInterface<T> {
 
@@ -15,42 +12,31 @@ public class SortedListImplementation<T extends Comparable<T>> implements Sorted
     @Override
     public void addEntry(T newEntry) {
         Node newNode = new Node(newEntry);
+        Node tempNode = firstNode;
+        Node nodeBefore = null;
 
         if (firstNode == null) {
             firstNode = newNode;
         } else {
-            if (firstNode.next == null) {
-                if (firstNode.data.compareTo(newNode.data) <= 0) {
-                    firstNode.next = newNode;
-                } else {
-                    newNode.next = firstNode;
-                    firstNode = newNode;
-                }
+            if (tempNode != null && tempNode.data.compareTo(newNode.data) >= 0) { //add at top
+                newNode.next = tempNode;
+                tempNode = newNode;
+                firstNode = tempNode;
             } else {
-
-                Node tempNode = firstNode;
-                Node currentNode = null;
-                if (tempNode.data.compareTo(newNode.data) > 0) {
+                while (tempNode != null && tempNode.data.compareTo(newNode.data) < 0) { //add at last
+                    nodeBefore = tempNode;
+                    tempNode = tempNode.next;
+                }
+                
+                if (numberOfEntries != 0 && nodeBefore !=null) {//add at middle
+                    nodeBefore.next = newNode;
                     newNode.next = tempNode;
-                    firstNode = newNode;
-                } else {
-                    while (tempNode.data.compareTo(newNode.data) <= 0) {
-                        currentNode = tempNode;
-                        if (tempNode.next == null) {
-                            tempNode.next = newNode;
-                        }
-                        tempNode = tempNode.next;
-                    }
-                    if (tempNode.data.compareTo(newNode.data) > 0) {
-                        currentNode.next = newNode;
-                        newNode.next = tempNode;
-                    }
                 }
             }
         }
         numberOfEntries++;
     }
-    
+
     @Override
     public T getEntry(int position) {
         T data = null;
@@ -63,6 +49,7 @@ public class SortedListImplementation<T extends Comparable<T>> implements Sorted
 
         return data;
     }
+   
 
     @Override
     public int size() {
@@ -74,6 +61,11 @@ public class SortedListImplementation<T extends Comparable<T>> implements Sorted
         return firstNode == null;
     }
 
+    public void clearList(){
+        numberOfEntries = 0;
+        firstNode = null;
+    }
+    
     private class Node {
 
         private Node next;

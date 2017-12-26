@@ -1,39 +1,41 @@
 package ModuleE.ui;
 
-import ModuleE.entity.ScheduledOrderClass;
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.myListInterface;
-import ModuleE.entity.ListClass;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.*;
-import java.text.SimpleDateFormat;
+import java.awt.*;
 import java.util.Date;
 import javax.swing.*;
 
-public class SOCheckTodayOrder extends JFrame {
+/**
+ *
+ * @author chong kun ming RSD 3
+ */
+
+public class ViewTodayTaskUI extends JFrame {
 
     private JLabel jlblCurrentDate = new JLabel();
     private JLabel jlblCurrentTime = new JLabel();
-    private SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy");
-    private SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm:ss aa");
-    private SimpleDateFormat sdfDisplayTime = new SimpleDateFormat("hh:mm aa");
+    private java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("dd/MM/yyyy");
+    private java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("hh:mm:ss aa");
+    private java.text.SimpleDateFormat sdfDisplayTime = new java.text.SimpleDateFormat("hh:mm aa");
     private Font dateTimeFont = new Font("Arial", Font.BOLD, 25);
     private Font itemListingFont = new Font("Arial", Font.PLAIN, 20);
     private Font titleFont = new Font("Arial", Font.BOLD, 20);
-    public ListClass arrList = new ListClass();
+    public ModuleE.entity.ListGetterSetter arrList = new ModuleE.entity.ListGetterSetter();
     private int custID = 0;
-    public void setData(ListClass list) {
+    private String dmName = "";
+    
+    public void setData(ModuleE.entity.ListGetterSetter list) {
         arrList = list;
     }
     
-    public SOCheckTodayOrder(ListClass arrClass, int dmID) {
+    public ViewTodayTaskUI(ModuleE.entity.ListGetterSetter arrClass, int dmID) {
         arrList = arrClass;
+        
+        for(int i = 0 ; i < arrList.getDmList().getSize(); i ++){
+            if(dmID == arrList.getDmList().getAllData(i).getDmID()){
+                dmName = arrList.getDmList().getAllData(i).getDmName();
+            }
+        }
+        
         displayCurrentDateTime();
         JPanel topPanel = new JPanel(new GridLayout(1, 2));
         JPanel[] itemOrderedListing = new JPanel[arrList.getScOrderClass().size()];
@@ -112,25 +114,26 @@ public class SOCheckTodayOrder extends JFrame {
                 jpnWrapItemListing.add(itemDetailListing);
                 
                 JLabel id = jlblOrderID[i];
-                jbtOrderedItems[i].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        new ViewItemOrdered().pageContent(Integer.parseInt(id.getText()), arrList.getScOrderItemList(), arrList.getItemlist());
+                jbtOrderedItems[i].addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
+                        new ViewOrderedItemUI().pageContent(Integer.parseInt(id.getText()), arrList.getScOrderItemList(), arrList.getItemlist());
                     }
                 });
                 
-                jbtDeliveryDetails[i].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        new DeliveryDetails(Integer.parseInt(id.getText()), arrList, custID).setVisible(true);
+                jbtDeliveryDetails[i].addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
+                        new ViewDeliveryDetailsUI(Integer.parseInt(id.getText()), arrList, custID).setVisible(true);
                     }
                 });
             }
         }
         
-        jbtBack.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-//                DMMainMenu main = new DMMainMenu();
-//                main.setListClass(arrList);
-                SOCheckTodayOrder.this.setVisible(false);
+        jbtBack.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent e){
+                DMMainMenuUI main = new DMMainMenuUI();
+                main.setData(arrList, dmName);
+                main.setVisible(true);
+                ViewTodayTaskUI.this.setVisible(false);
             }
         });
         
@@ -155,8 +158,8 @@ public class SOCheckTodayOrder extends JFrame {
     }
     
     private void displayCurrentDateTime() {
-        new Timer(0, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        new Timer(0, new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
                 Date d = new Date();
                 jlblCurrentDate.setText(sdfDate.format(d));
                 jlblCurrentTime.setText(sdfTime.format(d));

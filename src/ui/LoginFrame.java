@@ -5,9 +5,9 @@
  */
 package ui;
 
-import ModuleE.entity.ListClass;
-import ModuleE.ui.CustomerMainMenu;
-import ModuleE.ui.DMMainMenu;
+import ModuleE.entity.ListGetterSetter;
+import ModuleE.ui.CustomerMainMenuUI;
+import ModuleE.ui.DMMainMenuUI;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -27,7 +27,7 @@ public class LoginFrame extends javax.swing.JFrame {
     PreparedStatement stmt = null;
     ResultSet rs = null;
     JFrame frame;
-    ListClass list = new ListClass();
+    ListGetterSetter list = new ListGetterSetter();
     String username = "";
 
     public LoginFrame() {
@@ -36,7 +36,7 @@ public class LoginFrame extends javax.swing.JFrame {
         insertCredential();
     }
 
-    public void setListClass(ListClass arrClass) {
+    public void setListClass(ListGetterSetter arrClass) {
         list = arrClass;
     }
 
@@ -151,13 +151,13 @@ public class LoginFrame extends javax.swing.JFrame {
     private void goToMenu() {
         switch (jcbUserType.getSelectedItem().toString()) {
             case "Customer":
-                frame = new CustomerMainMenu(list, username);
+                frame = new CustomerMainMenuUI(list, username);
                 break;
             case "Affliate":
                 frame = new ModuleA.ui.CRUD();
                 break;
             case "Deliveryman":
-                DMMainMenu main = new DMMainMenu();
+                DMMainMenuUI main = new DMMainMenuUI();
                 main.setData(list, username);
                 frame = main;
                 break;

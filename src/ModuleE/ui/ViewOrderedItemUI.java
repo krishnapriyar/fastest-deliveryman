@@ -1,41 +1,24 @@
 
 package ModuleE.ui;
 
-import ModuleE.entity.OrderedItemClass;
-import ModuleE.entity.ScheduledOrderItem;
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.myListInterface;
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.border.EmptyBorder;
+import ModuleE.entity.*;
+import ModuleE.adt.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 
-public class ViewItemOrdered extends JFrame{
-    private myListInterface<ScheduledOrderItem> list = new ListImplementation<>();
+public class ViewOrderedItemUI extends JFrame{
+    private myListInterface<ScheduledOrderItemClass> list = new ListImplementation<>();
     
-    public ViewItemOrdered(){
+    public ViewOrderedItemUI(){
     
-        
     }
     
-    public void pageContent(int scheduleOrderID, myListInterface<ScheduledOrderItem> orderItem, myListInterface<OrderedItemClass> itemlist){
+    public void pageContent(int scheduleOrderID, myListInterface<ScheduledOrderItemClass> orderItem, myListInterface<OrderedItemClass> itemlist){
         for(int i = 0 ; i < orderItem.getSize() ; i ++){
             if(scheduleOrderID == orderItem.getAllData(i).getScheduleOrderID()){
-                list.addNewItem(new ScheduledOrderItem(orderItem.getAllData(i).getUnitPrice(), orderItem.getAllData(i).getQty(), orderItem.getAllData(i).getItemName(), orderItem.getAllData(i).getScheduleOrderID()));
+                list.addNewItem(new ScheduledOrderItemClass(orderItem.getAllData(i).getUnitPrice(), orderItem.getAllData(i).getQty(), orderItem.getAllData(i).getItemName(), orderItem.getAllData(i).getScheduleOrderID()));
             }
         }
         
@@ -94,7 +77,7 @@ public class ViewItemOrdered extends JFrame{
         
         jbtOK.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                ViewItemOrdered.this.setVisible(false);
+                ViewOrderedItemUI.this.setVisible(false);
             }
         });
         

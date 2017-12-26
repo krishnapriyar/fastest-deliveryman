@@ -1,46 +1,21 @@
 package ModuleE.ui;
 
-import ModuleE.entity.Customer;
-import ModuleE.entity.OrderedItemClass;
-import ModuleE.entity.ScheduledOrderClass;
-import ModuleE.entity.ScheduledOrderItem;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.event.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import org.jdesktop.swingx.JXDatePicker;
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.myListInterface;
-import ModuleE.entity.ListClass;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import javax.swing.*;
+import javax.swing.event.*;
+import ModuleE.adt.*;
+import ModuleE.entity.*;
+import java.sql.*;
+import java.text.DecimalFormat;
 import javax.swing.SwingConstants;
-import static javax.swing.SwingConstants.CENTER;
-import javax.swing.SwingUtilities;
 
 /**
  *
- * @author chong
+ * @author chong kun ming RSD 3
  */
-public class SOViewOrderedItem extends JFrame {
+public class SelectedItemListingUI extends JFrame {
 
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
     private static Connection conn = null;
@@ -49,8 +24,9 @@ public class SOViewOrderedItem extends JFrame {
     private double totalAmount = 0.0;
     private Font font = new Font("Arial", Font.BOLD, 18);
     private JLabel jlblShowCustName = new JLabel();
+    private DecimalFormat decimalFormat = new DecimalFormat("#00");
 
-    public void displayOrderedItem(ListClass arrClass, int custID, String receiveDate, String receiveTime, String userName) {
+    public void displayOrderedItem(ListGetterSetter arrClass, int custID, String receiveDate, String receiveTime, String userName) {
           
         for(int i = 0 ; i < arrClass.getCustList().getSize(); i ++){
             if(arrClass.getCustList().getAllData(i).getCustID() == custID){
@@ -144,7 +120,7 @@ public class SOViewOrderedItem extends JFrame {
                         itemQty.setValue(1);
                     } else {
                         itemTotalPrice.setText(String.valueOf(totalPrice(Integer.parseInt(itemQty.getValue().toString()), Double.parseDouble(itemPrice.getText()))));
-                        jlblTotalPrice.setText("Total Amount : RM " + String.valueOf(getTotalAmount(Double.parseDouble(itemPrice.getText()))));
+                        jlblTotalPrice.setText("Total Amount : RM " + String.valueOf(Math.round(getTotalAmount(Double.parseDouble(itemPrice.getText())) * 100) /100));
                     }
                 }
             });
@@ -153,9 +129,9 @@ public class SOViewOrderedItem extends JFrame {
             jbtRemove[i].addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     arrClass.getItemlist().removeItem(Integer.parseInt(action) + 1);
-                    SOViewOrderedItem s = new SOViewOrderedItem();
+                    SelectedItemListingUI s = new SelectedItemListingUI();
                     s.displayOrderedItem(arrClass, custID, receiveDate, receiveTime, userName);
-                    SOViewOrderedItem.this.setVisible(false);
+                    SelectedItemListingUI.this.setVisible(false);
                 }
             });
         }
@@ -178,17 +154,17 @@ public class SOViewOrderedItem extends JFrame {
                     oList.addNewItem(new OrderedItemClass(itemID, itemName, itemPrice, totalAmount, quantity));
                 }
                 arrClass.setItemlist(oList);
-                SOOrderConfirmation sot = new SOOrderConfirmation();
+                OrderConfirmationUI sot = new OrderConfirmationUI();
                 sot.orderDetails(arrClass, custID, receiveDate, receiveTime, userName);
-                SOViewOrderedItem.this.setVisible(false);
+                SelectedItemListingUI.this.setVisible(false);
             }
         });
 
         jbtBack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new SOMakeScheduledOrder().orderPage(arrClass, custID, receiveDate, receiveTime, userName);
+                new MakeNewOrderUI().orderPage(arrClass, custID, receiveDate, receiveTime, userName);
                 setVisible(true);
-                SOViewOrderedItem.this.dispose();
+                SelectedItemListingUI.this.dispose();
             }
         });
 

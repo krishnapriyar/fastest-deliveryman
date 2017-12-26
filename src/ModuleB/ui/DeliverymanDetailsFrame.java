@@ -5,7 +5,6 @@
  */
 package ModuleB.ui;
 
-
 import java.sql.*;
 import javax.swing.*;
 import ModuleB.adt.*;
@@ -216,31 +215,6 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
     private void jtfPostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPostActionPerformed
         // TODO add your handling code here:
-//        //Automatically fill city
-//        String postcode = jtfPost.getText();
-//        if(postcode.length()==5){
-//            
-//            try{
-//                DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
-//                Connection conn = DriverManager.getConnection(dbURL);
-//                
-//                String queryStr="SELECT CITY FROM  POSTALCODES WHERE POSTALCODE = ?";
-//
-//                stmt = conn.prepareStatement(queryStr);
-//                stmt.setString(1,postcode);
-//                ResultSet rs = stmt.executeQuery();
-//            
-//                if(rs.next())
-//                {
-//                    jtfCity.setText(rs.getString(1));  
-//                    
-//                }
-//                
-//            }catch (Exception ex){
-//                System.out.println(ex.getMessage());
-//            }            
-//        
-//        }
     }//GEN-LAST:event_jtfPostActionPerformed
 
     private void jcbEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbEditActionPerformed
@@ -269,11 +243,11 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
     private void jbtBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtBackActionPerformed
         // TODO add your handling code here:
+        writeToDB();
         HRExecMenu caller = getCaller();
         this.setVisible(false);
         caller.setVisible(true);
-        caller.setDmList(dmList);
-        writeToDB();
+        caller.setDmList(dmList);        
         this.dispose();
     }//GEN-LAST:event_jbtBackActionPerformed
 
@@ -290,7 +264,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
         Deliveryman dm = dmList.getEntry(jcbName.getSelectedIndex() + 1);
         dmList.remove(dm);
 
-        Deliveryman dm2 = new Deliveryman(ID, name, IC, tel, address, status, "Available", (LinkedQueue)dm.getDeliveryQueue() );
+        Deliveryman dm2 = new Deliveryman(ID, name, IC, tel, address, status, "Available", (LinkedQueue) dm.getDeliveryQueue());
 
         dmList.add(dm2);
 
@@ -299,22 +273,28 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
     private void jcbNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbNameActionPerformed
         // TODO add your handling code here:
-        Deliveryman dm = dmList.getEntry(jcbName.getSelectedIndex() + 1);
-        jtfID.setText(dm.getDmID()+"");
-        jtfName.setText(dm.getDmName());
-        jtfID2.setText(dm.getDmIC());
-        jtfTel.setText(dm.getDmTelNo());
-        formatAddress(dm.getDmAddress());
-        jdbStatus.setSelectedItem(dm.getActiveStatus());
+        try {
+            Deliveryman dm = dmList.getEntry(jcbName.getSelectedIndex() + 1);
+            jtfID.setText(dm.getDmID() + "");
+            jtfName.setText(dm.getDmName());
+            jtfID2.setText(dm.getDmIC());
+            jtfTel.setText(dm.getDmTelNo());
+            formatAddress(dm.getDmAddress());
+            jdbStatus.setSelectedItem(dm.getActiveStatus());
+        } catch (Exception ex) {
+            System.out.print(ex.getMessage());
+        }
 
 
     }//GEN-LAST:event_jcbNameActionPerformed
 
     private void jbtRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRefreshActionPerformed
         // TODO add your handling code here:
-        try{
+        try {
             fillBox();
-        } catch(Exception ex){}
+        } catch (Exception ex) {
+            System.out.print(ex.getMessage());
+        }
     }//GEN-LAST:event_jbtRefreshActionPerformed
 
     private void writeToDB() {
@@ -371,6 +351,7 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
 
             }
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
 
     }
@@ -378,8 +359,8 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
     public void autogenID() {
 
         int ID = 20001;
-        
-        Deliveryman dm  = dmList.getEntry(dmList.getSize());
+
+        Deliveryman dm = dmList.getEntry(dmList.getSize());
 
         try {
             DriverManager.registerDriver(new org.apache.derby.jdbc.ClientDriver());
@@ -395,11 +376,12 @@ public class DeliverymanDetailsFrame extends javax.swing.JFrame {
             }
 
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
 
         }
-        
-        if(dm!=null){
-            ID = dm.getDmID()+1;
+
+        if (dm != null) {
+            ID = dm.getDmID() + 1;
         }
         jtfID.setText(ID + "");
 

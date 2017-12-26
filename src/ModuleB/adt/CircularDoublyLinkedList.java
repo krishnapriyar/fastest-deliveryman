@@ -11,17 +11,22 @@ import ModuleB.entity.Node;
 /**
  *
  * @author Priya
+ * CircularDoublyLinkedList means elements are linked to elements to the front and back.
+ * The last element in the list also points to the first element in the list.
  */
 public class CircularDoublyLinkedList<T> implements ListInterface<T> {
 
+    //firstNode refers to the first/top/front element in the list
     private Node firstNode;
     private int size;
-
+    
+    //Initialize empty list
     public CircularDoublyLinkedList() {
 
         this.firstNode = null;
         this.size = 0;
     }
+
 
     @Override
     public void add(T newEntry) {
@@ -29,13 +34,18 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
         newNode.setNext(firstNode);
 
         if (isEmpty()) {
+            //New element is the firstNode if the list is empty
             firstNode = newNode;
             firstNode.setNext(newNode);
             firstNode.setPrevious(newNode);
 
         } else {
+            
+           //New elements are added to the end of the list
+           
             Node lastNode = firstNode.getPrevious();
 
+            //The new entry points to the firstNode (as next node) and the former last element (as previous node)
             newNode.setNext(firstNode);
             newNode.setPrevious(lastNode);
 
@@ -46,10 +56,12 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
         size++;
     }
 
+
     @Override
     public boolean remove(T anEntry) {
         boolean removed = false;
-
+        
+        //If the only element equals the one to be removed, the list is reinitialised to empty
         if (size == 1 && firstNode.getData().equals(anEntry)) {
 
             firstNode = null;
@@ -60,9 +72,11 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
             do {
                 if (node.getData().equals(anEntry)) {
 
+                    //firstNode is set the next element in case it needs to be removed
                     if (node.equals(firstNode)) {
                         firstNode = firstNode.getNext();
                     }
+                    //References to the node to be removed are reassigned
                     Node tempnode = node;
 
                     node.getNext().setPrevious(tempnode.getPrevious());
@@ -80,9 +94,12 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
 
         return removed;
     }
-
+    
+   
     @Override
     public T getEntry(int index) {
+        
+        //Valid index starts at 1 and is not more than the size of the list
         if (index > 0 && index < size + 1) {
             Node currentNode = firstNode;
 
@@ -97,6 +114,8 @@ public class CircularDoublyLinkedList<T> implements ListInterface<T> {
 
         }
     }
+    
+  
 
     @Override
     public boolean contains(T anEntry) {

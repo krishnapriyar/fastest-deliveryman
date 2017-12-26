@@ -5,42 +5,21 @@
  */
 package ModuleA.adt;
 
-
 /**
  *
  * @author Lysan Chen
  */
 public interface StackInterface<T> {
-     public void push(T newEntry);
 
-  /**
-   * Task: Removes and returns the stack's top entry.
-   *
-   * @return either the object at the top of the stack or, if the stack is empty
-   * before the operation, null
-   */
-  public T pop();
+    void push(T newEntry);
 
-  /**
-   * Task: Retrieves the stack's top entry.
-   *
-   * @return either the object at the top of the stack or null if the stack is
-   * empty
-   */
-  public T peek();
+    T pop();
 
-  /**
-   * Task: Detects whether the stack is empty.
-   *
-   * @return true if the stack is empty
-   */
-  public boolean isEmpty();
+    T peek();
 
-  /**
-   * Task: Removes all entries from the stack
-   */
-  public void clear();
-  
-  
+    boolean isEmpty();
+
+    void clear();
+
 } // end StackInterface
 

@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ModuleA.entity;
+package ModuleB.adt;
 
+import ModuleB.entity.*;
 
 
 /**
  *
- * @author Lysan Chen
+ * @author Priya
  */
 public class Node<T> {
     

@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ModuleE.entity;
 
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.myListInterface;
 import java.util.Date;
 
-public class ScheduledOrderClass implements Comparable<ScheduledOrderClass>{
+public class ScheduleOrderClass implements Comparable<ScheduleOrderClass>{
 
     private int orderID;
     private Date receiveDate;
@@ -21,7 +15,7 @@ public class ScheduledOrderClass implements Comparable<ScheduledOrderClass>{
     private int dmID;
     private String dmName;
 
-    public ScheduledOrderClass(int orderID, Date receiveDate, Date receiveTime, String status, int distance, double totalAmount, int custID, int dmID) {
+    public ScheduleOrderClass(int orderID, Date receiveDate, Date receiveTime, String status, int distance, double totalAmount, int custID, int dmID) {
         this.orderID = orderID;
         this.receiveDate = receiveDate;
         this.receiveTime = receiveTime;
@@ -106,10 +100,10 @@ public class ScheduledOrderClass implements Comparable<ScheduledOrderClass>{
     }
 
     @Override
-    public int compareTo(ScheduledOrderClass o) {
-        if(this.getReceiveDate().compareTo(o.receiveDate) == 0){
+    public int compareTo(ScheduleOrderClass o) {
+        if(this.getReceiveDate().compareTo(o.receiveDate) == 0)
             return this.getReceiveTime().compareTo(o.receiveTime);
-        }
+        
         return this.getReceiveDate().compareTo(o.receiveDate);
     }
 

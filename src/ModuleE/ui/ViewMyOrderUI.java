@@ -1,29 +1,18 @@
 package ModuleE.ui;
 
-import ModuleE.entity.Customer;
-import ModuleE.entity.OrderedItemClass;
-import ModuleE.entity.ScheduledOrderClass;
-import ModuleE.entity.ScheduledOrderItem;
-import ModuleE.adt.ListImplementation;
-import ModuleE.adt.myListInterface;
-import ModuleE.entity.ListClass;
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import ModuleE.entity.ListGetterSetter;
+import java.awt.*;
+import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import javax.swing.Timer;
+import javax.swing.*;
 
-public class SOViewMyOrder extends JFrame {
+/**
+ *
+ * @author chong kun ming RSD 3
+ */
+
+public class ViewMyOrderUI extends JFrame {
 
     private JPanel jpnTop = new JPanel(new GridLayout(3, 2));
     private JLabel jlblCurrentDate = new JLabel();
@@ -40,13 +29,13 @@ public class SOViewMyOrder extends JFrame {
     private Font dateTimeFont = new Font("Arial", Font.PLAIN, 30);
     private Font font = new Font("Arial", Font.BOLD, 18);
     private Font itemFont = new Font("Arial", Font.PLAIN, 20);
-    public ListClass arrClass = new ListClass();
+    public ListGetterSetter arrClass = new ListGetterSetter();
 
-    public SOViewMyOrder() {
+    public ViewMyOrderUI() {
 
     }
 
-    public void pageContent(ListClass arrList, int custID, String userName) {
+    public void pageContent(ListGetterSetter arrList, int custID, String userName) {
         arrClass = arrList;
         displayCurrentDateTime();
         
@@ -110,7 +99,7 @@ public class SOViewMyOrder extends JFrame {
                 jbtViewOrderedItem[i].addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         String schedule_orderID = sc_orderID.getText();
-                        ViewItemOrdered view = new ViewItemOrdered();
+                        ViewOrderedItemUI view = new ViewOrderedItemUI();
                         view.pageContent(Integer.parseInt(schedule_orderID), arrClass.getScOrderItemList(), arrClass.getItemlist());
                     }
                 });
@@ -120,8 +109,8 @@ public class SOViewMyOrder extends JFrame {
 
         jbtOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new CustomerMainMenu(arrClass, userName);
-                SOViewMyOrder.this.setVisible(false);
+                new CustomerMainMenuUI(arrClass, userName);
+                ViewMyOrderUI.this.setVisible(false);
             }
         });
 

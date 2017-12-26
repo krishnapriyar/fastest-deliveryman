@@ -1,37 +1,24 @@
 package ModuleE.ui;
 
-import ModuleE.entity.Customer;
-import ModuleE.entity.ScheduledOrderClass;
-import ModuleE.entity.ScheduledOrderItem;
-import ModuleE.adt.myListInterface;
-import ModuleE.entity.ListClass;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import ModuleE.entity.ListGetterSetter;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import java.text.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import javax.swing.JPanel;
 import org.jdesktop.swingx.JXDatePicker;
 
-public class SOSelectDateTime extends JFrame {
+/**
+ *
+ * @author chong kun ming RSD 3
+ */
+
+public class SelectDateTimeUI extends JFrame {
     private static String dbURL = "jdbc:derby://localhost:1527/Fast";
     private static Connection conn = null;
     private static PreparedStatement prepare;
@@ -57,11 +44,11 @@ public class SOSelectDateTime extends JFrame {
     private JLabel jlblCurrentDate = new JLabel();
     private JLabel jlblCurrentTime = new JLabel();
     private JLabel jlblCustomerName = new JLabel();
-    public SOSelectDateTime() {
+    public SelectDateTimeUI() {
 
     }
 
-    public void makeScheduleOrder(ListClass arrClass, int custID, String userName) {
+    public void makeScheduleOrder(ListGetterSetter arrClass, int custID, String userName) {
         displayCurrentDateTime();
         initializeComponent();
         jlblCurrentDate.setFont(font1);
@@ -124,9 +111,9 @@ public class SOSelectDateTime extends JFrame {
                             String deliverDate = sdf2.format(receiveDate);
                             String deliverTime = sdf1.format(receiveTime);
                             
-                            SOMakeScheduledOrder so = new SOMakeScheduledOrder();
+                            MakeNewOrderUI so = new MakeNewOrderUI();
                             so.orderPage(arrClass, custID, deliverDate, deliverTime, userName);
-                            SOSelectDateTime.this.dispose();
+                            SelectDateTimeUI.this.dispose();
                         } else {
                             JOptionPane.showMessageDialog(null, "Receive date cannot before today's date");
                         }

@@ -28,7 +28,7 @@ public class LinkedStack<T> implements StackInterface<T> {
     
     @Override
     public void push(T newEntry) {
-        Node newNode= new Node(newEntry);
+       Node newNode= new Node(newEntry);
         
        if(firstNode==null){
            firstNode = newNode;
@@ -48,20 +48,29 @@ public class LinkedStack<T> implements StackInterface<T> {
            firstNode = firstNode.next;
            size--;
        }
-       
-       return(T) returnNode.data;
+       if(returnNode==null){
+           return null;
+       }
+       else{
+         return(T) returnNode.data;
+       }
     }
 
     @Override
     public T peek() {
         
-           Node returnNode = null;
+       Node returnNode = null;
        if(firstNode != null){
            returnNode = firstNode;
          
        }
        
-       return(T) returnNode.data;
+       if(returnNode==null){
+           return null;
+       }
+       else{
+         return(T) returnNode.data;
+       }
     }
 
     @Override
