@@ -1,7 +1,6 @@
 package ModuleD.ui;
 
 import ModuleB.ui.HRExecMenu;
-import ModuleB.ui.DeliverymanDetailsFrame;
 import ModuleD.entity.DMClockInOut;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,12 +11,6 @@ import java.util.Locale;
 import javax.swing.Timer;
 import ModuleD.adt.DMListImplementation;
 import ModuleD.adt.DMListInterface;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  *
@@ -26,18 +19,15 @@ import java.sql.Statement;
 public class DeliverymanClockInOut extends javax.swing.JFrame {
 
     private Date date;
-    private Date checkInTime = null;
-    private Date checkOutTime = null;
+    private Date checkInTime,checkOutTime = null;
     private String checkInDate = "";
     private String selectedItem = null;
-    private String tempName = "";
-    private String tempID = "";
-    private String tempStatus = "";
+    
+
     int numOfRecord = 0;
-    private String DMname = "";
     private SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
-    private DMListInterface<DMClockInOut> list = new DMListImplementation<>();
+    private DMListInterface<DMClockInOut> listDM = new DMListImplementation<>();
     private HRExecMenu hrExec = new HRExecMenu();
 
     public DeliverymanClockInOut() {
@@ -55,7 +45,7 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
         }
         try {
             for (int i = 1; i <= hrExec.getDmList().getSize(); i++) {
-                list.addNewEntry(new DMClockInOut(hrExec.getDmList().getEntry(i).getDmName(),
+                listDM.addNewEntry(new DMClockInOut(hrExec.getDmList().getEntry(i).getDmName(),
                         hrExec.getDmList().getEntry(i).getDmID(), "Available",
                         sdfDate.parse("12/12/2017"), sdfTime.parse("00:00 AM"), sdfTime.parse("00:00 AM")));
             }
@@ -63,17 +53,9 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
-//        try {
-//            list.addNewEntry(new DMClockInOut(tempName, Integer.valueOf(tempID), tempStatus, sdfDate.parse("12/12/2017"), sdfTime.parse("00:00 AM"), sdfTime.parse("00:00 AM")));
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
         jcbDMan.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                DMname = jcbDMan.getSelectedItem().toString();
-//                getDMID();
-
                 selectedItem = jcbDMan.getSelectedItem().toString();
 
                 for (int i = 1; i <= hrExec.getDmList().getSize(); i++) {
@@ -85,15 +67,6 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
         });
     }
 
-//    void getDMID() {
-//        
-//        
-//            if(hrExec.getDmList().getEntry(i).equals(DMname)){
-//                jlblDManID.setText(hrExec.getDmList().getEntry(i).getDmName());
-//            }else{
-//                System.out.println("not same");
-//            }
-//    }
     void showDate() {
         date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -128,6 +101,7 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
         jlblDManID = new javax.swing.JLabel();
         jbtnClockOut = new javax.swing.JButton();
         jbtnClockIn = new javax.swing.JButton();
+        jbtnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -166,18 +140,25 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
             }
         });
 
+        jbtnBack.setText("Back");
+        jbtnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(130, 130, 130)
+                .addGap(139, 139, 139)
                 .addComponent(jlblTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(154, 154, 154))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(jlblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(180, 180, 180))
+                .addGap(145, 145, 145))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbtnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(124, 124, 124))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -195,8 +176,11 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
                             .addGap(59, 59, 59)
                             .addComponent(jbtnClockIn, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jbtnClockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jbtnClockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(152, 152, 152)
+                        .addComponent(jlblDate, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,7 +201,9 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtnClockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnClockIn, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jbtnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58))
         );
 
         pack();
@@ -231,15 +217,15 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Select a deliveryman!");
         } else {
             try {
-                for (int j = 0; j < list.retrieveSize(); j++) {
-                    if (list.retrieveAllEntry(j).getDmName().equals(selectedItem)) {
-                        if (list.retrieveAllEntry(j).getClockInDate().equals(sdfDate.parse("25/12/2017"))) {
+                for (int j = 0; j < listDM.retrieveSize(); j++) {
+                    if (listDM.retrieveAllEntry(j).getDmName().equals(selectedItem)) {
+                        if (listDM.retrieveAllEntry(j).getClockInDate().equals(sdfDate.parse("25/12/2017"))) {
                             JOptionPane.showMessageDialog(null, "Already clock in!");
                         } else {
                             try {
                                 checkInTime = sdfTime.parse(jlblTime.getText());
-                                list.retrieveAllEntry(j).setClockInDate(sdfDate.parse(checkInDate));
-                                list.retrieveAllEntry(j).setClockInTime(checkInTime);
+                                listDM.retrieveAllEntry(j).setClockInDate(sdfDate.parse(checkInDate));
+                                listDM.retrieveAllEntry(j).setClockInTime(checkInTime);
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
@@ -251,12 +237,6 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
         }
-        for (int i = 0; i < list.retrieveSize(); i++) {
-            System.out.println(list.retrieveAllEntry(i).getDmID()
-                    + " " + sdfDate.format(list.retrieveAllEntry(i).getClockInDate())
-                    + " " + sdfTime.format(list.retrieveAllEntry(i).getClockInTime())
-                    + " " + sdfTime.format(list.retrieveAllEntry(i).getClockOutTime()));
-        }
     }//GEN-LAST:event_jbtnClockInActionPerformed
 
     private void jbtnClockOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnClockOutActionPerformed
@@ -265,18 +245,16 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
         if (jlblDManID.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Select a deliveryman!");
         } else {
-//            for (int i = 1; i <= hrExec.getDmList().getSize(); i++) {
-//                if (hrExec.getDmList().getEntry(i).getDmName().equals(selectedItem)) {
-            for (int j = 0; j < list.retrieveSize(); j++) {
-                if (list.retrieveAllEntry(j).getDmName().equals(selectedItem)) {
+            for (int j = 0; j < listDM.retrieveSize(); j++) {
+                if (listDM.retrieveAllEntry(j).getDmName().equals(selectedItem)) {
 
                     try {
-                        if (list.retrieveAllEntry(j).getClockInDate().equals(sdfDate.parse("25/12/2017"))) {
-                            if (list.retrieveAllEntry(j).getClockInTime() != null) {
-                                if (list.retrieveAllEntry(j).getClockOutTime().equals(sdfTime.parse("12:00 AM"))) {
+                        if (listDM.retrieveAllEntry(j).getClockInDate().equals(sdfDate.parse("25/12/2017"))) {
+                            if (listDM.retrieveAllEntry(j).getClockInTime() != null) {
+                                if (listDM.retrieveAllEntry(j).getClockOutTime().equals(sdfTime.parse("12:00 AM"))) {
 
                                     checkOutTime = sdfTime.parse(jlblTime.getText());
-                                    list.retrieveAllEntry(j).setClockOutTime(checkOutTime);
+                                    listDM.retrieveAllEntry(j).setClockOutTime(checkOutTime);
                                     JOptionPane.showMessageDialog(null, "Clock out success!");
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Operation not allowed!");
@@ -293,17 +271,16 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
                 }
             }
         }
-        for (int i = 0; i < list.retrieveSize(); i++) {
-            System.out.println(list.retrieveAllEntry(i).getDmID()
-                    + " " + sdfDate.format(list.retrieveAllEntry(i).getClockInDate())
-                    + " " + sdfTime.format(list.retrieveAllEntry(i).getClockInTime())
-                    + " " + sdfTime.format(list.retrieveAllEntry(i).getClockOutTime()));
-        }
     }//GEN-LAST:event_jbtnClockOutActionPerformed
 
     private void jcbDManActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbDManActionPerformed
         // TODO adyour handling code here
     }//GEN-LAST:event_jcbDManActionPerformed
+
+    private void jbtnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBackActionPerformed
+        this.setVisible(false);
+        new DMMainMenu().setVisible(true);
+    }//GEN-LAST:event_jbtnBackActionPerformed
 
     public void reset() {
     }
@@ -346,6 +323,7 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton jbtnBack;
     private javax.swing.JButton jbtnClockIn;
     private javax.swing.JButton jbtnClockOut;
     private javax.swing.JComboBox jcbDMan;

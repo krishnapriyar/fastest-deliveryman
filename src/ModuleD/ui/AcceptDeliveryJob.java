@@ -1,55 +1,71 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ModuleD.ui;
 
 import ModuleD.entity.OrderClass;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
-import javax.swing.JOptionPane;
-import ModuleD.adt.DMListImplementation;
 import ModuleD.adt.DMListImplementation;
 import ModuleD.adt.DMListInterface;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import ui.AdminMenu;
 
 /**
  *
- * @author Kai Yan
+ * @author Chew
  */
 public class AcceptDeliveryJob extends javax.swing.JFrame {
 
     private Queue<OrderClass> queueOrders = new ArrayBlockingQueue<OrderClass>(100);
     private DMListInterface<OrderClass> listOrder = new DMListImplementation<>();
+    private DeliverymanWorkStatus dmWorkStat = new DeliverymanWorkStatus();
+    private String statusDelivery = "Delivery";
+    private int tempID = 0;
 
     public AcceptDeliveryJob() {
         initComponents();
-//        queueOrders.add(new OrderClass(20002, "Available", 99, 19.19, "91019191919", 10000));
-//        queueOrders.add(new OrderClass(30003, "Unavailable", 88, 19.19, "12345678233", 10001));
-//        queueOrders.add(new OrderClass(40004, "s", 77, 19.19, "12348678233", 10002));
-//        queueOrders.add(new OrderClass(50005, "d", 66, 19.19, "12349678233", 10003));
-//        queueOrders.add(new OrderClass(60006, "f", 55, 19.19, "12345978233", 10004));
-        
-        while(queueOrders.size() != 0){
-            listOrder.addNewEntry(queueOrders.remove());
+
+        queueOrders.offer(new OrderClass(20000, 11.11, 999, "address1", 0111111111, "status1", 10000));
+        queueOrders.offer(new OrderClass(20001, 22.22, 888, "address2", 0222222222, "status2", 10001));
+        queueOrders.offer(new OrderClass(20002, 33.33, 777, "address3", 0333333333, "status3", 10002));
+        queueOrders.offer(new OrderClass(20003, 44.44, 666, "address4", 0444444444, "status4", 10003));
+
+        while (!queueOrders.isEmpty()) {
+
+            listOrder.addNewEntry(queueOrders.poll());
         }
-
-//        for (int i = 0; i < queueOrders.size(); ++i) {
-//            System.out.print(queueOrder.poll().getOrderID()+"\n");
-//            listOrder.addNewEntry(queueOrders.remove());
-//        }
-
         for (int i = 0; i < listOrder.retrieveSize(); i++) {
             jcbDJob.addItem(listOrder.retrieveAllEntry(i).getOrderID());
         }
 
-//        jcbDJob.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//
+        jcbDJob.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 0; i < listOrder.retrieveSize(); i++) {
+                    if (jcbDJob.getSelectedItem().equals(listOrder.retrieveAllEntry(i).getOrderID())) {
+                        jlblOrderID.setText(String.valueOf(listOrder.retrieveAllEntry(i).getOrderID()));
+                        jlblOrderTime.setText(String.valueOf(listOrder.retrieveAllEntry(i).getOrderTime()));
+                        jlblOrderDate.setText(String.valueOf(listOrder.retrieveAllEntry(i).getOrderDate()));
+                    }
+                }
+            }
+        });
+///////////// add previous list into current list//////////////////////////////
+
+//        try {
+//            for (int i = 0; i < dmWorkStat.getParseList().retrieveSize(); i++) {
+//                listDM.addNewEntry(new DMClockInOut(dmWorkStat.getParseList().retrieveAllEntry(i).getDmName(),
+//                        dmWorkStat.getParseList().retrieveAllEntry(i).getDmID(), 
+//                        dmWorkStat.getParseList().retrieveAllEntry(i).getStatus(), 
+//                        dmWorkStat.getParseList().retrieveAllEntry(i).getOrderID(), 
+//                        dmWorkStat.getParseList().retrieveAllEntry(i).getCustID()));
 //            }
-//        });
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+        for (int i = 0; i < dmWorkStat.getParseList().retrieveSize(); i++) {
+            if (dmWorkStat.getParseList().retrieveAllEntry(i).getStatus().equals("Available")) {
+                jcbDMan.addItem(dmWorkStat.getParseList().retrieveAllEntry(i).getDmName());
+            }
+        }
     }
 
     /**
@@ -74,11 +90,12 @@ public class AcceptDeliveryJob extends javax.swing.JFrame {
         jlblOrderID = new javax.swing.JLabel();
         jlblOrderDate = new javax.swing.JLabel();
         jlblOrderTime = new javax.swing.JLabel();
+        jbtnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jlblTitleDWS.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jlblTitleDWS.setText("Choose a Delivery Order ");
+        jlblTitleDWS.setText("Orders To Be Delivered");
         jlblTitleDWS.setMaximumSize(new java.awt.Dimension(178, 22));
         jlblTitleDWS.setMinimumSize(new java.awt.Dimension(178, 22));
 
@@ -103,11 +120,12 @@ public class AcceptDeliveryJob extends javax.swing.JFrame {
 
         jcbDMan.setMaximumRowCount(100);
 
-        jlblOrderID.setText("jLabel6");
-
-        jlblOrderDate.setText("jLabel6");
-
-        jlblOrderTime.setText("jLabel6");
+        jbtnBack.setText("Back");
+        jbtnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,7 +168,9 @@ public class AcceptDeliveryJob extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jcbDMan, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(349, Short.MAX_VALUE)
+                        .addGap(68, 68, 68)
+                        .addComponent(jbtnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jbtnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(81, 81, 81))
         );
@@ -173,17 +193,19 @@ public class AcceptDeliveryJob extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jlblOrderID))
+                            .addComponent(jlblOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jlblOrderTime))
+                            .addComponent(jlblOrderTime, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jlblOrderDate))))
+                            .addComponent(jlblOrderDate, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addComponent(jbtnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbtnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
         );
 
@@ -192,8 +214,30 @@ public class AcceptDeliveryJob extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnConfirmActionPerformed
-        // TODO add your handling code here:
+        String tempName = jcbDMan.getSelectedItem().toString();
+        int tempDMID = 0;
+        tempID = Integer.valueOf(jcbDJob.getSelectedItem().toString());
+
+        for (int i = 0; i < dmWorkStat.getParseList().retrieveSize(); i++) {
+            if (dmWorkStat.getParseList().retrieveAllEntry(i).getDmName().equals(tempName)) {
+                dmWorkStat.getParseList().retrieveAllEntry(i).setStatus(statusDelivery);
+                tempDMID = dmWorkStat.getParseList().retrieveAllEntry(i).getDmID();
+            }
+        }
+
+        for (int i = 0; i < listOrder.retrieveSize(); i++) {
+            if (listOrder.retrieveAllEntry(i).getOrderID() == tempID) {
+                listOrder.retrieveAllEntry(i).setStatusDelivery(statusDelivery);
+                listOrder.retrieveAllEntry(i).setDmID(tempDMID);
+            }
+        }
+
     }//GEN-LAST:event_jbtnConfirmActionPerformed
+
+    private void jbtnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBackActionPerformed
+        this.setVisible(false);
+        new AdminMenu().setVisible(true);
+    }//GEN-LAST:event_jbtnBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,6 +281,7 @@ public class AcceptDeliveryJob extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton jbtnBack;
     private javax.swing.JButton jbtnConfirm;
     private javax.swing.JComboBox jcbDJob;
     private javax.swing.JComboBox jcbDMan;
