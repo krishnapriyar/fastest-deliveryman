@@ -11,6 +11,7 @@ import java.util.Locale;
 import javax.swing.Timer;
 import ModuleD.adt.DMListImplementation;
 import ModuleD.adt.DMListInterface;
+import ModuleE.ui.DMMainMenuUI;
 
 /**
  *
@@ -279,7 +280,7 @@ public class DeliverymanClockInOut extends javax.swing.JFrame {
 
     private void jbtnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBackActionPerformed
         this.setVisible(false);
-        new DMMainMenu().setVisible(true);
+        new DMMainMenuUI().setVisible(true);
     }//GEN-LAST:event_jbtnBackActionPerformed
 
     public void reset() {
