@@ -9,9 +9,8 @@ public class Customer {
     private int custID;
 
     public Customer() {
+        
     }
-
-    
     
     public Customer(int custID, String custName, String custTelNo, String custAddress) {
         this.custName = custName;
