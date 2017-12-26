@@ -1,7 +1,12 @@
 package ModuleE.ui;
 
+import ModuleC.adt.LinkedQueue;
+import ModuleC.adt.QueueInterface;
+import ModuleC.entity.OrderClass;
+import ModuleC.ui.MakeOrder;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,9 +27,18 @@ public class CustomerMainMenuUI extends JFrame {
     private JPanel jpnPanel2 = new JPanel(new GridLayout(3, 2));
     private int custID;
     public ModuleE.entity.ListGetterSetter arrList = new ModuleE.entity.ListGetterSetter();
+    private static QueueInterface<OrderClass> orderList = new LinkedQueue<>(); 
     
     public CustomerMainMenuUI() {
         
+    }
+    
+    public static void setQueue(QueueInterface<OrderClass> orderqueue){
+        orderList = orderqueue;
+    }
+    
+    public QueueInterface<OrderClass> getQueue(){
+        return orderList;
     }
     
     public CustomerMainMenuUI(ModuleE.entity.ListGetterSetter arrClass, String username) {
@@ -47,9 +61,13 @@ public class CustomerMainMenuUI extends JFrame {
         jbtLogout.setFont(font);
         
         jbtMakeOrder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                
+           
+                 public void actionPerformed(ActionEvent e) {
+               MakeOrder makeOrder = new MakeOrder(); 
+               makeOrder.orderPage(username, custID);
+               CustomerMainMenuUI.this.setVisible(false);
             }
+            
         });
         
         jbtViewScheduledOrder.addActionListener(new java.awt.event.ActionListener() {

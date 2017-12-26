@@ -7,6 +7,7 @@ import ModuleD.adt.DMListImplementation;
 import ModuleD.adt.DMListInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 import ui.AdminMenu;
 
 /**
@@ -222,13 +223,16 @@ public class AcceptDeliveryJob extends javax.swing.JFrame {
             if (dmWorkStat.getParseList().retrieveAllEntry(i).getDmName().equals(tempName)) {
                 dmWorkStat.getParseList().retrieveAllEntry(i).setStatus(statusDelivery);
                 tempDMID = dmWorkStat.getParseList().retrieveAllEntry(i).getDmID();
+                JOptionPane.showMessageDialog(null, tempName + "'s delivery status has changed to - " + statusDelivery);
             }
         }
 
         for (int i = 0; i < listOrder.retrieveSize(); i++) {
-            if (listOrder.retrieveAllEntry(i).getOrderID() == tempID) {
+            if (listOrder.retrieveAllEntry(i).getOrderID() == Integer.valueOf(jlblOrderID.getText())) {
                 listOrder.retrieveAllEntry(i).setStatusDelivery(statusDelivery);
                 listOrder.retrieveAllEntry(i).setDmID(tempDMID);
+                JOptionPane.showMessageDialog(null, "OrderID: " + jlblOrderID.getText() + " delivery status has changed to - " + statusDelivery);
+
             }
         }
 
